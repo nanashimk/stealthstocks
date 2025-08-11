@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="dark" name="color-scheme"/>
+<title>The Stealth Academy — MemeCoin Mastery</title>
+<style>
+/* =====================
+   Editable Theme Tokens
+   ===================== */
+:root{
+  --bg:#0B0F14;--cyan:#45E5FF;--teal:#11FFC7;--amber:#FFC46B;--white:#EAF6FF;--muted:#9FB4C4;
+  --glass:rgba(255,255,255,.06);--glass-strong:rgba(255,255,255,.10);--border:rgba(69,229,255,.35);
+  --shadow:0 10px 30px rgba(0,0,0,.45), 0 0 40px rgba(17,255,199,.05);
+  --radius:18px;--radius-lg:22px;--pad:22px;--speed:260ms;--ease:cubic-bezier(.2,.8,.2,1);
+  --mono:'ui-monospace','SFMono-Regular','Menlo','Consolas','Liberation Mono',monospace;
+  --sans:system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --grid-bg:linear-gradient(transparent 23px, rgba(255,255,255,.05) 24px),linear-gradient(90deg,transparent 23px, rgba(255,255,255,.05) 24px);
+}
+
+/* =====================
+   Base + Layout
+   ===================== */
+*{box-sizing:border-box}html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--white);font:16px/1.6 var(--sans);
+  letter-spacing:.1px; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+main{position:relative;z-index:2}
+.container{width:min(1200px,92vw);margin:0 auto;padding:64px 0}
+h1,h2,h3{font-family:var(--mono);letter-spacing:.6px}
+h1{font-size:clamp(28px,5vw,46px);line-height:1.15;margin:0 0 10px}
+h2{font-size:clamp(22px,3.6vw,32px);margin:0 0 14px}
+h3{font-size:clamp(18px,2.8vw,22px);margin:0 0 10px}
+p{margin:0 0 10px;color:var(--muted)}
+
+.glass{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06));
+  backdrop-filter:saturate(120%) blur(10px);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* =====================
+   Background & Overlays
+   ===================== */
+.bg-stack{position:fixed;inset:0;z-index:0;overflow:hidden}
+.bg-layer{position:absolute;inset:0}
+.scanlines:before{
+  content:"";position:absolute;inset:0;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px);
+  mix-blend-mode:soft-light;pointer-events:none
+}
+.vignette:after{
+  content:"";position:absolute;inset:-10%;pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,.25) 60%, rgba(0,0,0,.6) 100%)
+}
+
+/* =====================
+   Nav + Progress
+   ===================== */
+nav{
+  position:sticky;top:0;z-index:5;
+  backdrop-filter:saturate(140%) blur(12px);
+  background:linear-gradient(180deg,rgba(11,15,20,.65),rgba(11,15,20,.45));
+  border-bottom:1px solid rgba(69,229,255,.25)
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;width:min(1200px,92vw);margin:0 auto;height:64px}
+.logo{font:700 18px var(--mono);color:var(--teal);letter-spacing:.8px}
+nav a{color:var(--white);text-decoration:none;font-weight:600;opacity:.85}
+nav a:hover{text-shadow:0 0 18px rgba(69,229,255,.55)}
+.nav-links{display:flex;gap:22px;align-items:center}
+.progress{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber));width:0;box-shadow:0 0 12px rgba(17,255,199,.6)}
+
+/* =====================
+   Buttons
+   ===================== */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 20px;border-radius:16px;border:1px solid var(--border);cursor:pointer;
+  transition:transform var(--speed) var(--ease), box-shadow var(--speed) var(--ease), background var(--speed) var(--ease);
+  user-select:none;min-width:180px;font-weight:800;letter-spacing:.4px
+}
+.btn-primary{
+  color:#001c16;background:linear-gradient(180deg,var(--teal),#09d9a9);
+  box-shadow:0 10px 25px rgba(17,255,199,.25), 0 0 25px rgba(17,255,199,.35), inset 0 0 0 1px rgba(0,0,0,.25)
+}
+.btn-primary:hover{box-shadow:0 12px 30px rgba(17,255,199,.35), 0 0 35px rgba(17,255,199,.55)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--white)}
+.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-color:var(--cyan)}
+.btn.mag{will-change:transform;transition:transform .2s var(--ease)}
+.badges{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted)}
+.badge{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;border:1px dashed rgba(255,255,255,.18)}
+
+.badge svg{flex:0 0 18px}
+
+/* =====================
+   Hero
+   ===================== */
+.hero{display:grid;place-items:center;min-height:92vh;padding:90px 0 60px;position:relative;text-align:center}
+.hero .panel{padding:28px;border-radius:var(--radius-lg);border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(11,15,20,.5),rgba(11,15,20,.35));
+  box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 60px rgba(69,229,255,.08)
+}
+.sub{font:600 16px var(--sans);color:var(--muted);margin:6px 0 18px}
+.cta-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:8px 0 6px}
+
+/* =====================
+   Sections & Cards
+   ===================== */
+.section{scroll-margin-top:80px}
+.section .grid{display:grid;gap:18px}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}}
+
+.card{position:relative;padding:var(--pad);border-radius:var(--radius);border:1px solid var(--border);background:var(--glass);box-shadow:var(--shadow)}
+.card:hover{box-shadow:0 12px 38px rgba(17,255,199,.15), 0 0 40px rgba(69,229,255,.12)}
+.card .icon{width:28px;height:28px}
+
+/* Terminal step reveal */
+.terminal-line{overflow:hidden;display:block;--clip:0%;clip-path:inset(0 0 calc(100% - var(--clip)) 0);transition:clip-path 800ms var(--ease)}
+
+/* Tilt-on-hover */
+.tilt{transform-style:preserve-3d;transform:perspective(800px) rotateX(0) rotateY(0);transition:transform 400ms var(--ease), box-shadow 400ms var(--ease)}
+.tilt:hover{box-shadow:0 20px 60px rgba(0,0,0,.55), 0 0 60px rgba(17,255,199,.18)}
+.tilt:hover .tilt-fg{transform:translateZ(24px)}
+
+/* =====================
+   Faux Terminal Scanner
+   ===================== */
+.console{font:14px/1.5 var(--mono);background:rgba(4,8,12,.66);padding:18px;border-radius:14px;
+  border:1px solid rgba(69,229,255,.32);min-height:240px;max-height:340px;overflow:auto;color:#d6fff4}
+.console .line{opacity:0;transform:translateY(6px);animation:fadein .45s var(--ease) forwards}
+.console-controls{display:flex;gap:10px;margin-top:10px}
+@keyframes fadein{to{opacity:1;transform:none}}
+
+/* =====================
+   Sliders / Simulator
+   ===================== */
+.controls{display:grid;gap:14px}
+.control{display:grid;gap:8px}
+input[type=range]{width:100%}
+.selects{display:flex;gap:10px;flex-wrap:wrap}
+.toggle{display:flex;align-items:center;gap:10px}
+.result{font:15px var(--mono);color:#c9f8ff}
+.small{font-size:12px;color:var(--muted)}
+
+/* =====================
+   Pricing
+   ===================== */
+.pricing-card{position:relative;padding:28px;border-radius:20px;border:1px solid var(--border);
+  background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 80px rgba(17,255,199,.12);text-align:center
+}
+.price{font:700 40px var(--mono);color:var(--teal)}
+.countdown{font:700 18px var(--mono);color:var(--amber)}
+.kicker{color:var(--muted);font-size:13px}
+
+/* =====================
+   FAQ
+   ===================== */
+.faq item{display:block}
+.faq-summary{list-style:none;cursor:pointer;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-weight:700}
+.faq-content{overflow:hidden;max-height:0;transition:max-height 380ms var(--ease);border-left:2px solid rgba(69,229,255,.28);margin:8px 0 16px;padding-left:12px}
+.faq-content p{margin:8px 0;color:var(--white)}
+
+/* =====================
+   Footer
+   ===================== */
+footer{border-top:1px solid rgba(69,229,255,.18);padding:22px 0 40px;background:rgba(4,8,12,.42)}
+footer p{font-size:13px}
+
+/* =====================
+   Reveal-on-scroll & Reduced Motion
+   ===================== */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.revealed{opacity:1;transform:none}
+
+/* =====================
+   Utility
+   ===================== */
+.hr{height:1px;background:linear-gradient(90deg,transparent, rgba(69,229,255,.35), transparent);margin:20px 0}
+.center{text-align:center}
+.mono{font-family:var(--mono)}
+.tag{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);font:12px var(--mono);color:var(--muted)}
+
+/* Accessibility */
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+/* Scanline/Vignette container */
+.bg-stack.scanlines.vignette{pointer-events:none}
+
+/* =====================
+   End of readable CSS — below is minified duplicate for smaller payloads in prod (kept short)
+   ===================== */
+</style>
+</head>
+<body>
+<!-- =====================
+     Parallax Canvas Background (Layered)
+     ===================== -->
+<div aria-hidden="true" class="bg-stack scanlines vignette">
+<canvas aria-label="Animated aurora gradient backdrop" class="bg-layer" id="aurora" role="img"></canvas>
+<canvas class="bg-layer" id="particles"></canvas>
+</div>
+<!-- =====================
+     Sticky Nav
+     ===================== -->
+<nav aria-label="Primary">
+<div class="nav-inner">
+<div aria-label="Stealth Academy logo" class="logo">&gt;_</div>
+<div class="nav-links" role="navigation">
+<a aria-label="How it works" href="#how">How it works</a>
+<a aria-label="Proof" href="#proof">Proof</a>
+<a aria-label="Pricing" href="#pricing">Pricing</a>
+<a aria-label="FAQ" href="#faq">FAQ</a>
+</div>
+<a aria-label="Enroll" class="btn btn-ghost mag" href="#pricing">Enroll</a>
+</div>
+<div aria-hidden="true" class="progress" id="progress"></div>
+</nav>
+<!-- =====================
+     HERO
+     ===================== -->
+<header class="hero">
+<div class="panel glass reveal tilt">
+<div class="tag mono">The Stealth Academy — MemeCoin Mastery</div>
+<h1 aria-live="polite" class="mono" id="headline">ACCESS GRANTED // Catch the pumps before anyone else.</h1>
+<p class="sub">Track elite wallets. Enter early. Exit clean. Daily plans included.</p>
+<div class="cta-row">
+<a aria-label="Get Instant Access" class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank">Get Instant Access</a>
+<button aria-label="See the playbook video" class="btn btn-ghost mag" id="playbookBtn">See the Playbook (2-min)</button>
+<a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank">Get Instant Access (Pay with Solana)</a></div>
+<div class="badges" role="list">
+<div class="badge" role="listitem">
+<svg aria-hidden="true" fill="none" height="18" viewbox="0 0 24 24" width="18"><path d="M12 2l7 4v6c0 5-3 8-7 10C8 20 5 17 5 12V6l7-4Z" stroke="url(#g1)" stroke-width="1.5"></path><path d="M9 12l2 2 4-4" stroke="#11FFC7" stroke-linecap="round" stroke-width="1.7"></path><defs><lineargradient id="g1" x1="0" x2="24" y1="0" y2="24"><stop stop-color="#45E5FF"></stop><stop offset="1" stop-color="#11FFC7"></stop></lineargradient></defs></svg>
+<span>Instant access</span>
+</div>
+<div class="badge" role="listitem">
+<svg aria-hidden="true" fill="none" height="18" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="9" stroke="url(#g2)" stroke-width="1.5"></circle><path d="M12 7v5l3 3" stroke="#FFC46B" stroke-linecap="round" stroke-width="1.7"></path></svg>
+<span>Lifetime updates</span>
+</div>
+<div class="badge" role="listitem">
+<svg aria-hidden="true" fill="none" height="18" viewbox="0 0 24 24" width="18"><rect height="11" rx="2" stroke="url(#g3)" stroke-width="1.5" width="16" x="4" y="7"></rect><path d="M4 9h16" stroke="#45E5FF" stroke-width="1.5"></path><path d="M8 13h8" stroke="#11FFC7" stroke-linecap="round" stroke-width="1.5"></path></svg>
+<span>No fluff</span>
+</div>
+</div>
+</div>
+</header>
+<main>
+<!-- ============ How It Works ============ -->
+<section class="section container" id="how">
+<h2 class="mono">How it works</h2>
+<div class="grid grid-3">
+<article class="card tilt reveal">
+<div class="terminal-line"><svg aria-hidden="true" class="icon" fill="none" viewbox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="url(#g4)" stroke-width="1.3"></path><path d="M7 9l3 3-3 3" stroke="#11FFC7" stroke-linecap="round" stroke-width="1.6"></path><path d="M12 15h5" stroke="#45E5FF" stroke-linecap="round" stroke-width="1.6"></path></svg></div>
+<div class="terminal-line"><h3 class="mono">Step 1 — Discover</h3></div>
+<div class="terminal-line"><p>Scan memecoins early with wallet &amp; trend signals.</p></div>
+</article>
+<article class="card tilt reveal">
+<div class="terminal-line"><svg aria-hidden="true" class="icon" fill="none" viewbox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="url(#g4)" stroke-width="1.3"></path><path d="M9 9h6v6H9z" stroke="#FFC46B" stroke-width="1.6"></path></svg></div>
+<div class="terminal-line"><h3 class="mono">Step 2 — Mirror</h3></div>
+<div class="terminal-line"><p>Follow the smart money with on‑chain tracking.</p></div>
+</article>
+<article class="card tilt reveal">
+<div class="terminal-line"><svg aria-hidden="true" class="icon" fill="none" viewbox="0 0 24 24"><path d="M4 12h16" stroke="url(#g4)" stroke-width="1.3"></path><path d="M8 12l3-3v6l-3-3z" fill="#11FFC7"></path><path d="M16 8v8" stroke="#45E5FF" stroke-width="1.6"></path></svg></div>
+<div class="terminal-line"><h3 class="mono">Step 3 — Execute</h3></div>
+<div class="terminal-line"><p>Enter early, exit clean. Daily action plans.</p></div>
+</article>
+</div>
+</section>
+<!-- ============ Terminal Scanner (Simulated) ============ -->
+<section class="section container" id="scanner">
+<h2 class="mono">Live‑Like “Terminal Scanner”</h2>
+<div class="card reveal">
+<div aria-label="Simulated console output" aria-live="polite" class="console" id="console"></div>
+<div class="console-controls">
+<button aria-pressed="false" class="btn btn-ghost mag" id="toggleScan">Pause</button>
+<button class="btn btn-primary mag" id="genSample">Generate Sample Signal</button>
+</div>
+<div class="small kicker">Console is simulated for demo. Lines auto-trim to the last 25 for performance.</div>
+</div>
+</section>
+<!-- ============ Daily Plan Simulator ============ -->
+<section class="section container" id="sim">
+<h2 class="mono">Daily Plan Simulator</h2>
+<div class="grid grid-2">
+<div class="card reveal">
+<div class="controls">
+<div class="control">
+<label class="mono" for="budget">Budget: <span id="budgetVal">$35</span></label>
+<input aria-valuemax="2000" aria-valuemin="10" aria-valuenow="1000" id="budget" max="2000" min="10" step="10" type="range" value="1000"/>
+</div>
+<div class="control">
+<label class="mono" for="risk">Risk per trade: <span id="riskVal">3%</span></label>
+<input id="risk" max="10" min="1" step="1" type="range" value="3"/>
+</div>
+<div class="control">
+<label class="mono" for="holding">Holding time</label>
+<div aria-label="Holding time" class="selects" role="tablist">
+<button aria-selected="true" class="btn btn-ghost mag" data-hold="scalp" role="tab">Scalp</button>
+<button aria-selected="false" class="btn btn-ghost mag" data-hold="intraday" role="tab">Intraday</button>
+<button aria-selected="false" class="btn btn-ghost mag" data-hold="swing" role="tab">Swing</button>
+</div>
+</div>
+<label class="toggle">
+<input aria-checked="true" checked="" id="breakeven" type="checkbox"/>
+<span class="mono">Auto move stop to breakeven after +20%</span>
+</label>
+</div>
+</div>
+<div class="card reveal tilt">
+<h3 class="mono">Plan Output</h3>
+<div class="result" id="result"></div>
+<div class="small kicker">Clean math, illustrative only. Results not guaranteed.</div>
+</div>
+</div>
+</section>
+<!-- ============ Proof Wall ============ -->
+<section class="section container" id="proof">
+<h2 class="mono">Proof Wall — Case Files</h2>
+<div class="grid grid-3">
+<article class="card tilt reveal" style="background-image:var(--grid-bg);background-size:24px 24px">
+<div class="tag">2025‑05‑28</div>
+<h3 class="mono">Thesis</h3><p>Hype funnel + wallet cluster accumulation.</p>
+<div class="hr"></div>
+<p><strong>Entry:</strong> 0.000041 → <strong>Exit:</strong> 0.000057</p>
+<p class="small">Lesson: scale out into strength; trail remainder.</p>
+<div class="small">*Results vary.</div>
+</article>
+<article class="card tilt reveal" style="background-image:var(--grid-bg);background-size:24px 24px">
+<div class="tag">2025‑06‑11</div>
+<h3 class="mono">Thesis</h3><p>Fresh meme + early CEX rumors; tight float.</p>
+<div class="hr"></div>
+<p><strong>Entry:</strong> 0.00012 → <strong>Exit:</strong> 0.00019</p>
+<p class="small">Lesson: news pop fades; obey stops.</p>
+<div class="small">*Results vary.</div>
+</article>
+<article class="card tilt reveal" style="background-image:var(--grid-bg);background-size:24px 24px">
+<div class="tag">2025‑07‑22</div>
+<h3 class="mono">Thesis</h3><p>Wallet mirroring + trend strength across pairs.</p>
+<div class="hr"></div>
+<p><strong>Entry:</strong> 0.0031 → <strong>Exit:</strong> 0.0048</p>
+<p class="small">Lesson: staggered TP; protect gains.</p>
+<div class="small">*Results vary.</div>
+</article>
+</div>
+</section>
+<!-- ============ What You Get ============ -->
+<section class="section container" id="get">
+<h2 class="mono">What you get</h2>
+<div class="grid grid-2">
+<ul class="card reveal" style="list-style:none;padding-left:var(--pad);display:grid;gap:12px">
+<li><svg aria-hidden="true" fill="none" height="18" style="vertical-align:-3px;margin-right:8px" viewbox="0 0 24 24" width="18"><path d="M4 6h16v12H4z" stroke="url(#g4)"></path><path d="M7 9h6" stroke="#11FFC7" stroke-linecap="round" stroke-width="1.6"></path></svg> Insider Wallets (updated)</li>
+<li><svg aria-hidden="true" fill="none" height="18" style="vertical-align:-3px;margin-right:8px" viewbox="0 0 24 24" width="18"><path d="M6 5h12l1 3H5z" stroke="url(#g4)"></path><path d="M6 12h12" stroke="#45E5FF" stroke-width="1.6"></path></svg> Tool Stack &amp; Ready‑to‑Use Settings</li>
+<li><svg aria-hidden="true" fill="none" height="18" style="vertical-align:-3px;margin-right:8px" viewbox="0 0 24 24" width="18"><path d="M5 7h14v10H5z" stroke="url(#g4)"></path><path d="M7 10h10" stroke="#FFC46B" stroke-width="1.6"></path></svg> Daily Action Plans (coin / entry / TP / SL)</li>
+<li><svg aria-hidden="true" fill="none" height="18" style="vertical-align:-3px;margin-right:8px" viewbox="0 0 24 24" width="18"><path d="M4 6l8 12 8-12" stroke="url(#g4)"></path><path d="M8 9h8" stroke="#11FFC7" stroke-width="1.6"></path></svg> Step‑by‑Step Blueprints (discover → hype → exit)</li>
+<li><svg aria-hidden="true" fill="none" height="18" style="vertical-align:-3px;margin-right:8px" viewbox="0 0 24 24" width="18"><path d="M5 5h14v14H5z" stroke="url(#g4)"></path><path d="M12 8v8" stroke="#45E5FF" stroke-width="1.6"></path></svg> Private Support &amp; Weekly Recaps</li>
+</ul>
+<div class="card reveal">
+<h3 class="mono">Built to teach, not hype</h3>
+<p>Clear, repeatable process. No promises, no wild claims. You’ll learn how to think in systems and manage risk first.</p>
+</div>
+</div>
+</section>
+<!-- ============ Pricing ============ -->
+<section class="section container" id="pricing">
+<h2 class="mono center">Pricing</h2>
+<div class="pricing-card reveal tilt">
+<div class="tag mono">One‑time</div>
+<div class="price">$35</div>
+<p class="kicker">Lifetime updates · Instant access · Private support</p>
+<div aria-live="polite" class="countdown" id="countdown">DEMO TIMER — 02:00</div>
+<div class="small kicker">Timer resets on reload (demo only).</div>
+<div style="height:12px"></div>
+<a aria-label="Get Instant Access from pricing" class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank">Get Instant Access</a><a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank">Get Instant Access (Pay with Solana)</a><div style="height:10px"></div>
+<div style="height:14px"></div>
+<p class="small">14‑day refund if the content doesn’t match the curriculum. No results promised. Capital always at risk.</p>
+</div>
+</section>
+<!-- ============ FAQ ============ -->
+<section class="section container" id="faq">
+<h2 class="mono">FAQ</h2>
+<div class="faq">
+<div class="card reveal">
+<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Signals vs System?</div>
+<div class="faq-content"><p>We teach a system. You’ll learn to read wallet flows, structure entries, and manage exits. Sample signals are included only as study aids.</p></div>
+</div>
+<div class="card reveal">
+<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">How do you handle risk?</div>
+<div class="faq-content"><p>Risk first. Fixed % per trade, clear invalidation, and position sizing. We emphasize protecting downside above all.</p></div>
+</div>
+<div class="card reveal">
+<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Refund policy?</div>
+<div class="faq-content"><p>14‑day refund if the course content doesn’t match what’s described. No outcome guarantees.</p></div>
+</div>
+<div class="card reveal">
+<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Do I need experience?</div>
+<div class="faq-content"><p>No. We start with foundations, then build. If you’ve traded before, you’ll formalize what works.</p></div>
+</div>
+<div class="card reveal">
+<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Time commitment?</div>
+<div class="faq-content"><p>Most members spend 20–40 minutes a day. Plans keep you focused; repetition builds skill.</p></div>
+</div>
+</div>
+</section>
+</main>
+<!-- =====================
+     FOOTER
+     ===================== -->
+<footer>
+<div class="container">
+<p class="small">Risk disclaimer: Cryptocurrency is volatile. Capital is at risk. Past performance and case files are not guarantees of future results.</p>
+<p class="small">Contact: support@stealth.ac — © <span id="year"></span> The Stealth Academy. All rights reserved. <span class="tag">Accessibility: keyboard‑friendly, reduced motion respected.</span></p>
+</div>
+</footer>
+<!-- Hidden SVG gradients reused -->
+<svg height="0" style="position:absolute" width="0"><defs><lineargradient id="g3" x1="0" x2="24" y1="0" y2="24"><stop stop-color="#45E5FF"></stop><stop offset="1" stop-color="#FFC46B"></stop></lineargradient><lineargradient id="g2" x1="0" x2="24" y1="0" y2="24"><stop stop-color="#FFC46B"></stop><stop offset="1" stop-color="#45E5FF"></stop></lineargradient><lineargradient id="g4" x1="0" x2="24" y1="0" y2="24"><stop stop-color="#45E5FF"></stop><stop offset="1" stop-color="#11FFC7"></stop></lineargradient></defs></svg>
+<script>
+/* =====================================================
+   Interactive Background, UI, and Micro‑Interactions
+   ===================================================== */
+
+/* ---------- Helpers ---------- */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveData = navigator.connection && navigator.connection.saveData;
+const lowPower = !!saveData || /\b(iPad|iPhone|Android 5|Android 6)\b/i.test(navigator.userAgent);
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const rand=(a,b)=>Math.random()*(b-a)+a;
+const $=sel=>document.querySelector(sel);
+const $$=sel=>document.querySelectorAll(sel);
+
+/* ---------- Scroll Progress ---------- */
+const progressEl=$("#progress");
+const onScroll=()=>{
+  const h=document.documentElement;
+  const scrolled = (h.scrollTop)/(h.scrollHeight - h.clientHeight);
+  progressEl.style.width=(scrolled*100)+"%";
+};
+document.addEventListener('scroll', onScroll, {passive:true});
+
+/* ---------- Typewriter Headline ---------- */
+(function typewriter(){
+  const el = $("#headline");
+  const text = "ACCESS GRANTED // Catch the pumps before anyone else.";
+  if(prefersReduced){ el.textContent=text; return; }
+  let i=0; el.textContent="";
+  const tick=()=>{ el.textContent=text.slice(0, ++i); if(i<text.length) setTimeout(tick, 22); };
+  tick();
+})();
+
+/* ---------- Magnetic Buttons ---------- */
+$$('.mag').forEach(btn=>{
+  const radius = 16; // px
+  let inside=false;
+  const move = (e)=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width/2);
+    const y = e.clientY - (r.top + r.height/2);
+    const dist = Math.hypot(x,y);
+    if(dist < 120){
+      const tx = clamp(x, -radius, radius);
+      const ty = clamp(y, -radius, radius);
+      btn.style.transform = `translate(${tx}px, ${ty}px)`;
+      inside=true;
+    }
+  };
+  const leave=()=>{ if(!inside) return; btn.style.transform="translate(0,0)"; inside=false; };
+  btn.addEventListener('mousemove', move);
+  btn.addEventListener('mouseleave', leave);
+  btn.addEventListener('blur', leave);
+});
+
+/* ---------- Reveal on Scroll ---------- */
+if(!prefersReduced){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target);} });
+  },{threshold:.08});
+  $$('.reveal').forEach(el=>io.observe(el));
+}
+
+/* ---------- Tilt on Hover ---------- */
+$$('.tilt').forEach(card=>{
+  if(prefersReduced) return;
+  let raf=0;
+  const onMove=(e)=>{
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX - r.left)/r.width, y=(e.clientY - r.top)/r.height;
+      const rx=(.5 - y)*8, ry=(x - .5)*10;
+      card.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+  };
+  const reset=()=>card.style.transform='perspective(900px) rotateX(0) rotateY(0)';
+  card.addEventListener('mousemove', onMove);
+  card.addEventListener('mouseleave', reset);
+  card.addEventListener('blur', reset);
+});
+
+/* ---------- Terminal Step reveal ---------- */
+$$('.card .terminal-line').forEach((line,i)=>{
+  setTimeout(()=> line.style.setProperty('--clip','100%'), 250 + i*320);
+});
+
+/* ---------- Faux Console Scanner ---------- */
+const consoleEl = $("#console");
+let scanning=true;
+const maxLines=25;
+function addLine(text){
+  const el=document.createElement('div');
+  el.className='line';
+  el.textContent=text;
+  consoleEl.appendChild(el);
+  while(consoleEl.children.length>maxLines){ consoleEl.removeChild(consoleEl.firstChild); }
+  consoleEl.scrollTop=consoleEl.scrollHeight;
+}
+function randTime(){const d=new Date(); return d.toTimeString().slice(0,8);}
+function genSignal(){
+  const memes = ["BICHON/SOL","FROG/ETH","ZOOMER/SOL","BONGO/ETH","GLITCH/SOL"];
+  const sym = memes[(Math.random()*memes.length)|0];
+  const mom = ((Math.random()*3+0.7)*100)|0;
+  const day = ((Math.random()*5+1.5)*100)|0;
+  const e0= (Math.random()*0.004 + 0.00002).toFixed(6);
+  const e1= (+e0 + Math.random()*e0*0.08).toFixed(6);
+  const t0= (+e1 + Math.random()*e1*0.06).toFixed(6);
+  const t1= (+t0 + Math.random()*t0*0.06).toFixed(6);
+  const sl= (+e0 - Math.random()*e0*0.07).toFixed(6);
+  addLine(`[${randTime()}] SCAN: wallet_0x${(Math.random()*0xFFFFFFF|0).toString(16)}… added`);
+  addLine(`[${randTime()}] SIGNAL: ${sym} momentum +${mom}% (24h +${day}%)`);
+  addLine(`[${randTime()}] ENTRY: ${e0}–${e1} | TP: ${t0}–${t1} | SL: ${sl}`);
+}
+let interval = setInterval(()=>{ if(scanning) genSignal(); }, 2200);
+$("#toggleScan").addEventListener('click', (e)=>{
+  scanning=!scanning;
+  e.target.textContent=scanning?'Pause':'Resume';
+  e.target.setAttribute('aria-pressed', String(!scanning));
+});
+$("#genSample").addEventListener('click', genSignal);
+
+/* ---------- Daily Plan Simulator ---------- */
+const budget=$("#budget"), risk=$("#risk"), bVal=$("#budgetVal"), rVal=$("#riskVal"), res=$("#result"), holdBtns=$$('[data-hold]'), breakeven=$("#breakeven");
+let hold="scalp";
+holdBtns.forEach(btn=>btn.addEventListener('click', ()=>{
+  holdBtns.forEach(b=>{b.setAttribute('aria-selected','false'); b.classList.remove('btn-primary'); b.classList.add('btn-ghost');});
+  btn.setAttribute('aria-selected','true'); btn.classList.add('btn-primary'); btn.classList.remove('btn-ghost'); hold=btn.dataset.hold; update();
+}));
+function nice(n){return Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(n);}
+function tpRange(h){
+  if(h==='scalp') return [0.08,0.12];
+  if(h==='intraday') return [0.20,0.35];
+  return [0.60,1.20]; // swing
+}
+function update(){
+  const B=+budget.value, R=+risk.value/100;
+  bVal.textContent=`$${nice(B)}`; rVal.textContent=`${(R*100)|0}%`;
+  const maxLoss = B*R;
+  const positionSize = B*R; // illustrative: allocate risk % as position size (simple & conservative)
+  const [tp1,tp2]=tpRange(hold);
+  const tp1p = (tp1*100)|0, tp2p = (tp2*100)|0;
+  const note = breakeven.checked ? "Stop auto-moves to breakeven after +20%." : "No auto breakeven move.";
+  res.innerHTML = `
+    <div>Position size: <strong>$${nice(positionSize)}</strong></div>
+    <div>Max loss (risk): <strong>$${nice(maxLoss)}</strong></div>
+    <div>Suggested TP1/TP2: <strong>${tp1p}% / ${tp2p}%</strong></div>
+    <div class="small">${note}</div>
+  `;
+}
+budget.addEventListener('input', update);
+risk.addEventListener('input', update);
+breakeven.addEventListener('change', update);
+update();
+
+/* ---------- FAQ Accordion (remember last) ---------- */
+const keys={open:'stealth_faq_open'};
+$$('.faq-summary').forEach((sum,i)=>{
+  const cont=sum.nextElementSibling;
+  const id='faq_'+i;
+  if(localStorage.getItem(keys.open)===id){ cont.style.maxHeight=cont.scrollHeight+'px'; sum.setAttribute('aria-expanded','true'); }
+  const toggle=()=>{
+    const isOpen = sum.getAttribute('aria-expanded')==='true';
+    if(isOpen){ cont.style.maxHeight='0px'; sum.setAttribute('aria-expanded','false'); localStorage.removeItem(keys.open); }
+    else{ cont.style.maxHeight=cont.scrollHeight+'px'; sum.setAttribute('aria-expanded','true'); localStorage.setItem(keys.open, id); }
+  };
+  sum.addEventListener('click', toggle);
+  sum.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(); } });
+});
+
+/* ---------- Canvas: Aurora (Value Noise) & Particles ---------- */
+const aurora=document.getElementById('aurora');
+const particles=document.getElementById('particles');
+const ctxA=aurora.getContext('2d');
+const ctxP=particles.getContext('2d');
+let W,H, dPR=window.devicePixelRatio||1;
+
+function resize(){
+  W=aurora.width = particles.width = Math.floor(innerWidth*dPR);
+  H=aurora.height = particles.height = Math.floor(innerHeight*dPR);
+  aurora.style.width=particles.style.width=innerWidth+'px';
+  aurora.style.height=particles.style.height=innerHeight+'px';
+}
+resize(); addEventListener('resize', resize);
+
+/* Value noise setup */
+const grid= prefors(48, 64, 96); // resolution options
+function prefors(...opts){ // choose a grid size by viewport for perf
+  const w = Math.max(innerWidth, innerHeight);
+  return w>1400?opts[2]: w>900?opts[1]: opts[0];
+}
+let noiseScale = grid; // cells across
+const seed = Math.random()*1000;
+function smoothstep(t){return t*t*(3-2*t);}
+function hash(x,y){
+  const s = Math.sin((x*127.1 + y*311.7 + seed))*43758.5453;
+  return s - Math.floor(s);
+}
+function valueNoise(x,y,t){
+  const n=0.0015; // time factor
+  x*=0.008; y*=0.008;
+  x+=t*n; y+=t*n*0.7;
+  const xi=Math.floor(x), yi=Math.floor(y);
+  const tx=x-xi, ty=y-yi;
+  const a=hash(xi,yi), b=hash(xi+1,yi), c=hash(xi,yi+1), d=hash(xi+1,yi+1);
+  const u=smoothstep(tx), v=smoothstep(ty);
+  return lerp(lerp(a,b,u), lerp(c,d,u), v);
+}
+
+function drawAurora(t){
+  const step = Math.floor(4*dPR);
+  const img = ctxA.createImageData(W, H);
+  const data = img.data;
+  let i=0;
+  for(let y=0;y<H;y+=step){
+    for(let x=0;x<W;x+=step){
+      const v=valueNoise(x,y,t);
+      const c1 = Math.floor(lerp(10, 30, v));     // base dark
+      const c2 = Math.floor(lerp(80, 255, v));    // highlight
+      const r = Math.floor(lerp(c1, 30, v));
+      const g = Math.floor(lerp(c1, 255, v));
+      const b = Math.floor(lerp(c1, 255, v*0.6));
+      for(let yy=0; yy<step; yy++){
+        for(let xx=0; xx<step; xx++){
+          const p = ((y+yy)*W + (x+xx)) * 4;
+          data[p]=r; data[p+1]=g; data[p+2]=b; data[p+3]=120;
+        }
+      }
+      i++;
+    }
+  }
+  ctxA.putImageData(img,0,0);
+  // subtle parallax shift
+  const shiftX = Math.sin(t*0.0002)*6; const shiftY=Math.cos(t*0.00025)*6;
+  aurora.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
+}
+
+/* Particles */
+const PCOUNT = lowPower? 60 : 120;
+const parts=[];
+for(let i=0;i<PCOUNT;i++){
+  parts.push({x:Math.random()*W,y:Math.random()*H,vx:rand(-.6,.6),vy:rand(-.6,.6),h:rand(180,220)});
+}
+const cursor={x:W/2,y:H/2,vx:0,vy:0,tx:W/2,ty:H/2};
+let mouseActive=false;
+function moveCursor(e){
+  mouseActive=true;
+  cursor.tx = (e.clientX)*dPR;
+  cursor.ty = (e.clientY)*dPR;
+}
+addEventListener('mousemove', moveCursor, {passive:true});
+addEventListener('touchmove', (e)=>{ if(e.touches[0]) moveCursor(e.touches[0]); }, {passive:true});
+
+function stepParticles(t){
+  // move force target
+  cursor.vx += (cursor.tx - cursor.x)*0.06;
+  cursor.vy += (cursor.ty - cursor.y)*0.06;
+  cursor.vx*=0.85; cursor.vy*=0.85;
+  cursor.x += cursor.vx; cursor.y += cursor.vy;
+
+  // trail fade
+  ctxP.globalCompositeOperation='source-over';
+  ctxP.fillStyle='rgba(11,15,20,.25)';
+  ctxP.fillRect(0,0,W,H);
+  ctxP.globalCompositeOperation='lighter';
+
+  for(const p of parts){
+    const dx = cursor.x - p.x, dy = cursor.y - p.y;
+    const dist = Math.hypot(dx,dy)+0.001;
+    // attraction/repulsion based on velocity magnitude
+    const speed = Math.hypot(p.vx,p.vy);
+    const force = (speed>0.6? -1 : 1) * 0.06;
+    p.vx += (dx/dist)*force;
+    p.vy += (dy/dist)*force;
+
+    // orbit effect
+    const tang = 0.02;
+    p.vx += -dy/dist * tang;
+    p.vy +=  dx/dist * tang;
+
+    // integrate
+    p.vx*=0.985; p.vy*=0.985;
+    p.x += p.vx; p.y += p.vy;
+
+    // wrap
+    if(p.x<0) p.x+=W; if(p.x>W) p.x-=W;
+    if(p.y<0) p.y+=H; if(p.y>H) p.y-=H;
+
+    // color by velocity
+    const hue = lerp(170, 200, clamp(Math.hypot(p.vx,p.vy)*2, 0, 1));
+    ctxP.fillStyle = `hsla(${hue}, 100%, 60%, .35)`;
+    ctxP.beginPath(); ctxP.arc(p.x, p.y, 1.4*dPR, 0, Math.PI*2); ctxP.fill();
+  }
+  // subtle parallax
+  particles.style.transform=`translate(${-cursor.vx*.02}px, ${-cursor.vy*.02}px)`;
+}
+
+/* Animation Loop (throttled if needed) */
+let last=0, frame=0;
+function loop(ts){
+  if(prefersReduced){ return; }
+  const dt = ts-last; last=ts;
+  // target 60fps, but allow internal throttling on lowPower
+  const skip = lowPower ? 2 : 1;
+  if(frame%skip===0){
+    drawAurora(ts);
+    stepParticles(ts);
+  }
+  frame++;
+  requestAnimationFrame(loop);
+}
+if(!prefersReduced){ requestAnimationFrame(loop); }
+else{
+  // Static pleasant gradient for reduced motion
+  const g=ctxA.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#042026'); g.addColorStop(1,'#0b1620');
+  ctxA.fillStyle=g; ctxA.fillRect(0,0,W,H);
+}
+
+/* ---------- Playbook Button (demo action) ---------- */
+document.getElementById('playbookBtn').addEventListener('click', ()=>{
+  addLine(`[${randTime()}] PLAYBOOK: Opened 2‑min overview.`);
+  window.scrollTo({top: document.getElementById('how').offsetTop - 60, behavior: prefersReduced?'auto':'smooth'});
+});
+
+/* ---------- Pricing Demo Timer (MM:SS) ---------- */
+(function demoTimer(){
+  const el=$("#countdown");
+  let t=120; // 2 minutes demo
+  function tick(){
+    const m=String(Math.floor(t/60)).padStart(2,'0');
+    const s=String(t%60).padStart(2,'0');
+    el.textContent=`DEMO TIMER — ${m}:${s}`;
+    t=(t<=0)?120:t-1;
+  }
+  tick(); setInterval(tick,1000);
+})();
+
+/* ---------- Footer Year ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- Accessibility niceties ---------- */
+document.addEventListener('keydown', e=>{
+  // Skip animations for users toggling system setting mid-session (F5 to apply fully)
+  if(e.key==='Escape'){ document.body.classList.toggle('no-anim'); }
+});
+
+</script>
+</body>
+</html>
