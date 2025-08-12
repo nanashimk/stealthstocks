@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0B0F14">
-<title>Stealth Academy — Mobile First</title>
-<meta name="description" content="WalletChat-style neon landing, fully mobile-optimized. Reactive background, scanlines, reveal animations. Stealth Academy with clear CTAs.">
+<title>The Stealth Academy — MemeCoin Mastery (Year of Research)</title>
+<meta name="description" content="The Stealth Academy — MemeCoin Mastery. A year of research on tracking elite wallets, entering early, and exiting clean. Fully mobile-optimized with neon WalletChat-style background.">
 <style>
 :root{
   --bg:#0B0F14; --cyan:#45E5FF; --teal:#11FFC7; --amber:#FFC46B; --white:#EAF6FF; --muted:#9FB4C4;
@@ -56,7 +56,7 @@ nav{
 .nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between;width:min(1100px,92vw);margin:0 auto;gap:10px}
 .logo{display:flex;align-items:center;gap:10px}
 .logo svg{width:32px;height:32px;filter:drop-shadow(0 0 10px rgba(69,229,255,.35))}
-.logo b{font:900 16px var(--mono);letter-spacing:.6px}
+.logo b{font:900 16px var(--mono);letter-spacing:.6px;white-space:nowrap}
 .nav-links{display:none;gap:16px;flex-wrap:wrap}
 nav a{color:var(--white);text-decoration:none;font-weight:800;opacity:.95}
 nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
@@ -74,7 +74,7 @@ nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
 .chip svg{width:16px;height:16px}
 .headline{
   font:900 clamp(26px,8.2vw,50px)/1.06 var(--mono);
-  letter-spacing:1.8px;margin:4px 0 0;
+  letter-spacing:1.6px;margin:4px 0 0;
   background:repeating-linear-gradient(60deg,#2df7c7 0 16px,#2ccaff 16px 32px,#1581ff 32px 48px,#09c9a6 48px 64px);
   background-size:220% 220%;
   -webkit-background-clip:text;background-clip:text;color:transparent;
@@ -82,7 +82,8 @@ nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
   animation:titleShift 18s linear infinite;
 }
 @keyframes titleShift{to{background-position:200% 200%}}
-.sub{color:var(--muted);font-weight:600;font-size:clamp(14px,3.8vw,18px)}
+.sub{color:var(--muted);font-weight:700;font-size:clamp(14px,3.8vw,18px)}
+.sub small{display:block;opacity:.9;font-weight:600}
 
 /* Buttons: mobile-first spacing/targets */
 .btn{
@@ -101,14 +102,13 @@ nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
   .btn{width:100%;max-width:380px;margin:8px auto}
 }
 
-/* Address/note */
+/* Note / contact */
 .addr-wrap{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .addr{
   display:flex;align-items:center;gap:8px;padding:14px 16px;width:100%;
   border:1px solid rgba(69,229,255,.32);background:rgba(255,255,255,.06);border-radius:14px;
   font:600 clamp(12px,3.4vw,14px) var(--mono);color:#d6fff4;word-break:break-word
 }
-/* .copy removed — replaced by Telegram CTA on request */
 @media(max-width:768px){.addr-wrap{flex-direction:column;gap:10px}}
 
 /* Jagged separators */
@@ -144,7 +144,7 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 .belt::-webkit-scrollbar{height:6px}
 .fchip{
   scroll-snap-align:center;background:rgba(13,22,31,.85);border:1px solid rgba(69,229,255,.22);
-  padding:12px 14px;border-radius:16px;min-width:220px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)
+  padding:12px 14px;border-radius:16px;min-width:240px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)
 }
 .fchip h4{margin:0 0 6px;font:800 15px var(--mono)}
 .fchip p{margin:0;color:var(--muted);font-size:14px}
@@ -179,13 +179,13 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
   <div class="nav-inner">
     <div class="logo">
       <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="glogo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#45E5FF"/><stop offset="1" stop-color="#11FFC7"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="#0f1923" stroke="url(#glogo)" stroke-width="3"/><path d="M18 28h28v10H18z" fill="url(#glogo)"/></svg>
-      <b>Stealth Academy</b>
+      <b>The Stealth Academy</b>
     </div>
     <div class="nav-links" role="navigation">
-      <a href="#features">Features</a>
-      <a href="#modules">Modules</a>
+      <a href="#features">What You’ll Get</a>
+      <a href="#system">The System</a>
+      <a href="#who">Who It’s For</a>
       <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
     </div>
     <a class="btn btn-ghost mag" href="#pricing">Enroll</a>
   </div>
@@ -196,13 +196,18 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 <header class="hero" id="home">
   <div class="hero-inner">
     <div class="chips" aria-label="Highlights">
-      <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="#45E5FF" fill="none"/><path d="M7 9h6" stroke="#11FFC7" stroke-width="2"/></svg> Daily Action Plans</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#45E5FF" fill="none"/><path d="M12 7v10" stroke="#FFC46B" stroke-width="2"/></svg> Proven Playbooks</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="#45E5FF" fill="none"/><path d="M9 9h6v6H9z" stroke="#11FFC7" stroke-width="2"/></svg> Accountability</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="#45E5FF" fill="none"/><path d="M7 9h6" stroke="#11FFC7" stroke-width="2"/></svg> Wallet Tracking</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#45E5FF" fill="none"/><path d="M12 7v10" stroke="#FFC46B" stroke-width="2"/></svg> Pro Tools</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="#45E5FF" fill="none"/><path d="M9 9h6v6H9z" stroke="#11FFC7" stroke-width="2"/></svg> No Fluff</span>
     </div>
 
-    <h1 class="headline">NEXT-GEN SALES TRAINING</h1>
-    <p class="sub">Master prospecting, pipeline, and closes. Clear scripts. Live breakdowns. Zero fluff.</p>
+    <h1 class="headline">Turn Your Dreams Into Millions with MemeCoin Mastery</h1>
+    <p class="sub">
+      Not just another crypto guide — this is your unfair advantage.
+      <small>Imagine spotting the next viral memecoin before the hype.</small>
+      <small>With MemeCoin Mastery, you’re not guessing, you’re executing.</small>
+      <small>You’ll learn to track the right wallets, use pro tools, and enter early like the top 1%.</small>
+    </p>
 
     <div class="mags">
       <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
@@ -211,8 +216,8 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 
     <div class="addr-wrap">
       <div class="addr" id="addr"><strong>Note:</strong> Instant access after checkout. Need help? DM us on Telegram.</div>
-      <!-- Replaced Copy with Telegram button (as requested) -->
-      <a class="btn btn-primary" style="width:100%;max-width:380px;margin:8px auto" href="https://t.me/stealth_stocks" target="_blank" rel="noopener" aria-label="Contact Stealth Academy on Telegram">Contact on Telegram</a>
+      <!-- Telegram CTA under the note -->
+      <a class="btn btn-primary" style="width:100%;max-width:380px;margin:8px auto" href="https://t.me/stealth_stocks" target="_blank" rel="noopener" aria-label="Contact The Stealth Academy on Telegram">Contact on Telegram</a>
     </div>
   </div>
 </header>
@@ -226,39 +231,33 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 </div>
 
 <main>
-  <!-- FEATURES -->
+  <!-- WHAT YOU’LL GET -->
   <section id="features" class="container reveal">
-    <h2>What You’ll Get</h2>
-    <!-- Fully swipeable belt with snap + fade edges -->
+    <h2>🌐 What You’ll Get</h2>
     <div class="belt" role="region" aria-label="Swipe left/right to see all benefits">
-      <div class="fchip"><h4>Prospecting Engine</h4><p>DM & cold email frameworks that get replies.</p></div>
-      <div class="fchip"><h4>Pipeline OS</h4><p>Simple dashboards to keep follow-ups tight.</p></div>
-      <div class="fchip"><h4>Qualification</h4><p>Objection trees & decision rules.</p></div>
-      <div class="fchip"><h4>Closing Scripts</h4><p>Scenario playbooks for consultative closes.</p></div>
-      <div class="fchip"><h4>Reviews</h4><p>Weekly call breakdowns. Learn by example.</p></div>
-      <div class="fchip"><h4>Community</h4><p>Private chat. Accountability. Momentum.</p></div>
-      <div class="fchip"><h4>Templates</h4><p>Ready-to-use docs and trackers.</p></div>
-      <div class="fchip"><h4>Weekly Sprints</h4><p>Focus blocks to build momentum.</p></div>
+      <div class="fchip"><h4>✅ Insider Wallets</h4><p>Access real high-performing wallet addresses (Phantom & more). Watch smart money — copy, paste, learn.</p></div>
+      <div class="fchip"><h4>✅ Sniper Strategies</h4><p>Methods used by elite memecoin traders to catch 10x+ plays before they go mainstream.</p></div>
+      <div class="fchip"><h4>✅ Tool Stack & Configs</h4><p>Curated websites, bots, dashboards & platforms — with ready-to-use settings.</p></div>
+      <div class="fchip"><h4>✅ Step-by-Step Blueprints</h4><p>Discovery → entry → hype ride → exit. All mapped out. No fluff.</p></div>
+      <div class="fchip"><h4>✅ Exclusive Resources</h4><p>Private databases of tools, scripts, tracking methods & alpha groups.</p></div>
     </div>
   </section>
 
-  <!-- MODULES (animated bars) -->
-  <section id="modules" class="container reveal">
-    <h2>Curriculum Emphasis</h2>
-    <p class="small">Illustrative emphasis by module; content expands over time.</p>
-    <div class="grid grid-2" style="align-items:start">
-      <div class="card">
-        <svg viewBox="0 0 1000 320" id="bars" aria-label="Curriculum chart"></svg>
-      </div>
-      <div class="card">
-        <ul style="margin:0; padding-left:18px">
-          <li><strong>Foundation:</strong> buyer psychology, ICP, offer clarity</li>
-          <li><strong>Outbound:</strong> hooks, openers, follow-up sequences</li>
-          <li><strong>Discovery:</strong> pain stacks, gap building</li>
-          <li><strong>Closing:</strong> frameworks, objection handling</li>
-          <li><strong>Systems:</strong> templates, trackers, weekly sprints</li>
-        </ul>
-      </div>
+  <!-- THE SYSTEM -->
+  <section id="system" class="container reveal">
+    <h2>More Than a Course — It’s a System</h2>
+    <div class="card">
+      <p>This is a battle-tested system to detect, validate, and execute high-leverage trades on microcaps & memecoins. You’ll learn to think in systems, track flows, and act fast — without hype.</p>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section id="who" class="container reveal">
+    <h2>Who is it for?</h2>
+    <div class="grid grid-3">
+      <div class="card"><strong>Beginners</strong><p class="small">Want real results without trial & error. Start structured, avoid common traps.</p></div>
+      <div class="card"><strong>Intermediate Traders</strong><p class="small">Have experience but need a repeatable framework and risk rules.</p></div>
+      <div class="card"><strong>Advanced Degens</strong><p class="small">Want efficiency, automation, and a tighter decision pipeline.</p></div>
     </div>
   </section>
 
@@ -275,30 +274,31 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
     <h2>Pricing</h2>
     <div class="card">
       <div class="price">$35</div>
-      <p>Lifetime updates · Instant access · Private community</p>
+      <p>A year of research · Instant access · Private community</p>
       <div class="countdown" id="countdown" aria-live="polite">DEMO — 02:00</div>
       <div class="mags" style="margin-top:10px">
         <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
         <a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank" rel="noopener">Get Instant Access (Pay with Solana)</a>
       </div>
-      <p class="small" style="margin-top:12px">14-day refund if the curriculum doesn’t match this page. No performance guarantees.</p>
+      <p class="small" style="margin-top:12px">14-day refund if the curriculum doesn’t match this page. No performance guarantees. Crypto is volatile; capital at risk.</p>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="container reveal">
-    <h2>FAQ</h2>
-    <div class="grid grid-2">
-      <div class="card"><strong>Is this signals or a system?</strong><p class="small">A system. Process, scripts, and decision rules you’ll reuse.</p></div>
-      <div class="card"><strong>Time commitment?</strong><p class="small">20–40 minutes a day. Sprints keep you focused.</p></div>
-      <div class="card"><strong>Refunds?</strong><p class="small">14-day refund if content doesn’t match the curriculum.</p></div>
-      <div class="card"><strong>Experience required?</strong><p class="small">No. We start with foundations and ramp fast.</p></div>
+  <!-- JOIN -->
+  <section class="container reveal">
+    <h2>👾 Join The Stealth Academy today</h2>
+    <div class="card">
+      <p>While others scroll memes, you’ll be tracking wallets doing 3000% runs — in silence. Stealth. Smart. Profitable.</p>
+      <div class="mags" style="margin-top:6px">
+        <a class="btn btn-primary" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Join Now</a>
+        <a class="btn btn-ghost" href="https://t.me/stealth_stocks" target="_blank" rel="noopener">Chat on Telegram</a>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="container small">
-  © <span id="year"></span> Stealth Academy — Accessibility: keyboard-friendly, reduced motion respected.
+  © <span id="year"></span> The Stealth Academy — Accessibility: keyboard-friendly, reduced motion respected. Educational content only; nothing herein is financial advice.
 </footer>
 
 <script>
@@ -402,7 +402,7 @@ function drawSphere(t){
   base.addColorStop(0,'rgba(69,229,255,.95)'); base.addColorStop(0.45,'rgba(17,255,199,.90)'); base.addColorStop(1,'rgba(11,15,20,0)');
   s.fillStyle=base; s.beginPath(); s.arc(cx,cy,R,0,6.283); s.fill();
 
-  let halo=s.createRadialGradient(cx,cy,R*0.6, cx,cy,R*1.35);
+  let halo=s.createRadialGradient(cx,cy,R*0.6, cx,cy, R*1.35);
   halo.addColorStop(0,'rgba(17,255,199,.25)'); halo.addColorStop(1,'rgba(0,0,0,0)');
   s.fillStyle=halo; s.beginPath(); s.arc(cx,cy,R*1.35,0,6.283); s.fill();
 
@@ -449,47 +449,8 @@ function loop(ts){
 if(running) requestAnimationFrame(loop);
 document.addEventListener('visibilitychange',()=>{running=!document.hidden && !prefersReduced; if(running) requestAnimationFrame(loop);});
 
-/* Bars chart (modules) */
-const series=[
-  {label:'Foundation', value:26, color:'#B8E7FF'},
-  {label:'Outbound',   value:22, color:'#39C16C'},
-  {label:'Discovery',  value:20, color:'#6B5ACF'},
-  {label:'Closing',    value:16, color:'#E6E6E6'},
-  {label:'Systems',    value:18, color:'#5B5CE0'}
-];
-(function drawBars(){
-  const svg=$("#bars"), W=1000, H=320, pad=70, bw=120, gap=60, max=30;
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  series.forEach((d,i)=>{
-    const x=pad+i*(bw+gap), h=(d.value/max)*(H-120), y=H-30-h;
-    const glow=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    glow.setAttribute('x',x-4); glow.setAttribute('y',y-6);
-    glow.setAttribute('width',bw+8); glow.setAttribute('height',h+12);
-    glow.setAttribute('rx','18'); glow.setAttribute('fill','none'); glow.setAttribute('stroke','#45E5FF'); glow.setAttribute('opacity','.4');
-    svg.appendChild(glow);
-
-    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',x); r.setAttribute('y',H-30); r.setAttribute('width',bw); r.setAttribute('height',0);
-    r.setAttribute('rx','16'); r.setAttribute('fill',d.color);
-    r.style.filter='drop-shadow(0 0 10px rgba(69,229,255,.25))';
-    svg.appendChild(r);
-
-    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
-    t.setAttribute('x',x+bw/2); t.setAttribute('y',H-38);
-    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#cfefff');
-    t.setAttribute('font-family','ui-monospace,Menlo,Consolas'); t.setAttribute('font-size','16'); t.textContent=d.label;
-    svg.appendChild(t);
-
-    const targetH=h, targetY=y; let cur=0;
-    const rise=()=>{ cur+=(targetH-cur)*0.08; r.setAttribute('height',cur); r.setAttribute('y',H-30-cur);
-      if(Math.abs(targetH-cur)>0.6) requestAnimationFrame(rise); else { r.setAttribute('height',targetH); r.setAttribute('y',targetY); }
-    };
-    if(!prefersReduced) requestAnimationFrame(rise); else { r.setAttribute('height',targetH); r.setAttribute('y',targetY); }
-  });
-})();
-
 /* Countdown demo */
-(function(){ const el=$("#countdown"); let t=120; function tick(){ const m=String(Math.floor(t/60)).padStart(2,'0'), s=String(t%60).padStart(2,'0'); el.textContent=`DEMO — ${m}:${s}`; t=(t<=0)?120:t-1; } tick(); setInterval(tick,1000); })();
+(function(){ const el=$("#countdown"); if(!el) return; let t=120; function tick(){ const m=String(Math.floor(t/60)).padStart(2,'0'), s=String(t%60).padStart(2,'0'); el.textContent=`DEMO — ${m}:${s}`; t=(t<=0)?120:t-1; } tick(); setInterval(tick,1000); })();
 
 /* Footer year */
 $("#year").textContent = new Date().getFullYear();
