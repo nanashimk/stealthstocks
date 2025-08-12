@@ -1,572 +1,490 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<meta content="dark" name="color-scheme"/>
-<title>The Stealth Academy — MemeCoin Mastery</title>
-<meta content="Track elite wallets. Enter early. Exit clean. Daily plans included. Neon hero with animated textured title and mouse-reactive sphere background." name="description"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0F14">
+<title>The Stealth Sales Academy — Mobile First</title>
+<meta name="description" content="WalletChat-style neon landing, fully mobile-optimized. Reactive background, scanlines, reveal animations. Sales Academy with clear CTAs.">
 <style>
 :root{
-  --bg:#0B0F14;--cyan:#45E5FF;--teal:#11FFC7;--amber:#FFC46B;--white:#EAF6FF;--muted:#9FB4C4;
-  --glass:rgba(255,255,255,.06);--border:rgba(69,229,255,.35);
-  --radius:18px;--pad:22px;--speed:260ms;--ease:cubic-bezier(.2,.8,.2,1);
-  --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  --sans:system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+  --bg:#0B0F14; --cyan:#45E5FF; --teal:#11FFC7; --amber:#FFC46B; --white:#EAF6FF; --muted:#9FB4C4;
+  --border:rgba(69,229,255,.28); --card:rgba(255,255,255,.06); --chip:#101821;
+  --radius:18px; --ease:cubic-bezier(.2,.8,.2,1);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
 }
+
+/* Base */
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--white);font:16px/1.6 var(--sans)}
-h1,h2,h3{font-family:var(--mono)}
-/* --- Nav --- */
-nav{position:sticky;top:0;z-index:5;backdrop-filter:saturate(140%) blur(12px);
-  background:linear-gradient(180deg,rgba(11,15,20,.7),rgba(11,15,20,.45));border-bottom:1px solid rgba(69,229,255,.25)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;width:min(1200px,92vw);margin:0 auto;height:68px}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-badge{width:34px;height:34px;border-radius:50%;
-  background:radial-gradient(circle at 35% 35%, var(--teal), #0bffb7 40%, transparent 41%),
-             radial-gradient(circle at 70% 70%, var(--cyan), #2ccaff 35%, transparent 36%);
-  box-shadow:0 0 24px rgba(17,255,199,.35) inset, 0 0 18px rgba(69,229,255,.35)}
-.logo-txt{font:800 18px var(--mono);letter-spacing:.6px}
-.nav-links{display:flex;gap:18px;flex-wrap:wrap}
-nav a{color:var(--white);text-decoration:none;opacity:.9;font-weight:700}
-nav a:hover{text-shadow:0 0 16px rgba(69,229,255,.6)}
-.progress{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber));width:0}
-/* --- Buttons --- */
-.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;
-  border-radius:999px;border:1px solid var(--border);cursor:pointer;min-width:190px;font-weight:900;letter-spacing:.3px;
-  transition:transform var(--speed) var(--ease), box-shadow var(--speed) var(--ease), background var(--speed) var(--ease)}
-.btn-primary{color:#021a14;background:linear-gradient(180deg,var(--teal),#0cdcae);box-shadow:0 10px 28px rgba(17,255,199,.3),0 0 24px rgba(17,255,199,.4)}
-.btn-ghost{background:rgba(255,255,255,.06);color:var(--white)}
-.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-.btn.mag{will-change:transform}
-/* --- Background stack --- */
+body{
+  margin:0;background:var(--bg);color:var(--white);
+  font:16px/1.6 var(--sans);letter-spacing:.15px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+
+/* Subtle scanlines + grid */
+body:before,body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none}
+body:before{
+  background:
+    radial-gradient(1000px 700px at 50% -20%, rgba(69,229,255,.08), transparent 60%),
+    radial-gradient(1000px 700px at 50% 120%, rgba(17,255,199,.08), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px);
+  mix-blend-mode:screen;
+}
+body:after{
+  opacity:.16;
+  background-image:
+    linear-gradient(transparent 23px, rgba(255,255,255,.045) 24px),
+    linear-gradient(90deg,transparent 23px, rgba(255,255,255,.045) 24px);
+  background-size:24px 24px,24px 24px;
+}
+
+/* Background canvases */
 .bg-stack{position:fixed;inset:0;z-index:0;overflow:hidden}
 .bg-layer{position:absolute;inset:0}
-.scanlines:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px);mix-blend-mode:soft-light;pointer-events:none}
-.vignette:after{content:"";position:absolute;inset:-10%;background:radial-gradient(ellipse at center,transparent 0,rgba(0,0,0,.22) 60%,rgba(0,0,0,.6) 100%);pointer-events:none}
-/* --- Hero --- */
-.hero{position:relative;min-height:92vh;display:grid;place-items:center;padding:90px 0 60px;text-align:center}
-.hero-inner{width:min(1200px,92vw);margin:0 auto;display:grid;gap:18px}
-.pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.05);font-weight:700;color:var(--white)}
-.hero-title{
-  font:900 clamp(28px,8vw,74px)/1.02 var(--mono);
-  letter-spacing:1.8px;
-  background:repeating-linear-gradient(60deg,#2df7c7 0 16px,#2ccaff 16px 32px,#ffc46b 32px 48px);
-  background-size:200% 200%;
+
+/* Sticky nav */
+nav{
+  position:sticky;top:0;z-index:5;
+  background:linear-gradient(180deg,rgba(11,15,20,.85),rgba(11,15,20,.55));
+  backdrop-filter:saturate(130%) blur(10px);
+  border-bottom:1px solid rgba(69,229,255,.18)
+}
+.nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between;width:min(1100px,92vw);margin:0 auto;gap:10px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo svg{width:32px;height:32px;filter:drop-shadow(0 0 10px rgba(69,229,255,.35))}
+.logo b{font:900 16px var(--mono);letter-spacing:.6px}
+.nav-links{display:none;gap:16px;flex-wrap:wrap}
+nav a{color:var(--white);text-decoration:none;font-weight:800;opacity:.95}
+nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
+.progress{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber))}
+
+/* Show links on wider screens */
+@media(min-width:860px){.nav-links{display:flex}}
+
+/* Hero */
+.hero{position:relative;z-index:1;min-height:92vh;display:grid;place-items:center;padding:80px 0 56px;text-align:center}
+.hero-inner{width:min(1100px,92vw);display:grid;gap:16px;margin:0 auto}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.chip{
+  background:var(--chip);border:1px solid var(--border);border-radius:14px;color:var(--white);
+  padding:10px 12px;display:inline-flex;gap:8px;align-items:center;font-weight:800
+}
+.chip svg{width:16px;height:16px}
+.headline{
+  font:900 clamp(28px,8.2vw,54px)/1.06 var(--mono);
+  letter-spacing:1.8px;margin:4px 0 0;
+  background:repeating-linear-gradient(60deg,#2df7c7 0 16px,#2ccaff 16px 32px,#1581ff 32px 48px,#09c9a6 48px 64px);
+  background-size:220% 220%;
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 6px 24px rgba(69,229,255,.25);
+  text-shadow:0 6px 22px rgba(69,229,255,.23);
   animation:titleShift 18s linear infinite;
 }
 @keyframes titleShift{to{background-position:200% 200%}}
-.hero-sub{color:var(--muted);font-weight:600;margin-top:4px}
-.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:4px}
-.input-wrap{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
-.addr{display:flex;align-items:center;gap:8px;padding:12px 16px;border:1px solid rgba(69,229,255,.3);
-  background:rgba(255,255,255,.06);border-radius:14px;font:600 14px var(--mono);color:#cffff5;min-width:min(560px,90vw)}
+.sub{color:var(--muted);font-weight:600;font-size:clamp(14px,3.8vw,18px)}
+
+/* Buttons: mobile-first spacing/targets */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 20px;border-radius:999px;border:1px solid var(--border);cursor:pointer;
+  min-height:48px;min-width:200px;font-weight:900;letter-spacing:.3px;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)
+}
+.btn-primary{color:#021a14;background:linear-gradient(180deg,var(--teal),#0cdcae);box-shadow:0 10px 26px rgba(17,255,199,.28),0 0 24px rgba(17,255,199,.34)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--white)}
+.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.mags{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.mag{will-change:transform}
+@media(max-width:768px){
+  .mags{flex-direction:column;align-items:center}
+  .btn{width:100%;max-width:380px;margin:8px auto}
+}
+
+/* Address/note */
+.addr-wrap{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.addr{
+  display:flex;align-items:center;gap:8px;padding:14px 16px;width:100%;
+  border:1px solid rgba(69,229,255,.32);background:rgba(255,255,255,.06);border-radius:14px;
+  font:600 clamp(12px,3.4vw,14px) var(--mono);color:#d6fff4;word-break:break-word
+}
 .copy{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);font-weight:800;cursor:pointer}
-.badge-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.badge{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;border:1px dashed rgba(255,255,255,.18);color:var(--muted)}
-/* --- Sections --- */
-.container{width:min(1200px,92vw);margin:0 auto;padding:64px 0}
-.section{scroll-margin-top:80px}
-.grid{display:grid;gap:18px}
-.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:768px){.addr-wrap{flex-direction:column;gap:10px}.copy{width:100%;min-height:48px}}
+
+/* Jagged separators */
+.sep{position:relative;height:64px;overflow:hidden}
+.sep svg{position:absolute;left:0;width:100%;height:100%}
+.sep path{filter:drop-shadow(0 0 8px rgba(69,229,255,.45))}
+
+/* Sections */
+.container{width:min(1100px,92vw);margin:0 auto;padding:56px 0}
+h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12px}
+.grid{display:grid;gap:16px}
 .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}.addr{min-width:auto;width:100%}}
-.card{position:relative;padding:var(--pad);border-radius:16px;border:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06));box-shadow:0 12px 40px rgba(0,0,0,.45)}
-.console{font:14px/1.5 var(--mono);background:rgba(4,8,12,.66);padding:18px;border-radius:14px;border:1px solid rgba(69,229,255,.32);min-height:240px;max-height:340px;overflow:auto;color:#d6fff4}
-.console .line{opacity:0;transform:translateY(6px);animation:fadein .45s var(--ease) forwards}
-.console-controls{display:flex;gap:10px;margin-top:10px}
-@keyframes fadein{to{opacity:1;transform:none}}
-.pricing-card{text-align:center;padding:28px;border-radius:20px;border:1px solid var(--border);background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.06));
-  box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 80px rgba(17,255,199,.12)}
-.price{font:900 44px var(--mono);color:var(--teal)}
-.countdown{font:800 18px var(--mono);color:var(--amber)}
-.faq-summary{list-style:none;cursor:pointer;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-weight:800}
-.faq-content{overflow:hidden;max-height:0;transition:max-height 380ms var(--ease);border-left:2px solid rgba(69,229,255,.28);margin:8px 0 16px;padding-left:12px}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06));
+  border:1px solid var(--border);border-radius:16px;padding:16px;
+  box-shadow:0 12px 36px rgba(0,0,0,.45)
+}
+.card:hover{box-shadow:0 16px 46px rgba(0,0,0,.55), 0 0 50px rgba(17,255,199,.12)}
+
+/* Feature belt (scrollable pills) */
+.belt{display:flex;gap:12px;overflow:auto;padding:6px;scroll-snap-type:x mandatory}
+.belt::-webkit-scrollbar{height:6px}
+.fchip{scroll-snap-align:center;background:rgba(13,22,31,.85);border:1px solid rgba(69,229,255,.22);
+  padding:12px 14px;border-radius:16px;min-width:220px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.fchip h4{margin:0 0 6px;font:800 15px var(--mono)}
+.fchip p{margin:0;color:var(--muted);font-size:14px}
+
+/* Pricing */
+.pricing{text-align:center}
+.price{font:900 clamp(24px,6.2vw,40px) var(--mono);color:var(--teal)}
+.countdown{font:800 15px var(--mono);color:var(--amber)}
 .small{font-size:12px;color:var(--muted)}
-footer{border-top:1px solid rgba(69,229,255,.18);padding:22px 0 40px;background:rgba(4,8,12,.42)}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .revealed{opacity:1;transform:none}
 
-/* ===== Mobile Optimizations ===== */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: clamp(22px, 6vw, 38px);
-  }
-  .hero-sub, h2, h3 {
-    font-size: clamp(16px, 4.5vw, 22px);
-  }
-  .addr {
-    width: 100%;
-    min-width: unset;
-    word-wrap: break-word;
-  }
-  .container {
-    padding: 48px 4vw;
-  }
-  .grid-3, .grid-2 {
-    grid-template-columns: 1fr !important;
-    gap: 12px;
-  }
-  .btn {
-    min-height: 44px;
-    width: 100%;
-    max-width: 320px;
-    margin: auto;
-  }
-  .hero-cta {
-    flex-direction: column;
-    align-items: center;
-  }
-}
+/* Accessibility */
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 
-/* Disable magnetic hover effect & heavy animations on touch */
-@media (hover: none) and (pointer: coarse) {
-  .mag {
-    transform: none !important;
-    transition: none !important;
-  }
-  canvas#particles, canvas#aurora {
-    opacity: 0.8;
-  }
-}
+/* Extra: reduce container side padding on very small screens */
+@media(max-width:768px){.container{padding:48px 4vw}}
 </style>
 </head>
 <body>
-<!-- Background stack: aurora + reactive sphere + particles -->
-<div aria-hidden="true" class="bg-stack scanlines vignette">
-<canvas class="bg-layer" id="aurora"></canvas>
-<canvas class="bg-layer" id="sphere"></canvas>
-<canvas class="bg-layer" id="particles"></canvas>
+<!-- Background: aurora + reactive sphere + particles (throttled on touch) -->
+<div class="bg-stack" aria-hidden="true">
+  <canvas id="aurora" class="bg-layer"></canvas>
+  <canvas id="sphere" class="bg-layer"></canvas>
+  <canvas id="particles" class="bg-layer"></canvas>
 </div>
-<nav aria-label="Primary navigation">
-<div class="nav-inner">
-<div class="logo"><div aria-hidden="true" class="logo-badge"></div><div class="logo-txt">Stealth Academy</div></div>
-<div class="nav-links">
-<a href="#how">How it works</a>
-<a href="#proof">Proof</a>
-<a href="#pricing">Pricing</a>
-<a href="#faq">FAQ</a>
-</div>
-<a class="btn btn-ghost mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" rel="noopener noreferrer" target="_blank">Enroll</a>
-</div>
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress" id="progress" role="progressbar"></div>
-</nav>
-<header class="hero">
-<div class="hero-inner">
-<div class="pills">
-<span class="pill">Built on Solana</span>
-<span class="pill">Lifetime updates</span>
-<span class="pill">No fluff</span>
-</div>
-<h1 aria-hidden="true" class="hero-title">NEXT-GENERATION<br/>MEMECOIN MASTERY</h1>
-<p class="hero-sub">Track elite wallets. Enter early. Exit clean. Daily plans included.</p>
-<div class="hero-cta">
-<a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" rel="noopener noreferrer" target="_blank">Get Instant Access — $35</a>
-<a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" rel="noopener noreferrer" target="_blank">Get Instant Access (Pay with Solana)</a>
-</div>
-<div class="input-wrap">
-<div class="addr" id="addr">Z9wntkAqg4DzU7yNjp7kH5t3ZfsWqte9a1T9mn</div>
-<button aria-label="Copy address" class="copy btn-ghost" id="copyBtn">Copy</button>
-</div>
-<div class="badge-row">
-<div class="badge">Instant access</div>
-<div class="badge">Lifetime updates</div>
-<div class="badge">Capital at risk</div>
-</div>
-</div>
-</header>
-<main>
-<section class="section container" id="how">
-<h2>How it works</h2>
-<div class="grid grid-3">
-<article class="card reveal"><h3>1 — Discover</h3><p>Scan early memecoins using wallet &amp; trend signals.</p></article>
-<article class="card reveal"><h3>2 — Mirror</h3><p>Follow smart money with on-chain tracking.</p></article>
-<article class="card reveal"><h3>3 — Execute</h3><p>Enter early, exit clean. Daily action plans.</p></article>
-</div>
-</section>
-<section class="section container" id="scanner">
-<h2>Terminal Scanner (demo)</h2>
-<div class="card reveal">
-<div aria-live="polite" class="console" id="console"></div>
-<div class="console-controls">
-<button aria-pressed="false" class="btn btn-ghost mag" id="toggleScan">Pause</button>
-<button class="btn btn-primary mag" id="genSample">Generate Sample Signal</button>
-</div>
-<p class="small">Simulated for demo. Trims to the last 25 lines.</p>
-</div>
-</section>
-<section class="section container" id="sim">
-<h2>Daily Plan Simulator</h2>
-<div class="grid grid-2">
-<div class="card reveal">
-<label>Budget: <strong id="budgetVal">$1,000</strong></label>
-<input id="budget" max="2000" min="10" step="10" type="range" value="1000"/>
-<label>Risk per trade: <strong id="riskVal">3%</strong></label>
-<input id="risk" max="10" min="1" step="1" type="range" value="3"/>
-<div style="height:6px"></div>
-<div class="pills">
-<button aria-selected="true" class="btn btn-ghost mag" data-hold="scalp">Scalp</button>
-<button aria-selected="false" class="btn btn-ghost mag" data-hold="intraday">Intraday</button>
-<button aria-selected="false" class="btn btn-ghost mag" data-hold="swing">Swing</button>
-</div>
-<label style="display:flex;gap:10px;align-items:center;margin-top:8px">
-<input checked="" id="breakeven" type="checkbox"/>
-<span>Auto move stop to breakeven after +20%</span>
-</label>
-</div>
-<div class="card reveal">
-<h3>Results</h3>
-<div id="result"></div>
-<p class="small">Illustrative math only. No results guaranteed.</p>
-</div>
-</div>
-</section>
-<section class="section container" id="proof">
-<h2>Proof — Case Files</h2>
-<div class="grid grid-3">
-<article class="card reveal"><div class="small">2025-05-28</div><strong>Thesis:</strong> Hype + wallet cluster accumulation.<br/>Entry 0.000041 → Exit 0.000057<br/><span class="small">*Results vary.</span></article>
-<article class="card reveal"><div class="small">2025-06-11</div><strong>Thesis:</strong> Fresh meme + early CEX rumors.<br/>Entry 0.00012 → Exit 0.00019<br/><span class="small">*Results vary.</span></article>
-<article class="card reveal"><div class="small">2025-07-22</div><strong>Thesis:</strong> Mirroring + trend strength.<br/>Entry 0.0031 → Exit 0.0048<br/><span class="small">*Results vary.</span></article>
-</div>
-</section>
-<section class="section container" id="get">
-<h2>What you get</h2>
-<div class="grid grid-2">
-<ul class="card reveal" style="list-style:none;padding-left:var(--pad);display:grid;gap:10px">
-<li>Insider Wallets (updated)</li>
-<li>Tool Stack &amp; ready-to-use settings</li>
-<li>Daily Action Plans (coin / entry / TP / SL)</li>
-<li>Step-by-Step Blueprints (discover → hype → exit)</li>
-<li>Private Support &amp; weekly recaps</li>
-</ul>
-<div class="card reveal"><h3>Built to teach, not hype</h3><p>Clear, repeatable process. Risk management first.</p></div>
-</div>
-</section>
-<section class="section container" id="pricing">
-<h2 style="text-align:center">Pricing</h2>
-<div class="pricing-card reveal">
-<div class="price">$35</div>
-<p>Lifetime updates · Instant access · Private support</p>
-<div aria-live="polite" class="countdown" id="countdown">DEMO — 02:00</div>
-<div style="height:12px"></div>
-<div class="hero-cta">
-<a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" rel="noopener noreferrer" target="_blank">Get Instant Access — $35</a>
-<a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" rel="noopener noreferrer" target="_blank">Get Instant Access (Pay with Solana)</a>
-</div>
-<p class="small" style="margin-top:12px">14-day refund if the curriculum doesn’t match what’s described. No outcome promises.</p>
-</div>
-</section>
-<section class="section container" id="faq">
-<h2>FAQ</h2>
-<div class="card reveal">
-<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Signals vs System?</div>
-<div class="faq-content"><p>We teach a system. Sample signals are study aids only.</p></div>
-<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">How do you handle risk?</div>
-<div class="faq-content"><p>Fixed % per trade, clear invalidation, and sizing. Protect downside first.</p></div>
-<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Refunds?</div>
-<div class="faq-content"><p>14-day refund if the content doesn’t match the curriculum. No guarantees.</p></div>
-<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Experience required?</div>
-<div class="faq-content"><p>None. We start with foundations, then build.</p></div>
-<div aria-expanded="false" class="faq-summary" role="button" tabindex="0">Time commitment?</div>
-<div class="faq-content"><p>Most members spend 20–40 minutes daily.</p></div>
-</div>
-</section>
-</main>
-<footer>
-<div class="container">
-<p class="small">Risk disclaimer: Cryptocurrency is volatile. Capital is at risk. Case files are not guarantees of future results.</p>
-<p class="small">Contact: support@stealth.ac — © <span id="year"></span> The Stealth Academy. Accessibility: keyboard-friendly, reduced motion respected.</p>
-</div>
-</footer>
-<script>
-/* ================= Helpers & State ================= */
-const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const saveData = navigator.connection && navigator.connection.saveData;
-const lowPower = !!saveData;
-const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
-const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
 
-/* ================= Progress Bar ================= */
-const progress = $("#progress");
+<!-- NAV -->
+<nav aria-label="Primary">
+  <div class="nav-inner">
+    <div class="logo">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="glogo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#45E5FF"/><stop offset="1" stop-color="#11FFC7"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="#0f1923" stroke="url(#glogo)" stroke-width="3"/><path d="M18 28h28v10H18z" fill="url(#glogo)"/></svg>
+      <b>Stealth Sales Academy</b>
+    </div>
+    <div class="nav-links" role="navigation">
+      <a href="#features">Features</a>
+      <a href="#modules">Modules</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-ghost mag" href="#pricing">Enroll</a>
+  </div>
+  <div class="progress" id="progress"></div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="home">
+  <div class="hero-inner">
+    <div class="chips">
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="#45E5FF" fill="none"/><path d="M7 9h6" stroke="#11FFC7" stroke-width="2"/></svg> Daily Action Plans</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#45E5FF" fill="none"/><path d="M12 7v10" stroke="#FFC46B" stroke-width="2"/></svg> Proven Playbooks</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="#45E5FF" fill="none"/><path d="M9 9h6v6H9z" stroke="#11FFC7" stroke-width="2"/></svg> Accountability</span>
+    </div>
+
+    <h1 class="headline">NEXT-GEN SALES TRAINING</h1>
+    <p class="sub">Master prospecting, pipeline, and closes. Clear scripts. Live breakdowns. Zero fluff.</p>
+
+    <div class="mags">
+      <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
+      <a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank" rel="noopener">Get Instant Access (Pay with Solana)</a>
+    </div>
+
+    <div class="addr-wrap">
+      <div class="addr" id="addr"><strong>Note:</strong> Instant access after checkout. Need help? DM us on Telegram.</div>
+      <button class="copy" id="copyBtn" aria-label="Copy note">Copy</button>
+    </div>
+  </div>
+</header>
+
+<!-- Separator -->
+<div class="sep" aria-hidden="true">
+  <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
+    <path d="M0,40 L140,60 L300,30 L480,70 L680,20 L860,60 L1040,30 L1200,50 L1200,140 L0,140 Z"
+          fill="#0f1822" stroke="#1fe0ff" stroke-opacity=".55" stroke-width="2"/>
+  </svg>
+</div>
+
+<main>
+  <!-- FEATURES -->
+  <section id="features" class="container reveal">
+    <h2>What You’ll Get</h2>
+    <div class="belt">
+      <div class="fchip"><h4>Prospecting Engine</h4><p>DM & cold email frameworks that get replies.</p></div>
+      <div class="fchip"><h4>Pipeline OS</h4><p>Simple dashboards to keep follow-ups tight.</p></div>
+      <div class="fchip"><h4>Qualification</h4><p>Objection trees & decision rules.</p></div>
+      <div class="fchip"><h4>Closing Scripts</h4><p>Scenario playbooks for consultative closes.</p></div>
+      <div class="fchip"><h4>Reviews</h4><p>Weekly call breakdowns. Learn by example.</p></div>
+      <div class="fchip"><h4>Community</h4><p>Private chat. Accountability. Momentum.</p></div>
+    </div>
+  </section>
+
+  <!-- MODULES (animated bars) -->
+  <section id="modules" class="container reveal">
+    <h2>Curriculum Emphasis</h2>
+    <p class="small">Illustrative emphasis by module; content expands over time.</p>
+    <div class="grid grid-2" style="align-items:start">
+      <div class="card">
+        <svg viewBox="0 0 1000 320" id="bars" aria-label="Curriculum chart"></svg>
+      </div>
+      <div class="card">
+        <ul style="margin:0; padding-left:18px">
+          <li><strong>Foundation:</strong> buyer psychology, ICP, offer clarity</li>
+          <li><strong>Outbound:</strong> hooks, openers, follow-up sequences</li>
+          <li><strong>Discovery:</strong> pain stacks, gap building</li>
+          <li><strong>Closing:</strong> frameworks, objection handling</li>
+          <li><strong>Systems:</strong> templates, trackers, weekly sprints</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separator -->
+  <div class="sep" aria-hidden="true">
+    <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
+      <path d="M0,80 L160,40 L320,70 L520,30 L700,60 L900,20 L1060,55 L1200,40 L1200,140 L0,140 Z"
+            fill="#0d151f" stroke="#1fe0ff" stroke-opacity=".55" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <!-- PRICING -->
+  <section id="pricing" class="container pricing reveal">
+    <h2>Pricing</h2>
+    <div class="card">
+      <div class="price">$35</div>
+      <p>Lifetime updates · Instant access · Private community</p>
+      <div class="countdown" id="countdown" aria-live="polite">DEMO — 02:00</div>
+      <div class="mags" style="margin-top:10px">
+        <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
+        <a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank" rel="noopener">Get Instant Access (Pay with Solana)</a>
+      </div>
+      <p class="small" style="margin-top:12px">14-day refund if the curriculum doesn’t match this page. No performance guarantees.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="container reveal">
+    <h2>FAQ</h2>
+    <div class="grid grid-2">
+      <div class="card"><strong>Is this signals or a system?</strong><p class="small">A system. Process, scripts, and decision rules you’ll reuse.</p></div>
+      <div class="card"><strong>Time commitment?</strong><p class="small">20–40 minutes a day. Sprints keep you focused.</p></div>
+      <div class="card"><strong>Refunds?</strong><p class="small">14-day refund if content doesn’t match the curriculum.</p></div>
+      <div class="card"><strong>Experience required?</strong><p class="small">No. We start with foundations and ramp fast.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="container small">
+  © <span id="year"></span> The Stealth Sales Academy — Accessibility: keyboard-friendly, reduced motion respected.
+</footer>
+
+<script>
+/* ======================== Utilities & state ======================== */
+const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouch = matchMedia('(hover:none) and (pointer:coarse)').matches;
+const saveData = navigator.connection && navigator.connection.saveData;
+const lowPower = isTouch || !!saveData;
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+
+/* Progress bar */
+const progress=$("#progress");
 addEventListener('scroll', ()=>{
   const h=document.documentElement;
-  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
-  progress.style.width=pct+"%";
-  progress.setAttribute('aria-valuenow', pct.toFixed(0));
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight);
+  progress.style.width=(pct*100)+"%";
 },{passive:true});
 
-/* ================= Reveal on Scroll ================= */
+/* Reveal on scroll (disabled if prefers-reduced-motion) */
 if(!prefersReduced){
-  const io=new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('revealed'); io.unobserve(e.target);}
-  }),{threshold:.08});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed'); io.unobserve(e.target);}}),{threshold:.08});
   $$('.reveal').forEach(el=>io.observe(el));
+} else {
+  $$('.reveal').forEach(el=>el.classList.add('revealed'));
 }
 
-/* ================= Magnetic Buttons ================= */
-$$('.mag').forEach(btn=>{
-  const radius = 16; let inside=false;
-  const move = e=>{
-    const r=btn.getBoundingClientRect();
-    const x=e.clientX - (r.left + r.width/2);
-    const y=e.clientY - (r.top + r.height/2);
-    const d=Math.hypot(x,y);
-    if(d<120){
-      btn.style.transform=`translate(${clamp(x,-radius,radius)}px,${clamp(y,-radius,radius)}px)`;
-      inside=true;
-    }
-  };
-  const leave=()=>{ if(!inside) return; btn.style.transform='translate(0,0)'; inside=false; };
-  btn.addEventListener('mousemove', move);
-  btn.addEventListener('mouseleave', leave);
-  btn.addEventListener('blur', leave);
-});
+/* Magnetic buttons — disabled on touch */
+if(!isTouch){
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  $$('.mag').forEach(btn=>{
+    const radius=16; let inside=false;
+    const move=e=>{
+      const r=btn.getBoundingClientRect();
+      const x=e.clientX-(r.left+r.width/2), y=e.clientY-(r.top+r.height/2);
+      const d=Math.hypot(x,y);
+      if(d<120){ btn.style.transform=`translate(${clamp(x,-radius,radius)}px,${clamp(y,-radius,radius)}px)`; inside=true; }
+    };
+    const out=()=>{ if(!inside) return; btn.style.transform='translate(0,0)'; inside=false; };
+    btn.addEventListener('mousemove',move); btn.addEventListener('mouseleave',out); btn.addEventListener('blur',out);
+  });
+}
 
-/* ================= Copy Wallet Demo ================= */
+/* Copy helper (demo note) */
 $('#copyBtn').addEventListener('click', async ()=>{
-  const t=$('#addr').textContent.trim();
-  try{
-    await navigator.clipboard.writeText(t);
-    $('#copyBtn').textContent='Copied';
-    setTimeout(()=>$('#copyBtn').textContent='Copy', 1200);
-  }catch{}
+  try{ await navigator.clipboard.writeText($('#addr').textContent.trim()); const b=$('#copyBtn'); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200);}catch{}
 });
 
-/* ================= Console (Simulated) ================= */
-const consoleEl=$("#console"); let scanning=true; const maxLines=25;
-function addLine(text){
-  const el=document.createElement('div'); el.className='line'; el.textContent=text;
-  consoleEl.appendChild(el);
-  while(consoleEl.children.length>maxLines){ consoleEl.removeChild(consoleEl.firstChild); }
-  consoleEl.scrollTop=consoleEl.scrollHeight;
-}
-function now(){return new Date().toTimeString().slice(0,8);}
-function gen(){
-  const syms=["BICHON/SOL","FROG/ETH","ZOOMER/SOL","BONGO/ETH","GLITCH/SOL"];
-  const s=syms[(Math.random()*syms.length)|0];
-  const m=((Math.random()*3+0.7)*100)|0;
-  const d=((Math.random()*5+1.5)*100)|0;
-  const e0=(Math.random()*0.004+0.00002).toFixed(6);
-  const e1=(+e0+Math.random()*e0*.08).toFixed(6);
-  const t0=(+e1+Math.random()*e1*.06).toFixed(6);
-  const t1=(+t0+Math.random()*t0*.06).toFixed(6);
-  const sl=(+e0-Math.random()*e0*.07).toFixed(6);
-  addLine(`[${now()}] SCAN: wallet_0x${(Math.random()*0xFFFFFFF|0).toString(16)}… added`);
-  addLine(`[${now()}] SIGNAL: ${s} momentum +${m}% (24h +${d}%)`);
-  addLine(`[${now()}] ENTRY: ${e0}–${e1} | TP: ${t0}–${t1} | SL: ${sl}`);
-}
-let inter=setInterval(()=>{ if(scanning) gen(); }, 2200);
-$("#toggleScan").addEventListener('click', e=>{
-  scanning=!scanning;
-  e.target.textContent=scanning?'Pause':'Resume';
-  if(!scanning){ clearInterval(inter); }
-  else{ inter=setInterval(()=>{ if(scanning) gen(); },2200); }
-});
-$("#genSample").addEventListener('click', gen);
-
-/* ================= Simulator ================= */
-const budget=$("#budget"), risk=$("#risk"), bVal=$("#budgetVal"), rVal=$("#riskVal"), res=$("#result"), holds=$$('[data-hold]'), breakeven=$("#breakeven");
-let hold="scalp";
-holds.forEach(b=>b.addEventListener('click', ()=>{
-  holds.forEach(x=>{x.setAttribute('aria-selected','false'); x.classList.remove('btn-primary'); x.classList.add('btn-ghost');});
-  b.setAttribute('aria-selected','true'); b.classList.add('btn-primary'); b.classList.remove('btn-ghost'); hold=b.dataset.hold; update();
-}));
-function nice(n){return Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(n);}
-function tpRange(h){ if(h==='scalp') return [0.08,0.12]; if(h==='intraday') return [0.20,0.35]; return [0.60,1.20]; }
-function update(){
-  const B=+budget.value, R=+risk.value/100;
-  bVal.textContent=`$${nice(B)}`; rVal.textContent=`${(R*100)|0}%`;
-  const maxLoss=B*R;
-  const position=B*R; // illustrative sizing
-  const [tp1,tp2]=tpRange(hold);
-  const note=breakeven.checked?'Stop auto-moves to breakeven after +20%.':'No auto breakeven move.';
-  res.innerHTML =
-    `<div>Position size: <strong>$${nice(position)}</strong></div>
-     <div>Max loss: <strong>$${nice(maxLoss)}</strong></div>
-     <div>Suggested TP1/TP2: <strong>${(tp1*100)|0}% / ${(tp2*100)|0}%</strong></div>
-     <div class="small">${note}</div>`;
-}
-budget.addEventListener('input', update);
-risk.addEventListener('input', update);
-breakeven.addEventListener('change', update);
-update();
-
-/* ================= Background Canvases ================= */
+/* ======================== Background Effects ======================== */
 const aur = document.getElementById('aurora'),
       sph = document.getElementById('sphere'),
       par = document.getElementById('particles');
 const a = aur.getContext('2d'), s = sph.getContext('2d'), p = par.getContext('2d');
 let W,H, dPR = devicePixelRatio || 1;
 
+/* Resize with mobile scaling (save battery) */
 function size(){
-  const scale = lowPower ? 1.4 : 1;
+  const scale = lowPower ? 1.8 : 1;   // downscale on touch/Save-Data
   W = aur.width = sph.width = par.width = Math.floor(innerWidth*dPR/scale);
   H = aur.height = sph.height = par.height = Math.floor(innerHeight*dPR/scale);
-  aur.style.width = sph.style.width = par.style.width = innerWidth+'px';
-  aur.style.height = sph.style.height = par.style.height = innerHeight+'px';
+  [aur,sph,par].forEach(c=>{c.style.width=innerWidth+'px'; c.style.height=innerHeight+'px';});
 }
 size(); addEventListener('resize', size);
 
-/* ---- Aurora (fast value noise) ---- */
+/* Value noise (aurora) */
 function smooth(t){return t*t*(3-2*t);}
 function hash(x,y){const n=Math.sin(x*127.1+y*311.7+99.1)*43758.5453; return n-Math.floor(n);}
 function noise(x,y,t){
   x*=0.008; y*=0.008; x+=t*0.0015; y+=t*0.0011;
-  const xi=Math.floor(x), yi=Math.floor(y);
-  const tx=x-xi, ty=y-yi;
+  const xi=Math.floor(x), yi=Math.floor(y), tx=x-xi, ty=y-yi;
   const a0=hash(xi,yi), a1=hash(xi+1,yi), b0=hash(xi,yi+1), b1=hash(xi+1,yi+1);
   const u=smooth(tx), v=smooth(ty);
   return (a0*(1-u)+a1*u)*(1-v) + (b0*(1-u)+b1*u)*v;
 }
-let img = a.createImageData(0,0);
+let img=a.createImageData(0,0);
 function drawAur(t){
-  const step = Math.floor((lowPower?6:4)*dPR);
-  if(img.width!==W || img.height!==H){ img = a.createImageData(W,H); }
-  const d = img.data;
+  const step=Math.floor((lowPower?7:4)*dPR);   // larger step on mobile
+  if(img.width!==W||img.height!==H) img=a.createImageData(W,H);
+  const d=img.data;
   for(let y=0;y<H;y+=step){
     for(let x=0;x<W;x+=step){
-      const v = noise(x,y,t);
-      const r = (10+20*v)|0, g=(50+205*v)|0, b=(60+(195*v*0.6))|0;
-      for(let yy=0; yy<step; yy++){
-        for(let xx=0; xx<step; xx++){
-          const i=((y+yy)*W+(x+xx))*4;
-          d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=120;
-        }
+      const v=noise(x,y,t);
+      const r=(8+18*v)|0, g=(50+205*v)|0, b=(70+(185*v*0.6))|0;
+      for(let yy=0;yy<step;yy++) for(let xx=0;xx<step;xx++){
+        const i=((y+yy)*W+(x+xx))*4; d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=120;
       }
     }
   }
   a.putImageData(img,0,0);
 }
 
-/* ---- Reactive Neon Sphere (boosted) ---- */
+/* Reactive neon sphere */
 const cursor={x:W/2,y:H/2,tx:W/2,ty:H/2,vx:0,vy:0};
-function onMove(e){ cursor.tx = e.clientX * dPR; cursor.ty = e.clientY * dPR; }
+function onMove(e){ cursor.tx=e.clientX*dPR; cursor.ty=e.clientY*dPR; }
 addEventListener('mousemove', onMove, {passive:true});
 addEventListener('touchmove', e=>{ if(e.touches[0]) onMove(e.touches[0]); }, {passive:true});
 
 function drawSphere(t){
   s.clearRect(0,0,W,H);
-  const cx=W/2, cy=H/2;
-  const R = Math.min(W,H)*0.38; /* larger sphere */
-
-  /* faster, snappier tracking */
-  cursor.vx += (cursor.tx-cursor.x)*0.12;
-  cursor.vy += (cursor.ty-cursor.y)*0.12;
-  cursor.vx *= 0.85; cursor.vy *= 0.85;
-  cursor.x  += cursor.vx; cursor.y  += cursor.vy;
-
+  const cx=W/2, cy=H/2, R=Math.min(W,H)*(isTouch?0.30:0.36); // smaller on phones
+  cursor.vx+=(cursor.tx-cursor.x)*0.12; cursor.vy+=(cursor.ty-cursor.y)*0.12;
+  cursor.vx*=0.85; cursor.vy*=0.85; cursor.x+=cursor.vx; cursor.y+=cursor.vy;
   const nx=(cursor.x-cx)/R, ny=(cursor.y-cy)/R;
 
-  /* base sphere glow (stronger color & opacity) */
   s.globalCompositeOperation='screen';
   let base=s.createRadialGradient(cx-R*0.18, cy-R*0.18, R*0.18, cx, cy, R*1.02);
-  base.addColorStop(0, 'rgba(69,229,255,0.95)');
-  base.addColorStop(0.45,'rgba(17,255,199,0.90)');
-  base.addColorStop(1, 'rgba(11,15,20,0)');
-  s.globalAlpha=1; s.fillStyle=base; s.beginPath(); s.arc(cx,cy,R,0,Math.PI*2); s.fill();
+  base.addColorStop(0,'rgba(69,229,255,.95)'); base.addColorStop(0.45,'rgba(17,255,199,.90)'); base.addColorStop(1,'rgba(11,15,20,0)');
+  s.fillStyle=base; s.beginPath(); s.arc(cx,cy,R,0,6.283); s.fill();
 
-  /* outer halo for extra punch */
-  let halo=s.createRadialGradient(cx,cy,R*0.6, cx,cy, R*1.35);
-  halo.addColorStop(0, 'rgba(17,255,199,0.28)');
-  halo.addColorStop(1, 'rgba(0,0,0,0)');
-  s.globalAlpha=1; s.fillStyle=halo; s.beginPath(); s.arc(cx,cy,R*1.35,0,Math.PI*2); s.fill();
+  let halo=s.createRadialGradient(cx,cy,R*0.6, cx,cy,R*1.35);
+  halo.addColorStop(0,'rgba(17,255,199,.25)'); halo.addColorStop(1,'rgba(0,0,0,0)');
+  s.fillStyle=halo; s.beginPath(); s.arc(cx,cy,R*1.35,0,6.283); s.fill();
 
-  /* cursor-facing highlight (brighter) */
-  const hx=cx + nx*R*0.58, hy=cy + ny*R*0.58;
-  let hgrad=s.createRadialGradient(hx,hy, R*0.02, hx,hy,R*0.38);
-  hgrad.addColorStop(0,'rgba(255,255,255,0.95)');
-  hgrad.addColorStop(0.18,'rgba(69,229,255,0.92)');
-  hgrad.addColorStop(1,'rgba(0,0,0,0)');
-  s.globalAlpha=1; s.fillStyle=hgrad; s.beginPath(); s.arc(cx,cy,R,0,Math.PI*2); s.fill();
+  const hx=cx+nx*R*0.58, hy=cy+ny*R*0.58;
+  let hgrad=s.createRadialGradient(hx,hy,R*0.02, hx,hy,R*0.38);
+  hgrad.addColorStop(0,'rgba(255,255,255,.95)'); hgrad.addColorStop(0.18,'rgba(69,229,255,.92)'); hgrad.addColorStop(1,'rgba(0,0,0,0)');
+  s.fillStyle=hgrad; s.beginPath(); s.arc(cx,cy,R,0,6.283); s.fill();
 
-  /* thicker, faster amber sheen band */
-  const ang = t*0.00045; /* speed up */
-  s.save();
-  s.translate(cx,cy); s.rotate(ang);
-  const band=s.createLinearGradient(-R, R*0.18, R, -R*0.18);
-  band.addColorStop(0,'rgba(255,196,107,0)');
-  band.addColorStop(0.5,'rgba(255,196,107,0.55)');
-  band.addColorStop(1,'rgba(255,196,107,0)');
-  s.globalAlpha=0.9; s.fillStyle=band;
-  s.fillRect(-R, -R*0.4, R*2, R*0.8); /* thicker strip */
+  const ang=t*0.00045;
+  s.save(); s.translate(cx,cy); s.rotate(ang);
+  const band=s.createLinearGradient(-R,R*0.18, R,-R*0.18);
+  band.addColorStop(0,'rgba(255,196,107,0)'); band.addColorStop(0.5,'rgba(255,196,107,.55)'); band.addColorStop(1,'rgba(255,196,107,0)');
+  s.globalAlpha=.9; s.fillStyle=band; s.fillRect(-R,-R*0.4,R*2,R*0.8);
   s.restore();
 
   s.globalAlpha=1; s.globalCompositeOperation='source-over';
 }
 
-/* ---- Particles (slightly brighter) ---- */
-const PCOUNT = lowPower ? 70 : 120;
+/* Particles (reduced count on phones) */
+const PCOUNT = lowPower? 55 : 120;
 const pts=[];
-for(let i=0;i<PCOUNT;i++){
-  pts.push({x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*1.2, vy:(Math.random()-.5)*1.2});
-}
+for(let i=0;i<PCOUNT;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*1.1,vy:(Math.random()-.5)*1.1});
 function drawParticles(){
-  p.globalCompositeOperation='source-over';
-  p.fillStyle='rgba(11,15,20,.28)';
-  p.fillRect(0,0,W,H);
+  p.globalCompositeOperation='source-over'; p.fillStyle='rgba(11,15,20,.28)'; p.fillRect(0,0,W,H);
   p.globalCompositeOperation='lighter';
-
   for(const o of pts){
-    const dx=cursor.x-o.x, dy=cursor.y-o.y, dist=Math.hypot(dx,dy)+.001;
-    const sp=Math.hypot(o.vx,o.vy);
-    const force=(sp>0.6?-1:1)*0.06;
-    o.vx+=(dx/dist)*force; o.vy+=(dy/dist)*force;
+    const dx=cursor.x-o.x, dy=cursor.y-o.y, dist=Math.hypot(dx,dy)+.001, sp=Math.hypot(o.vx,o.vy);
+    const force=(sp>0.6?-1:1)*0.06; o.vx+=(dx/dist)*force; o.vy+=(dy/dist)*force;
     const tang=0.02; o.vx+=-dy/dist*tang; o.vy+=dx/dist*tang;
-
-    o.vx*=0.985; o.vy*=0.985;
-    o.x+=o.vx; o.y+=o.vy;
-
-    if(o.x<0)o.x+=W; if(o.x>W)o.x-=W;
-    if(o.y<0)o.y+=H; if(o.y>H)o.y-=H;
-
+    o.vx*=0.985; o.vy*=0.985; o.x+=o.vx; o.y+=o.vy;
+    if(o.x<0)o.x+=W; if(o.x>W)o.x-=W; if(o.y<0)o.y+=H; if(o.y>H)o.y-=H;
     const hue=170+30*Math.min(1,Math.hypot(o.vx,o.vy)*2);
-    p.fillStyle=`hsla(${hue},100%,60%,.45)`; /* brighter */
-    p.beginPath(); p.arc(o.x,o.y,1.6*dPR,0,Math.PI*2); /* slightly larger */
-    p.fill();
+    p.fillStyle=`hsla(${hue},100%,60%,.42)`; p.beginPath(); p.arc(o.x,o.y,1.5*(devicePixelRatio||1),0,6.283); p.fill();
   }
 }
 
-/* ---- Animation loop (throttled on low-power) ---- */
+/* Animation loop (throttled on touch/Save-Data/reduced motion) */
 let frame=0, running=!prefersReduced;
 function loop(ts){
   if(!running) return;
-  if(frame%(lowPower?2:1)===0){
-    drawAur(ts);
-    drawSphere(ts);
-    drawParticles();
-  }
-  frame++;
-  requestAnimationFrame(loop);
+  if(frame%(lowPower?2:1)===0){ drawAur(ts); drawSphere(ts); drawParticles(); }
+  frame++; requestAnimationFrame(loop);
 }
 if(running) requestAnimationFrame(loop);
-document.addEventListener('visibilitychange', ()=>{
-  running = !document.hidden && !prefersReduced;
-  if(running) requestAnimationFrame(loop);
-});
+document.addEventListener('visibilitychange',()=>{running=!document.hidden && !prefersReduced; if(running) requestAnimationFrame(loop);});
 
-/* ================= Countdown Demo ================= */
-(function(){
-  const el=$("#countdown");
-  let t=120;
-  function tick(){
-    const m=String(Math.floor(t/60)).padStart(2,'0');
-    const s=String(t%60).padStart(2,'0');
-    el.textContent=`DEMO — ${m}:${s}`;
-    t = (t<=0)?120:t-1;
-  }
-  tick(); setInterval(tick,1000);
+/* Bars chart (modules) */
+const series=[
+  {label:'Foundation', value:26, color:'#B8E7FF'},
+  {label:'Outbound',   value:22, color:'#39C16C'},
+  {label:'Discovery',  value:20, color:'#6B5ACF'},
+  {label:'Closing',    value:16, color:'#E6E6E6'},
+  {label:'Systems',    value:18, color:'#5B5CE0'}
+];
+(function drawBars(){
+  const svg=$("#bars"), W=1000, H=320, pad=70, bw=120, gap=60, max=30;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  series.forEach((d,i)=>{
+    const x=pad+i*(bw+gap), h=(d.value/max)*(H-120), y=H-30-h;
+    const glow=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    glow.setAttribute('x',x-4); glow.setAttribute('y',y-6);
+    glow.setAttribute('width',bw+8); glow.setAttribute('height',h+12);
+    glow.setAttribute('rx','18'); glow.setAttribute('fill','none'); glow.setAttribute('stroke','#45E5FF'); glow.setAttribute('opacity','.4');
+    svg.appendChild(glow);
+
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',x); r.setAttribute('y',H-30); r.setAttribute('width',bw); r.setAttribute('height',0);
+    r.setAttribute('rx','16'); r.setAttribute('fill',d.color);
+    r.style.filter='drop-shadow(0 0 10px rgba(69,229,255,.25))';
+    svg.appendChild(r);
+
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',x+bw/2); t.setAttribute('y',H-38);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#cfefff');
+    t.setAttribute('font-family','ui-monospace,Menlo,Consolas'); t.setAttribute('font-size','16'); t.textContent=d.label;
+    svg.appendChild(t);
+
+    const targetH=h, targetY=y; let cur=0;
+    const rise=()=>{ cur+=(targetH-cur)*0.08; r.setAttribute('height',cur); r.setAttribute('y',H-30-cur);
+      if(Math.abs(targetH-cur)>0.6) requestAnimationFrame(rise); else { r.setAttribute('height',targetH); r.setAttribute('y',targetY); }
+    };
+    if(!prefersReduced) requestAnimationFrame(rise); else { r.setAttribute('height',targetH); r.setAttribute('y',targetY); }
+  });
 })();
 
-/* ================= Footer Year ================= */
+/* Countdown demo */
+(function(){ const el=$("#countdown"); let t=120; function tick(){ const m=String(Math.floor(t/60)).padStart(2,'0'), s=String(t%60).padStart(2,'0'); el.textContent=`DEMO — ${m}:${s}`; t=(t<=0)?120:t-1; } tick(); setInterval(tick,1000); })();
+
+/* Footer year */
 $("#year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
-
-
