@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0B0F14">
-<title>The Stealth Sales Academy — Mobile First</title>
-<meta name="description" content="WalletChat-style neon landing, fully mobile-optimized. Reactive background, scanlines, reveal animations. Sales Academy with clear CTAs.">
+<title>Stealth Academy — Mobile First</title>
+<meta name="description" content="WalletChat-style neon landing, fully mobile-optimized. Reactive background, scanlines, reveal animations. Stealth Academy with clear CTAs.">
 <style>
 :root{
   --bg:#0B0F14; --cyan:#45E5FF; --teal:#11FFC7; --amber:#FFC46B; --white:#EAF6FF; --muted:#9FB4C4;
@@ -61,8 +61,6 @@ nav{
 nav a{color:var(--white);text-decoration:none;font-weight:800;opacity:.95}
 nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
 .progress{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber))}
-
-/* Show links on wider screens */
 @media(min-width:860px){.nav-links{display:flex}}
 
 /* Hero */
@@ -75,7 +73,7 @@ nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
 }
 .chip svg{width:16px;height:16px}
 .headline{
-  font:900 clamp(28px,8.2vw,54px)/1.06 var(--mono);
+  font:900 clamp(26px,8.2vw,50px)/1.06 var(--mono);
   letter-spacing:1.8px;margin:4px 0 0;
   background:repeating-linear-gradient(60deg,#2df7c7 0 16px,#2ccaff 16px 32px,#1581ff 32px 48px,#09c9a6 48px 64px);
   background-size:220% 220%;
@@ -110,8 +108,8 @@ nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
   border:1px solid rgba(69,229,255,.32);background:rgba(255,255,255,.06);border-radius:14px;
   font:600 clamp(12px,3.4vw,14px) var(--mono);color:#d6fff4;word-break:break-word
 }
-.copy{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);font-weight:800;cursor:pointer}
-@media(max-width:768px){.addr-wrap{flex-direction:column;gap:10px}.copy{width:100%;min-height:48px}}
+/* .copy removed — replaced by Telegram CTA on request */
+@media(max-width:768px){.addr-wrap{flex-direction:column;gap:10px}}
 
 /* Jagged separators */
 .sep{position:relative;height:64px;overflow:hidden}
@@ -132,11 +130,22 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 }
 .card:hover{box-shadow:0 16px 46px rgba(0,0,0,.55), 0 0 50px rgba(17,255,199,.12)}
 
-/* Feature belt (scrollable pills) */
-.belt{display:flex;gap:12px;overflow:auto;padding:6px;scroll-snap-type:x mandatory}
+/* Feature belt (horizontal scroll) */
+.belt{
+  display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:6px;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scroll-padding:10px;
+  mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+}
+.belt::before,.belt::after{
+  content:"";position:sticky;top:0;bottom:0;width:18px;pointer-events:none;z-index:2;
+  background:linear-gradient(to right, var(--bg), transparent);
+}
+.belt::after{margin-left:auto;background:linear-gradient(to left, var(--bg), transparent)}
 .belt::-webkit-scrollbar{height:6px}
-.fchip{scroll-snap-align:center;background:rgba(13,22,31,.85);border:1px solid rgba(69,229,255,.22);
-  padding:12px 14px;border-radius:16px;min-width:220px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.fchip{
+  scroll-snap-align:center;background:rgba(13,22,31,.85);border:1px solid rgba(69,229,255,.22);
+  padding:12px 14px;border-radius:16px;min-width:220px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)
+}
 .fchip h4{margin:0 0 6px;font:800 15px var(--mono)}
 .fchip p{margin:0;color:var(--muted);font-size:14px}
 
@@ -170,7 +179,7 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
   <div class="nav-inner">
     <div class="logo">
       <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="glogo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#45E5FF"/><stop offset="1" stop-color="#11FFC7"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="#0f1923" stroke="url(#glogo)" stroke-width="3"/><path d="M18 28h28v10H18z" fill="url(#glogo)"/></svg>
-      <b>Stealth Sales Academy</b>
+      <b>Stealth Academy</b>
     </div>
     <div class="nav-links" role="navigation">
       <a href="#features">Features</a>
@@ -186,7 +195,7 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 <!-- HERO -->
 <header class="hero" id="home">
   <div class="hero-inner">
-    <div class="chips">
+    <div class="chips" aria-label="Highlights">
       <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="#45E5FF" fill="none"/><path d="M7 9h6" stroke="#11FFC7" stroke-width="2"/></svg> Daily Action Plans</span>
       <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#45E5FF" fill="none"/><path d="M12 7v10" stroke="#FFC46B" stroke-width="2"/></svg> Proven Playbooks</span>
       <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="#45E5FF" fill="none"/><path d="M9 9h6v6H9z" stroke="#11FFC7" stroke-width="2"/></svg> Accountability</span>
@@ -202,7 +211,8 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 
     <div class="addr-wrap">
       <div class="addr" id="addr"><strong>Note:</strong> Instant access after checkout. Need help? DM us on Telegram.</div>
-      <button class="copy" id="copyBtn" aria-label="Copy note">Copy</button>
+      <!-- Replaced Copy with Telegram button (as requested) -->
+      <a class="btn btn-primary" style="width:100%;max-width:380px;margin:8px auto" href="https://t.me/stealth_stocks" target="_blank" rel="noopener" aria-label="Contact Stealth Academy on Telegram">Contact on Telegram</a>
     </div>
   </div>
 </header>
@@ -219,13 +229,16 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
   <!-- FEATURES -->
   <section id="features" class="container reveal">
     <h2>What You’ll Get</h2>
-    <div class="belt">
+    <!-- Fully swipeable belt with snap + fade edges -->
+    <div class="belt" role="region" aria-label="Swipe left/right to see all benefits">
       <div class="fchip"><h4>Prospecting Engine</h4><p>DM & cold email frameworks that get replies.</p></div>
       <div class="fchip"><h4>Pipeline OS</h4><p>Simple dashboards to keep follow-ups tight.</p></div>
       <div class="fchip"><h4>Qualification</h4><p>Objection trees & decision rules.</p></div>
       <div class="fchip"><h4>Closing Scripts</h4><p>Scenario playbooks for consultative closes.</p></div>
       <div class="fchip"><h4>Reviews</h4><p>Weekly call breakdowns. Learn by example.</p></div>
       <div class="fchip"><h4>Community</h4><p>Private chat. Accountability. Momentum.</p></div>
+      <div class="fchip"><h4>Templates</h4><p>Ready-to-use docs and trackers.</p></div>
+      <div class="fchip"><h4>Weekly Sprints</h4><p>Focus blocks to build momentum.</p></div>
     </div>
   </section>
 
@@ -285,7 +298,7 @@ h2{font:900 clamp(18px,5.4vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12
 </main>
 
 <footer class="container small">
-  © <span id="year"></span> The Stealth Sales Academy — Accessibility: keyboard-friendly, reduced motion respected.
+  © <span id="year"></span> Stealth Academy — Accessibility: keyboard-friendly, reduced motion respected.
 </footer>
 
 <script>
@@ -304,7 +317,7 @@ addEventListener('scroll', ()=>{
   progress.style.width=(pct*100)+"%";
 },{passive:true});
 
-/* Reveal on scroll (disabled if prefers-reduced-motion) */
+/* Reveal on scroll */
 if(!prefersReduced){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed'); io.unobserve(e.target);}}),{threshold:.08});
   $$('.reveal').forEach(el=>io.observe(el));
@@ -327,11 +340,6 @@ if(!isTouch){
     btn.addEventListener('mousemove',move); btn.addEventListener('mouseleave',out); btn.addEventListener('blur',out);
   });
 }
-
-/* Copy helper (demo note) */
-$('#copyBtn').addEventListener('click', async ()=>{
-  try{ await navigator.clipboard.writeText($('#addr').textContent.trim()); const b=$('#copyBtn'); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200);}catch{}
-});
 
 /* ======================== Background Effects ======================== */
 const aur = document.getElementById('aurora'),
