@@ -1,457 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0B0F14">
-<title>The Stealth Academy — MemeCoin Mastery (Year of Research) • Mobile-First</title>
-<meta name="description" content="A phone-first, WalletChat-style neon landing for The Stealth Academy — MemeCoin Mastery. Swipeable benefits, big tap targets, reactive canvas background (throttled on mobile).">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Stealth Academy – MemeCoin Mastery</title>
 <style>
-:root{
-  --bg:#0B0F14; --cyan:#45E5FF; --teal:#11FFC7; --amber:#FFC46B; --white:#EAF6FF; --muted:#9FB4C4;
-  --border:rgba(69,229,255,.28); --card:rgba(255,255,255,.06); --chip:#101821;
-  --radius:18px; --ease:cubic-bezier(.2,.8,.2,1);
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
-}
+  :root{
+    --bg:#07090e;--neon:#00ffe1;--neon2:#7d5af7;--ink:#e6ffff;--ink-dim:#b9fff5;--bar:#0b0f17;--bevel:#9ed4ff;--danger:#ef4444;
+    --taskbar-h:44px;
+  }
+  html,body{height:100%;}
+  html{overflow-x:hidden;background:var(--bg);color:var(--ink);}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;}
+  .noselect{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+  .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .focus-ring:focus{outline:2px solid #67e8f9; outline-offset:2px}
 
-/* Base */
-*{box-sizing:border-box}
-html,body{height:100%}
-html{overflow-x:hidden}
-body{
-  margin:0;background:var(--bg);color:var(--white);
-  font:16px/1.6 var(--sans);letter-spacing:.15px;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
-}
+  /* Background layers */
+  #bg-canvas{position:fixed;inset:0;z-index:-2;display:block}
+  #bg-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+    radial-gradient(1200px 800px at 0% 0%, rgba(0,255,224,.16), transparent 60%),
+    radial-gradient(1200px 800px at 100% 100%, rgba(125,90,247,.12), transparent 60%);
+  }
 
-/* Scanlines + subtle grid */
-body:before,body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none}
-body:before{
-  background:
-    radial-gradient(1000px 700px at 50% -20%, rgba(69,229,255,.08), transparent 60%),
-    radial-gradient(1000px 700px at 50% 120%, rgba(17,255,199,.08), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px);
-  mix-blend-mode:screen;
-}
-body:after{
-  opacity:.14;
-  background-image:
-    linear-gradient(transparent 23px, rgba(255,255,255,.045) 24px),
-    linear-gradient(90deg,transparent 23px, rgba(255,255,255,.045) 24px);
-  background-size:24px 24px,24px 24px;
-}
+  /* Desktop */
+  #desktop-root{position:relative;min-height:100vh;display:flex;flex-direction:column}
+  #icons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:12px;max-width:1100px;padding:16px 16px 8px}
+  .icon{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;border-radius:12px;background:transparent;border:0;color:var(--ink);cursor:pointer;min-width:88px;min-height:88px}
+  .icon:hover{background:rgba(255,255,255,.05)}
+  .icon:active{transform:scale(.98)}
+  .icon .glyph{font-size:24px;filter:drop-shadow(0 0 6px rgba(0,255,237,.7))}
+  .icon .label{font-size:12px;text-align:center;max-width:96px;text-shadow:0 0 8px rgba(0,255,237,.6)}
 
-/* Background canvases */
-.bg-stack{position:fixed;inset:0;z-index:0;overflow:hidden}
-.bg-layer{position:absolute;inset:0}
+  /* Windows area */
+  #windows{position:relative;flex:1 1 auto;padding-bottom:var(--taskbar-h)}
+  .win{position:absolute;background:rgba(11,15,23,.92);backdrop-filter:saturate(140%) blur(4px);border:1px solid #2b2f37;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 1px 0 0 rgba(255,255,255,.16), 0 10px 24px rgba(0,255,225,.08)}
+  .titlebar{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;border-bottom:1px solid rgba(255,255,255,.2);background:linear-gradient(90deg,#2b9bff,#18e0d1,#7d5af7);color:#000;border-top-left-radius:6px;border-top-right-radius:6px;cursor:move}
+  .title{font-weight:800;font-size:13px;text-shadow:0 0 6px rgba(0,0,0,.4)}
+  .badge{font-size:10px;background:rgba(255,255,255,.6);padding:1px 4px;border-radius:3px;margin-right:6px}
+  .controls{display:flex;gap:6px}
+  .btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.4);cursor:pointer}
+  .btn:hover{background:rgba(255,255,255,.6)}
+  .btn:active{transform:translateY(1px)}
+  .btn-danger{background:rgba(239,68,68,.7);border-color:rgba(252,165,165,.6)}
+  .btn-danger:hover{background:rgba(239,68,68,.9)}
+  .content{padding:14px;max-height:calc(100% - 36px);overflow:auto;color:var(--ink);text-shadow:0 0 6px rgba(0,255,200,.35)}
 
-/* Sticky nav */
-nav{
-  position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,rgba(11,15,20,.88),rgba(11,15,20,.6));
-  backdrop-filter:saturate(130%) blur(10px);
-  border-bottom:1px solid rgba(69,229,255,.18)
-}
-.nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between;width:min(1100px,92vw);margin:0 auto;gap:10px}
-.logo{display:flex;align-items:center;gap:10px}
-.logo svg{width:32px;height:32px;filter:drop-shadow(0 0 10px rgba(69,229,255,.35))}
-.logo b{font:900 16px var(--mono);letter-spacing:.6px;white-space:nowrap}
-.nav-links{display:none;gap:16px;flex-wrap:wrap}
-nav a{color:var(--white);text-decoration:none;font-weight:800;opacity:.95}
-nav a:hover{text-shadow:0 0 14px rgba(69,229,255,.6)}
-.progress{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber))}
-@media(min-width:860px){.nav-links{display:flex}}
+  .chip{border:1px solid rgba(119,255,232,.3);background:rgba(119,255,232,.1);border-radius:10px;padding:12px;box-shadow:0 0 20px rgba(0,255,225,.15)}
 
-/* Hero */
-.hero{position:relative;z-index:1;min-height:92vh;display:grid;place-items:center;padding:80px 0 56px;text-align:center}
-@media (max-height:480px) and (orientation:landscape){.hero{min-height:86vh;padding:56px 0 40px}}
-.hero-inner{width:min(1100px,92vw);display:grid;gap:16px;margin:0 auto}
-.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.chip{
-  background:var(--chip);border:1px solid var(--border);border-radius:14px;color:var(--white);
-  padding:10px 12px;display:inline-flex;gap:8px;align-items:center;font-weight:800
-}
-.chip svg{width:16px;height:16px}
-.headline{
-  font:900 clamp(24px,8vw,48px)/1.06 var(--mono);
-  letter-spacing:1.4px;margin:4px 0 0;
-  background:repeating-linear-gradient(60deg,#2df7c7 0 16px,#2ccaff 16px 32px,#1581ff 32px 48px,#09c9a6 48px 64px);
-  background-size:220% 220%;
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 6px 22px rgba(69,229,255,.23);
-  animation:titleShift 18s linear infinite;
-}
-@keyframes titleShift{to{background-position:200% 200%}}
-.sub{color:var(--muted);font-weight:700;font-size:clamp(14px,3.6vw,18px)}
-.sub small{display:block;opacity:.9;font-weight:600}
+  /* Resize handles */
+  .handle{position:absolute;z-index:3}
+  .h-n{top:-3px;left:0;right:0;height:6px;cursor:n-resize}
+  .h-s{bottom:-3px;left:0;right:0;height:6px;cursor:s-resize}
+  .h-e{top:0;bottom:0;right:-3px;width:6px;cursor:e-resize}
+  .h-w{top:0;bottom:0;left:-3px;width:6px;cursor:w-resize}
+  .h-ne{top:-6px;right:-6px;width:12px;height:12px;cursor:ne-resize}
+  .h-nw{top:-6px;left:-6px;width:12px;height:12px;cursor:nw-resize}
+  .h-se{bottom:-6px;right:-6px;width:12px;height:12px;cursor:se-resize}
+  .h-sw{bottom:-6px;left:-6px;width:12px;height:12px;cursor:sw-resize}
 
-/* Buttons: large touch targets */
-.btn{
-  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  padding:14px 20px;border-radius:999px;border:1px solid var(--border);cursor:pointer;
-  min-height:52px;min-width:200px;font-weight:900;letter-spacing:.3px;
-  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)
-}
-.btn-primary{color:#021a14;background:linear-gradient(180deg,var(--teal),#0cdcae);box-shadow:0 10px 26px rgba(17,255,199,.28),0 0 24px rgba(17,255,199,.34)}
-.btn-ghost{background:rgba(255,255,255,.06);color:var(--white)}
-.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-.mags{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px}
-.mag{will-change:transform}
-@media(max-width:768px){
-  .mags{flex-direction:column;align-items:center}
-  .btn{width:100%;max-width:420px;margin:10px auto}
-}
+  /* Taskbar */
+  #taskbar{position:fixed;left:0;right:0;bottom:0;height:var(--taskbar-h);display:flex;align-items:center;justify-content:space-between;padding:4px 8px;border-top:1px solid rgba(255,255,255,.25);background:rgba(11,15,23,.9);backdrop-filter:blur(4px)}
+  #tasks{display:flex;gap:8px;overflow-x:auto}
+  .task{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2);cursor:pointer}
+  .task.active{background:rgba(0,255,225,.28);border-color:rgba(153,246,228,.6)}
+  #right-controls{display:flex;align-items:center;gap:8px}
+  .toggle{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2);cursor:pointer}
+  #clock{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2)}
 
-/* Note / contact */
-.addr-wrap{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.addr{
-  display:flex;align-items:center;gap:8px;padding:14px 16px;width:100%;
-  border:1px solid rgba(69,229,255,.32);background:rgba(255,255,255,.06);border-radius:14px;
-  font:600 clamp(12px,3.4vw,14px) var(--mono);color:#d6fff4;word-break:break-word
-}
-@media(max-width:768px){.addr-wrap{flex-direction:column;gap:10px}}
+  /* Mobile adaptations */
+  @media (max-width: 768px){
+    .win{max-width:100vw}
+    .content{overscroll-behavior:contain}
+    .icon{min-width:88px;min-height:88px}
+    .mobile-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+    .mobile-scroll>.chip{min-width:240px}
+  }
 
-/* Separators */
-.sep{position:relative;height:64px;overflow:hidden}
-.sep svg{position:absolute;left:0;width:100%;height:100%}
-.sep path{filter:drop-shadow(0 0 8px rgba(69,229,255,.45))}
-
-/* Sections */
-.container{width:min(1100px,92vw);margin:0 auto;padding:56px 0}
-@media(max-width:768px){.container{padding:48px 4vw}}
-h2{font:900 clamp(18px,5vw,28px) var(--mono);letter-spacing:.6px;margin:0 0 12px}
-.grid{display:grid;gap:16px}
-.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
-@media(max-width:600px){.grid{gap:12px} .card{padding:14px}}
-.card{
-  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06));
-  border:1px solid var(--border);border-radius:16px;padding:16px;
-  box-shadow:0 12px 36px rgba(0,0,0,.45)
-}
-.card:hover{box-shadow:0 16px 46px rgba(0,0,0,.55), 0 0 50px rgba(17,255,199,.12)}
-
-/* Feature belt (horizontal swipe) */
-.belt{
-  display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:6px;
-  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scroll-padding:10px;
-  overscroll-behavior-x:contain;
-  mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
-}
-.belt::-webkit-scrollbar{height:6px}
-.fchip{
-  scroll-snap-align:center;background:rgba(13,22,31,.85);border:1px solid rgba(69,229,255,.22);
-  padding:12px 14px;border-radius:16px;min-width:240px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)
-}
-.fchip h4{margin:0 0 6px;font:800 15px var(--mono)}
-.fchip p{margin:0;color:var(--muted);font-size:14px}
-
-/* Pricing */
-.pricing{text-align:center}
-.price{font:900 clamp(24px,6vw,40px) var(--mono);color:var(--teal)}
-.countdown{font:800 15px var(--mono);color:var(--amber)}
-.small{font-size:12px;color:var(--muted)}
-
-/* Reveal */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.revealed{opacity:1;transform:none}
-
-/* Accessibility */
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    #desktop-root{transform:none !important}
+  }
 </style>
 </head>
 <body>
-<!-- Background: aurora + reactive sphere + particles (throttled on mobile/touch) -->
-<div class="bg-stack" aria-hidden="true">
-  <canvas id="aurora" class="bg-layer"></canvas>
-  <canvas id="sphere" class="bg-layer"></canvas>
-  <canvas id="particles" class="bg-layer"></canvas>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="bg-overlay" aria-hidden="true"></div>
+
+<div id="desktop-root" class="noselect">
+  <div id="icons-grid" aria-label="Desktop icons">
+    <button class="icon focus-ring" data-open="about" aria-label="Open About"><div class="glyph">💾</div><div class="label">About</div></button>
+    <button class="icon focus-ring" data-open="what" aria-label="Open What You'll Get"><div class="glyph">📁</div><div class="label">What You'll Get</div></button>
+    <button class="icon focus-ring" data-open="join" aria-label="Open Join Now"><div class="glyph">🚀</div><div class="label">Join Now</div></button>
+    <button class="icon focus-ring" data-open="community" aria-label="Open Community"><div class="glyph">👥</div><div class="label">Community</div></button>
+    <button class="icon focus-ring" data-open="telegram" aria-label="Open Telegram"><div class="glyph">💬</div><div class="label">Telegram</div></button>
+    <button class="icon focus-ring" data-open="whitepaper" aria-label="Open Whitepaper"><div class="glyph">📜</div><div class="label">Whitepaper</div></button>
+  </div>
+
+  <div id="windows" role="region" aria-label="Windows area"></div>
 </div>
 
-<!-- NAV -->
-<nav aria-label="Primary">
-  <div class="nav-inner">
-    <div class="logo">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="glogo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#45E5FF"/><stop offset="1" stop-color="#11FFC7"/></linearGradient></defs><circle cx="32" cy="32" r="28" fill="#0f1923" stroke="url(#glogo)" stroke-width="3"/><path d="M18 28h28v10H18z" fill="url(#glogo)"/></svg>
-      <b>The Stealth Academy</b>
-    </div>
-    <div class="nav-links" role="navigation">
-      <a href="#features">What You’ll Get</a>
-      <a href="#system">The System</a>
-      <a href="#who">Who It’s For</a>
-      <a href="#pricing">Pricing</a>
-    </div>
-    <a class="btn btn-ghost mag" href="#pricing">Enroll</a>
+<div id="taskbar" role="toolbar" aria-label="Taskbar">
+  <div id="tasks"></div>
+  <div id="right-controls">
+    <button id="sound-toggle" class="toggle focus-ring" aria-pressed="false" aria-label="Toggle sound effects">🔇 Sound: Off</button>
+    <div id="clock" aria-label="Clock">🕒 --:--</div>
   </div>
-  <div class="progress" id="progress"></div>
-</nav>
-
-<!-- HERO -->
-<header class="hero" id="home">
-  <div class="hero-inner">
-    <div class="chips" aria-label="Highlights">
-      <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" stroke="#45E5FF" fill="none"/><path d="M7 9h6" stroke="#11FFC7" stroke-width="2"/></svg> Wallet Tracking</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#45E5FF" fill="none"/><path d="M12 7v10" stroke="#FFC46B" stroke-width="2"/></svg> Pro Tools</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z" stroke="#45E5FF" fill="none"/><path d="M9 9h6v6H9z" stroke="#11FFC7" stroke-width="2"/></svg> No Fluff</span>
-    </div>
-
-    <h1 class="headline">Turn Your Dreams Into Millions with MemeCoin Mastery</h1>
-    <p class="sub">
-      Not just another crypto guide — this is your unfair advantage.
-      <small>Imagine spotting the next viral memecoin before the hype.</small>
-      <small>With MemeCoin Mastery, you’re not guessing, you’re executing.</small>
-      <small>You’ll learn to track the right wallets, use pro tools, and enter early like the top 1%.</small>
-    </p>
-
-    <div class="mags">
-      <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
-      <a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank" rel="noopener">Get Instant Access (Pay with Solana)</a>
-    </div>
-
-    <div class="addr-wrap">
-      <div class="addr" id="addr"><strong>Note:</strong> Instant access after checkout. Need help? DM us on Telegram.</div>
-      <a class="btn btn-primary" style="width:100%;max-width:420px;margin:10px auto" href="https://t.me/stealth_stocks" target="_blank" rel="noopener" aria-label="Contact The Stealth Academy on Telegram">Contact on Telegram</a>
-    </div>
-  </div>
-</header>
-
-<!-- Separator -->
-<div class="sep" aria-hidden="true">
-  <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
-    <path d="M0,40 L140,60 L300,30 L480,70 L680,20 L860,60 L1040,30 L1200,50 L1200,140 L0,140 Z"
-          fill="#0f1822" stroke="#1fe0ff" stroke-opacity=".55" stroke-width="2"/>
-  </svg>
 </div>
 
-<main>
-  <!-- WHAT YOU’LL GET -->
-  <section id="features" class="container reveal">
-    <h2>🌐 What You’ll Get</h2>
-    <div class="belt" role="region" aria-label="Swipe left/right to see all benefits">
-      <div class="fchip"><h4>✅ Insider Wallets</h4><p>Access real high-performing wallet addresses (Phantom & more). Watch smart money — copy, paste, learn.</p></div>
-      <div class="fchip"><h4>✅ Sniper Strategies</h4><p>Methods used by elite memecoin traders to catch 10x+ plays before they go mainstream.</p></div>
-      <div class="fchip"><h4>✅ Tool Stack & Configs</h4><p>Curated websites, bots, dashboards & platforms — with ready-to-use settings.</p></div>
-      <div class="fchip"><h4>✅ Step-by-Step Blueprints</h4><p>Discovery → entry → hype ride → exit. All mapped out. No fluff.</p></div>
-      <div class="fchip"><h4>✅ Exclusive Resources</h4><p>Private databases of tools, scripts, tracking methods & alpha groups.</p></div>
-    </div>
-  </section>
-
-  <!-- THE SYSTEM -->
-  <section id="system" class="container reveal">
-    <h2>More Than a Course — It’s a System</h2>
-    <div class="card">
-      <p>This is a battle-tested system to detect, validate, and execute high-leverage trades on microcaps & memecoins. You’ll learn to think in systems, track flows, and act fast — without hype.</p>
-    </div>
-  </section>
-
-  <!-- WHO IT'S FOR -->
-  <section id="who" class="container reveal">
-    <h2>Who is it for?</h2>
-    <div class="grid grid-3">
-      <div class="card"><strong>Beginners</strong><p class="small">Want real results without trial & error. Start structured, avoid common traps.</p></div>
-      <div class="card"><strong>Intermediate Traders</strong><p class="small">Have experience but need a repeatable framework and risk rules.</p></div>
-      <div class="card"><strong>Advanced Degens</strong><p class="small">Want efficiency, automation, and a tighter decision pipeline.</p></div>
-    </div>
-  </section>
-
-  <!-- Separator -->
-  <div class="sep" aria-hidden="true">
-    <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
-      <path d="M0,80 L160,40 L320,70 L520,30 L700,60 L900,20 L1060,55 L1200,40 L1200,140 L0,140 Z"
-            fill="#0d151f" stroke="#1fe0ff" stroke-opacity=".55" stroke-width="2"/>
-    </svg>
-  </div>
-
-  <!-- PRICING -->
-  <section id="pricing" class="container pricing reveal">
-    <h2>Pricing</h2>
-    <div class="card">
-      <div class="price">$35</div>
-      <p>A year of research · Instant access · Private community</p>
-      <div class="countdown" id="countdown" aria-live="polite">DEMO — 02:00</div>
-      <div class="mags" style="margin-top:10px">
-        <a class="btn btn-primary mag" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Get Instant Access — $35</a>
-        <a class="btn btn-ghost mag" href="https://t.me/Sharkstealthbot" target="_blank" rel="noopener">Get Instant Access (Pay with Solana)</a>
-      </div>
-      <p class="small" style="margin-top:12px">14-day refund if the curriculum doesn’t match this page. No performance guarantees. Crypto is volatile; capital at risk.</p>
-    </div>
-  </section>
-
-  <!-- JOIN -->
-  <section class="container reveal">
-    <h2>👾 Join The Stealth Academy today</h2>
-    <div class="card">
-      <p>While others scroll memes, you’ll be tracking wallets doing 3000% runs — in silence. Stealth. Smart. Profitable.</p>
-      <div class="mags" style="margin-top:6px">
-        <a class="btn btn-primary" href="https://stealthstocks.gumroad.com/l/stealthstocks" target="_blank" rel="noopener">Join Now</a>
-        <a class="btn btn-ghost" href="https://t.me/stealth_stocks" target="_blank" rel="noopener">Chat on Telegram</a>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="container small">
-  © <span id="year"></span> The Stealth Academy — Accessibility: keyboard-friendly, reduced motion respected. Educational content only; nothing herein is financial advice.
-</footer>
+<a href="#icons-grid" class="sr-only">Skip to icons</a>
 
 <script>
-/* ================= Utilities & state ================= */
-const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isTouch = matchMedia('(hover:none) and (pointer:coarse)').matches;
-const saveData = navigator.connection && navigator.connection.saveData;
-const lowPower = isTouch || !!saveData;
-const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+(function(){
+  'use strict';
 
-/* Progress bar */
-const progress=$("#progress");
-addEventListener('scroll', ()=>{
-  const h=document.documentElement;
-  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight);
-  progress.style.width=(pct*100)+"%";
-},{passive:true});
+  // ------------------ Config & Links ------------------
+  const COMMUNITY_LINKS = {
+    TELEGRAM: 'https://t.me/stealth_stocks',
+    X_TWITTER: 'https://x.com/stealth_stocks' // TODO: update if needed
+  };
+  const LINKS = {
+    WHITEPAPER: '#whitepaper.pdf', // TODO: replace with actual PDF
+    JOIN_CTA: '#join-stealth-academy' // TODO: wire to checkout
+  };
 
-/* Reveal on scroll */
-if(!prefersReduced){
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed'); io.unobserve(e.target);}}),{threshold:.08});
-  $$('.reveal').forEach(el=>io.observe(el));
-} else {
-  $$('.reveal').forEach(el=>el.classList.add('revealed'));
-}
+  // ------------------ Utilities ------------------
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+  const isMobile = () => window.innerWidth < 768;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* Magnetic buttons — disabled on touch */
-if(!isTouch){
-  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-  $$('.mag').forEach(btn=>{
-    const radius=16; let inside=false;
-    const move=e=>{
-      const r=btn.getBoundingClientRect();
-      const x=e.clientX-(r.left+r.width/2), y=e.clientY-(r.top+r.height/2);
-      const d=Math.hypot(x,y);
-      if(d<120){ btn.style.transform=`translate(${clamp(x,-radius,radius)}px,${clamp(y,-radius,radius)}px)`; inside=true; }
-    };
-    const out=()=>{ if(!inside) return; btn.style.transform='translate(0,0)'; inside=false; };
-    btn.addEventListener('mousemove',move); btn.addEventListener('mouseleave',out); btn.addEventListener('blur',out);
-  });
-}
+  // ------------------ Simple WebAudio SFX ------------------
+  let audioCtx = null; let soundEnabled = false;
+  function setSound(val){ soundEnabled = !!val; btnSound.setAttribute('aria-pressed', soundEnabled); btnSound.textContent = soundEnabled ? '🔊 Sound: On' : '🔇 Sound: Off'; }
+  function bleep(type){
+    if(!soundEnabled) return;
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type==='close' ? 'square' : (type==='min'?'sawtooth':'triangle');
+    const now = audioCtx.currentTime;
+    const dur = 0.08; const freq = type==='close'?220:(type==='min'?330:440);
+    o.frequency.setValueAtTime(freq, now);
+    g.gain.setValueAtTime(0.001, now);
+    g.gain.exponentialRampToValueAtTime(0.08, now+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+dur);
+    o.connect(g).connect(audioCtx.destination); o.start(now); o.stop(now+dur);
+  }
 
-/* ================= Background Effects ================= */
-const aur = document.getElementById('aurora'),
-      sph = document.getElementById('sphere'),
-      par = document.getElementById('particles');
-const a = aur.getContext('2d'), s = sph.getContext('2d'), p = par.getContext('2d');
-let W,H, dPR = devicePixelRatio || 1;
-
-/* Resize with mobile scaling */
-function size(){
-  const scale = (lowPower ? 2.0 : 1);   // stronger downscale on touch/Save-Data
-  W = aur.width = sph.width = par.width = Math.floor(innerWidth*dPR/scale);
-  H = aur.height = sph.height = par.height = Math.floor(innerHeight*dPR/scale);
-  [aur,sph,par].forEach(c=>{c.style.width=innerWidth+'px'; c.style.height=innerHeight+'px';});
-}
-size(); addEventListener('resize', size);
-
-/* Value noise (aurora) */
-function smooth(t){return t*t*(3-2*t);}
-function hash(x,y){const n=Math.sin(x*127.1+y*311.7+99.1)*43758.5453; return n-Math.floor(n);}
-function noise(x,y,t){
-  x*=0.008; y*=0.008; x+=t*0.0015; y+=t*0.0011;
-  const xi=Math.floor(x), yi=Math.floor(y), tx=x-xi, ty=y-yi;
-  const a0=hash(xi,yi), a1=hash(xi+1,yi), b0=hash(xi,yi+1), b1=hash(xi+1,yi+1);
-  const u=smooth(tx), v=smooth(ty);
-  return (a0*(1-u)+a1*u)*(1-v) + (b0*(1-u)+b1*u)*v;
-}
-let img=a.createImageData(0,0);
-function drawAur(t){
-  const step=Math.floor((lowPower?8:4)*dPR);   // bigger pixels on mobile
-  if(img.width!==W||img.height!==H) img=a.createImageData(W,H);
-  const d=img.data;
-  for(let y=0;y<H;y+=step){
-    for(let x=0;x<W;x+=step){
-      const v=noise(x,y,t);
-      const r=(8+18*v)|0, g=(50+205*v)|0, b=(70+(185*v*0.6))|0;
-      for(let yy=0;yy<step;yy++) for(let xx=0;xx<step;xx++){
-        const i=((y+yy)*W+(x+xx))*4; d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=120;
-      }
+  // ------------------ Particle Background ------------------
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = []; let rafId = 0; let mouseX=0, mouseY=0;
+  function resizeCanvas(){ canvas.width = Math.floor(window.innerWidth * devicePixelRatio); canvas.height = Math.floor(window.innerHeight * devicePixelRatio); }
+  function initParticles(){
+    particles = [];
+    if(prefersReduced) return;
+    const count = isMobile()?40:90;
+    for(let i=0;i<count;i++){
+      particles.push({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3, r: Math.random()*1.5+0.5 });
     }
   }
-  a.putImageData(img,0,0);
-}
-
-/* Reactive neon sphere */
-const cursor={x:W/2,y:H/2,tx:W/2,ty:H/2,vx:0,vy:0};
-function onMove(e){ cursor.tx=e.clientX*dPR; cursor.ty=e.clientY*dPR; }
-addEventListener('mousemove', onMove, {passive:true});
-addEventListener('touchmove', e=>{ if(e.touches[0]) onMove(e.touches[0]); }, {passive:true});
-
-function drawSphere(t){
-  s.clearRect(0,0,W,H);
-  const cx=W/2, cy=H/2, R=Math.min(W,H)*(isTouch?0.28:0.36); // smaller on phones
-  cursor.vx+=(cursor.tx-cursor.x)*0.12; cursor.vy+=(cursor.ty-cursor.y)*0.12;
-  cursor.vx*=0.85; cursor.vy*=0.85; cursor.x+=cursor.vx; cursor.y+=cursor.vy;
-  const nx=(cursor.x-cx)/R, ny=(cursor.y-cy)/R;
-
-  s.globalCompositeOperation='screen';
-  let base=s.createRadialGradient(cx-R*0.18, cy-R*0.18, R*0.18, cx, cy, R*1.02);
-  base.addColorStop(0,'rgba(69,229,255,.95)'); base.addColorStop(0.45,'rgba(17,255,199,.90)'); base.addColorStop(1,'rgba(11,15,20,0)');
-  s.fillStyle=base; s.beginPath(); s.arc(cx,cy,R,0,6.283); s.fill();
-
-  let halo=s.createRadialGradient(cx,cy,R*0.6, cx,cy,R*1.35);
-  halo.addColorStop(0,'rgba(17,255,199,.25)'); halo.addColorStop(1,'rgba(0,0,0,0)');
-  s.fillStyle=halo; s.beginPath(); s.arc(cx,cy,R*1.35,0,6.283); s.fill();
-
-  const hx=cx+nx*R*0.58, hy=cy+ny*R*0.58;
-  let hgrad=s.createRadialGradient(hx,hy,R*0.02, hx,hy,R*0.38);
-  hgrad.addColorStop(0,'rgba(255,255,255,.95)'); hgrad.addColorStop(0.18,'rgba(69,229,255,.92)'); hgrad.addColorStop(1,'rgba(0,0,0,0)');
-  s.fillStyle=hgrad; s.beginPath(); s.arc(cx,cy,R,0,6.283); s.fill();
-
-  const ang=t*0.00045;
-  s.save(); s.translate(cx,cy); s.rotate(ang);
-  const band=s.createLinearGradient(-R,R*0.18, R,-R*0.18);
-  band.addColorStop(0,'rgba(255,196,107,0)'); band.addColorStop(0.5,'rgba(255,196,107,.55)'); band.addColorStop(1,'rgba(255,196,107,0)');
-  s.globalAlpha=.9; s.fillStyle=band; s.fillRect(-R,-R*0.4,R*2,R*0.8);
-  s.restore();
-
-  s.globalAlpha=1; s.globalCompositeOperation='source-over';
-}
-
-/* Particles (reduced count on phones) */
-const PCOUNT = lowPower? 45 : 120;
-const pts=[];
-for(let i=0;i<PCOUNT;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*1.05,vy:(Math.random()-.5)*1.05});
-function drawParticles(){
-  p.globalCompositeOperation='source-over'; p.fillStyle='rgba(11,15,20,.28)'; p.fillRect(0,0,W,H);
-  p.globalCompositeOperation='lighter';
-  for(const o of pts){
-    const dx=cursor.x-o.x, dy=cursor.y-o.y, dist=Math.hypot(dx,dy)+.001, sp=Math.hypot(o.vx,o.vy);
-    const force=(sp>0.6?-1:1)*0.06; o.vx+=(dx/dist)*force; o.vy+=(dy/dist)*force;
-    const tang=0.02; o.vx+=-dy/dist*tang; o.vy+=dx/dist*tang;
-    o.vx*=0.985; o.vy*=0.985; o.x+=o.vx; o.y+=o.vy;
-    if(o.x<0)o.x+=W; if(o.x>W)o.x-=W; if(o.y<0)o.y+=H; if(o.y>H)o.y-=H;
-    const hue=170+30*Math.min(1,Math.hypot(o.vx,o.vy)*2);
-    p.fillStyle=`hsla(${hue},100%,60%,.4)`; p.beginPath(); p.arc(o.x,o.y,1.4*(devicePixelRatio||1),0,6.283); p.fill();
+  function draw(){
+    const w = window.innerWidth; const h = window.innerHeight; const dpr = devicePixelRatio;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h); ctx.fillStyle = '#07090e'; ctx.fillRect(0,0,w,h);
+    // grid
+    ctx.strokeStyle='rgba(80,180,255,0.04)'; ctx.lineWidth=1;
+    const gs=24; for(let x=0;x<w;x+=gs){ ctx.beginPath();ctx.moveTo(x+0.5,0);ctx.lineTo(x+0.5,h);ctx.stroke(); }
+    for(let y=0;y<h;y+=gs){ ctx.beginPath();ctx.moveTo(0,y+0.5);ctx.lineTo(w,y+0.5);ctx.stroke(); }
+    // particles
+    particles.forEach(p=>{
+      const dx=(mouseX-p.x)*0.0008, dy=(mouseY-p.y)*0.0008; p.vx=clamp(p.vx+dx,-0.6,0.6); p.vy=clamp(p.vy+dy,-0.6,0.6); p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2); ctx.fillStyle='rgba(0,255,255,0.06)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(88,255,200,0.9)'; ctx.fill();
+    });
+    rafId = requestAnimationFrame(draw);
   }
-}
+  function startBG(){ resizeCanvas(); initParticles(); cancelAnimationFrame(rafId); draw(); }
+  window.addEventListener('resize', startBG);
+  if(!prefersReduced){
+    window.addEventListener('mousemove', e=>{ mouseX=e.clientX; mouseY=e.clientY; }, {passive:true});
+    window.addEventListener('touchmove', e=>{ if(e.touches[0]){mouseX=e.touches[0].clientX; mouseY=e.touches[0].clientY;} }, {passive:true});
+  }
+  startBG();
 
-/* Animation loop (throttled on touch/Save-Data/reduced motion) */
-let frame=0, running=!prefersReduced;
-function loop(ts){
-  if(!running) return;
-  if(frame%(lowPower?2:1)===0){ drawAur(ts); drawSphere(ts); drawParticles(); }
-  frame++; requestAnimationFrame(loop);
-}
-if(running) requestAnimationFrame(loop);
-document.addEventListener('visibilitychange',()=>{running=!document.hidden && !prefersReduced; if(running) requestAnimationFrame(loop);});
+  // Subtle perspective tilt (mobile/desktop), disabled on PRM
+  const desktopRoot = document.getElementById('desktop-root');
+  if(!prefersReduced){
+    let tx=0, ty=0; let tilting=true;
+    const onMove=(x,y)=>{ tx=(x/window.innerWidth - .5)*4; ty=(y/window.innerHeight - .5)*-4; };
+    const anim=()=>{ if(!tilting) return; desktopRoot.style.transform = `perspective(1000px) rotateX(${ty}deg) rotateY(${tx}deg)`; requestAnimationFrame(anim); };
+    window.addEventListener('mousemove', e=>onMove(e.clientX,e.clientY));
+    window.addEventListener('touchmove', e=>{ if(e.touches[0]) onMove(e.touches[0].clientX,e.touches[0].clientY); }, {passive:true});
+    anim();
+  }
 
-/* Countdown demo */
-(function(){ const el=$("#countdown"); if(!el) return; let t=120; function tick(){ const m=String(Math.floor(t/60)).padStart(2,'0'), s=String(t%60).padStart(2,'0'); el.textContent=`DEMO — ${m}:${s}`; t=(t<=0)?120:t-1; } tick(); setInterval(tick,1000); })();
+  // ------------------ Window Manager ------------------
+  const windowsArea = document.getElementById('windows');
+  const tasks = document.getElementById('tasks');
+  const btnSound = document.getElementById('sound-toggle');
 
-/* Footer year */
-$("#year").textContent = new Date().getFullYear();
+  let zTop = 10;
+  const defs=[
+    {id:'about', title:'About', w:480, h:340, icon:'💾'},
+    {id:'what', title:"What You'll Get", w:560, h:360, icon:'📁'},
+    {id:'join', title:'Join Now', w:460, h:300, icon:'🚀'},
+    {id:'community', title:'Community', w:460, h:300, icon:'👥'},
+    {id:'telegram', title:'Telegram', w:420, h:260, icon:'💬'},
+    {id:'whitepaper', title:'Whitepaper', w:520, h:320, icon:'📜'}
+  ];
+
+  const state = Object.create(null); // id -> {el, open, minimized, maximized, x,y,w,h, z, prevRect}
+
+  function bringToFront(id){ zTop+=1; const w=state[id]; if(w){ w.z=zTop; w.el.style.zIndex=String(zTop);} return zTop; }
+
+  function cascadePos(i){ const gap=28; return {x:36+i*gap, y:36+i*gap}; }
+
+  function createWindow(def,i){
+    const win=document.createElement('div'); win.className='win'; win.style.zIndex=String(10+i);
+    const {x,y}=cascadePos(i);
+    const w=isMobile()?Math.min(window.innerWidth-24,def.w):def.w;
+    const h=isMobile()?Math.min(window.innerHeight-parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h'))-80,def.h):def.h;
+    Object.assign(win.style,{left:x+'px', top:y+'px', width:w+'px', height:h+'px'});
+
+    win.innerHTML = `
+      <div class="titlebar" data-id="${def.id}" aria-label="${def.title} window title bar">
+        <div style="display:flex;align-items:center;gap:6px"><span class="badge">98</span><span class="title">${def.title}</span></div>
+        <div class="controls">
+          <button class="btn focus-ring" data-min aria-label="Minimize" title="Minimize">▁</button>
+          <button class="btn focus-ring" data-max aria-label="Maximize" title="Maximize">🗖</button>
+          <button class="btn btn-danger focus-ring" data-close aria-label="Close" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="content" role="document"></div>
+      <div class="handle h-n"></div><div class="handle h-s"></div><div class="handle h-e"></div><div class="handle h-w"></div>
+      <div class="handle h-ne"></div><div class="handle h-nw"></div><div class="handle h-se"></div><div class="handle h-sw"></div>
+    `;
+
+    const content = win.querySelector('.content');
+    content.appendChild(buildContent(def.id));
+
+    const info = state[def.id] = { el:win, open:false, minimized:false, maximized:false, x,y,w,h, z:10+i, prevRect:null, taskBtn:null };
+
+    // Titlebar drag
+    const titlebar=win.querySelector('.titlebar');
+    attachDrag(titlebar,(dx,dy,start)=>{
+      const nx = clamp(start.left + dx, 0, window.innerWidth - win.offsetWidth);
+      const ny = clamp(start.top + dy, 0, window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h')) - win.offsetHeight);
+      win.style.left = nx+'px'; win.style.top=ny+'px'; info.x=nx; info.y=ny;
+    },()=>{ bringToFront(def.id); });
+
+    // Resize handles
+    const resizers=['n','s','e','w','ne','nw','se','sw'];
+    resizers.forEach(dir=>{
+      const handle=win.querySelector('.h-'+dir);
+      attachResize(handle, dir, info);
+    });
+
+    // Controls
+    win.querySelector('[data-min]').addEventListener('click',()=>minimize(def.id));
+    win.querySelector('[data-max]').addEventListener('click',()=>toggleMaximize(def.id));
+    win.querySelector('[data-close]').addEventListener('click',()=>closeWindow(def.id));
+
+    // Focus on mousedown
+    win.addEventListener('mousedown',()=>bringToFront(def.id));
+
+    return win;
+  }
+
+  function buildContent(id){
+    const wrap=document.createElement('div');
+    if(id==='about'){
+      wrap.innerHTML = `<p><strong>The Stealth Academy</strong> — Turn Your Dreams Into Millions with MemeCoin Mastery. Spot viral memecoins before the hype. Learn to track wallets, snipe early, and profit.</p>
+      <ul style="opacity:.9"><li>Retro vibes, modern alpha. Built for speed and clarity.</li><li>High-contrast UI with keyboard access and reduced-motion support.</li></ul>`;
+    } else if(id==='what'){
+      const items=['Insider Wallets','Sniper Strategies','Tool Stack','Step-by-Step Blueprints','Exclusive Resources'];
+      if(isMobile()){
+        const sc=document.createElement('div'); sc.className='mobile-scroll';
+        items.forEach(t=>{ const c=document.createElement('div'); c.className='chip'; c.textContent='✅ '+t; sc.appendChild(c); });
+        wrap.appendChild(sc);
+      } else {
+        const grid=document.createElement('div'); grid.style.display='grid'; grid.style.gridTemplateColumns='repeat( auto-fit, minmax(220px, 1fr) )'; grid.style.gap='12px';
+        items.forEach(t=>{ const c=document.createElement('div'); c.className='chip'; c.textContent='✅ '+t; grid.appendChild(c); });
+        wrap.appendChild(grid);
+      }
+    } else if(id==='join'){
+      const a=document.createElement('a'); a.href=LINKS.JOIN_CTA; a.textContent='Join The Stealth Academy'; a.setAttribute('aria-label','Join The Stealth Academy');
+      Object.assign(a.style,{display:'inline-flex',minHeight:'56px',minWidth:'240px',alignItems:'center',justifyContent:'center',padding:'12px 20px',fontWeight:'800',background:'var(--neon)',color:'#000',borderRadius:'12px',boxShadow:'0 0 24px rgba(0,255,225,.55)',textDecoration:'none'});
+      a.addEventListener('mouseenter',()=>a.style.boxShadow='0 0 36px rgba(0,255,225,.75)');
+      a.addEventListener('mouseleave',()=>a.style.boxShadow='0 0 24px rgba(0,255,225,.55)');
+      const ctr=document.createElement('div'); ctr.style.display='flex'; ctr.style.justifyContent='center'; ctr.appendChild(a); wrap.appendChild(ctr);
+    } else if(id==='community'){
+      wrap.innerHTML = `<div style="margin-bottom:10px"><div style="opacity:.8;font-size:13px">Chat</div><a href="${COMMUNITY_LINKS.TELEGRAM}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">Telegram → ${COMMUNITY_LINKS.TELEGRAM}</a></div>
+      <div><div style="opacity:.8;font-size:13px">Updates</div><a href="${COMMUNITY_LINKS.X_TWITTER}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">X / Twitter → ${COMMUNITY_LINKS.X_TWITTER}</a></div>`;
+    } else if(id==='telegram'){
+      wrap.innerHTML = `<p style="opacity:.85">Join our Telegram to catch early alpha and live drops.</p><a href="${COMMUNITY_LINKS.TELEGRAM}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px">💬 Open Telegram</a>`;
+    } else if(id==='whitepaper'){
+      wrap.innerHTML = `<p style="opacity:.85">Whitepaper PDF is coming soon. This is a placeholder link you can swap.</p><a href="${LINKS.WHITEPAPER}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">📜 Open Whitepaper (placeholder)</a>`;
+    }
+    return wrap;
+  }
+
+  function openWindow(id){
+    const info=state[id];
+    if(!info){ console.warn('Unknown window', id); return; }
+    if(info.open && info.minimized){ toggleFromTaskbar(id); return; }
+    if(!info.open){
+      windowsArea.appendChild(info.el); info.open=true; info.minimized=false; bringToFront(id);
+      ensureTaskButton(id);
+    }
+    bleep('open');
+  }
+  function closeWindow(id){
+    const info=state[id]; if(!info||!info.open) return; info.el.remove(); info.open=false; info.minimized=false; info.maximized=false; if(info.taskBtn){ info.taskBtn.remove(); info.taskBtn=null; } bleep('close');
+  }
+  function minimize(id){
+    const info=state[id]; if(!info||!info.open) return; info.minimized=true; info.el.style.display='none'; ensureTaskButton(id); bleep('min');
+  }
+  function toggleFromTaskbar(id){
+    const info=state[id]; if(!info) return; if(!info.open){ openWindow(id); return; }
+    info.minimized=!info.minimized; info.el.style.display = info.minimized? 'none':'block'; bringToFront(id); if(info.taskBtn) info.taskBtn.classList.toggle('active', !info.minimized);
+  }
+  function toggleMaximize(id){
+    const info=state[id]; if(!info||!info.open) return; const barH=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h'));
+    if(!info.maximized){
+      info.prevRect={left:info.x, top:info.y, width:info.w, height:info.h};
+      Object.assign(info.el.style,{left:'0px', top:'0px', width:window.innerWidth+'px', height:(window.innerHeight-barH)+'px'});
+      info.x=0; info.y=0; info.w=window.innerWidth; info.h=window.innerHeight-barH; info.maximized=true;
+    } else {
+      Object.assign(info.el.style,{left:info.prevRect.left+'px', top:info.prevRect.top+'px', width:info.prevRect.width+'px', height:info.prevRect.height+'px'});
+      info.x=info.prevRect.left; info.y=info.prevRect.top; info.w=info.prevRect.width; info.h=info.prevRect.height; info.maximized=false;
+    }
+  }
+
+  function ensureTaskButton(id){
+    const info=state[id]; if(info.taskBtn) return; const def=defs.find(d=>d.id===id);
+    const btn=document.createElement('button'); btn.className='task focus-ring'; btn.textContent=def.title; btn.addEventListener('click',()=>{ toggleFromTaskbar(id); bleep('open'); });
+    tasks.appendChild(btn); info.taskBtn=btn; btn.classList.add('active');
+  }
+
+  // Drag helper
+  function attachDrag(handle, onDrag, onStart){
+    let start=null; let moved=false;
+    function pos(e){ return e.touches? {x:e.touches[0].clientX,y:e.touches[0].clientY} : {x:e.clientX,y:e.clientY}; }
+    const down=(e)=>{ const target=handle.closest('.win'); start={ x:pos(e).x, y:pos(e).y, left:target.offsetLeft, top:target.offsetTop }; moved=false; onStart&&onStart();
+      window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+      window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up); e.preventDefault(); };
+    const move=(e)=>{ const p=pos(e); const dx=p.x-start.x; const dy=p.y-start.y; onDrag(dx,dy,start); moved=true; e.preventDefault(); };
+    const up=()=>{ window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); window.removeEventListener('touchmove',move); window.removeEventListener('touchend',up); };
+    handle.addEventListener('mousedown',down); handle.addEventListener('touchstart',down,{passive:false});
+  }
+
+  // Resize helper
+  function attachResize(handle, dir, info){
+    if(!handle) return;
+    const down=(e)=>{
+      bringToFront(info.el.querySelector('.titlebar').dataset.id);
+      const start={ x: (e.touches?e.touches[0].clientX:e.clientX), y:(e.touches?e.touches[0].clientY:e.clientY), left:info.el.offsetLeft, top:info.el.offsetTop, w:info.el.offsetWidth, h:info.el.offsetHeight };
+      function move(ev){
+        const cx=(ev.touches?ev.touches[0].clientX:ev.clientX), cy=(ev.touches?ev.touches[0].clientY:ev.clientY);
+        let nx=start.left, ny=start.top, nw=start.w, nh=start.h;
+        if(dir.includes('e')) nw = clamp(cx - start.left, 280, window.innerWidth - start.left);
+        if(dir.includes('s')) nh = clamp(cy - start.top, 200, window.innerHeight - start.top);
+        if(dir.includes('w')){ nx = clamp(cx, 0, start.left+start.w-280); nw = clamp(start.left+start.w - cx, 280, window.innerWidth - nx); }
+        if(dir.includes('n')){ ny = clamp(cy, 0, start.top+start.h-200); nh = clamp(start.top+start.h - cy, 200, window.innerHeight - ny); }
+        Object.assign(info.el.style,{left:nx+'px', top:ny+'px', width:nw+'px', height:nh+'px'});
+        info.x=nx; info.y=ny; info.w=nw; info.h=nh;
+      }
+      function up(){ window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); window.removeEventListener('touchmove',move); window.removeEventListener('touchend',up); }
+      window.addEventListener('mousemove',move); window.addEventListener('mouseup',up); window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up);
+      e.preventDefault();
+    };
+    handle.addEventListener('mousedown',down); handle.addEventListener('touchstart',down,{passive:false});
+  }
+
+  // Build all windows upfront (closed by default)
+  defs.forEach((d,i)=>{ const win=createWindow(d,i); /* not appended until opened */ });
+
+  // Desktop icons
+  document.querySelectorAll('[data-open]').forEach(btn=>btn.addEventListener('click',()=>openWindow(btn.dataset.open)));
+
+  // Sound toggle
+  btnSound.addEventListener('click',()=> setSound(!soundEnabled));
+
+  // Clock
+  const clock = document.getElementById('clock');
+  function tick(){ const now=new Date(); clock.textContent='🕒 '+now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
+  setInterval(tick,1000); tick();
+
+  // --------------- Dev Smoke Tests (non-blocking) ---------------
+  try{
+    console.assert(clamp(5,0,10)===5,'clamp in-bounds');
+    console.assert(clamp(-1,0,10)===0,'clamp low bound');
+    console.assert(clamp(20,0,10)===10,'clamp high bound');
+    const prev=zTop; const next=bringToFront('about'); console.assert(next===prev+1,'z-index increments');
+    console.debug('[Stealth Academy] Smoke tests passed.');
+  }catch(e){ console.warn('[Stealth Academy] Smoke test failure:', e); }
+})();
 </script>
 </body>
 </html>
