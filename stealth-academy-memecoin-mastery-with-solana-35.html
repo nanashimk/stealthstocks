@@ -116,12 +116,14 @@
 
   // ------------------ Config & Links ------------------
   const COMMUNITY_LINKS = {
-    TELEGRAM: 'https://t.me/stealth_stocks',
-    X_TWITTER: 'https://x.com/stealth_stocks' // TODO: update if needed
+    TELEGRAM_COMMUNITY: 'https://t.me/stealthstocks1',
+    TELEGRAM_DM: 'https://t.me/stealth_stocks',
+    X_TWITTER: 'https://x.com/stealth_stocks'
   };
   const LINKS = {
-    WHITEPAPER: '#whitepaper.pdf', // TODO: replace with actual PDF
-    JOIN_CTA: '#join-stealth-academy' // TODO: wire to checkout
+    WHITEPAPER: '#whitepaper.pdf',
+    JOIN_CTA: 'https://stealthstocks.gumroad.com/l/stealthstocks',
+    SOLANA_PAY: 'https://t.me/Sharkstealthbot'
   };
 
   // ------------------ Utilities ------------------
@@ -286,16 +288,21 @@
         wrap.appendChild(grid);
       }
     } else if(id==='join'){
-      const a=document.createElement('a'); a.href=LINKS.JOIN_CTA; a.textContent='Join The Stealth Academy'; a.setAttribute('aria-label','Join The Stealth Academy');
-      Object.assign(a.style,{display:'inline-flex',minHeight:'56px',minWidth:'240px',alignItems:'center',justifyContent:'center',padding:'12px 20px',fontWeight:'800',background:'var(--neon)',color:'#000',borderRadius:'12px',boxShadow:'0 0 24px rgba(0,255,225,.55)',textDecoration:'none'});
-      a.addEventListener('mouseenter',()=>a.style.boxShadow='0 0 36px rgba(0,255,225,.75)');
-      a.addEventListener('mouseleave',()=>a.style.boxShadow='0 0 24px rgba(0,255,225,.55)');
-      const ctr=document.createElement('div'); ctr.style.display='flex'; ctr.style.justifyContent='center'; ctr.appendChild(a); wrap.appendChild(ctr);
+      const ctr=document.createElement('div'); ctr.style.display='grid'; ctr.style.gridTemplateColumns='repeat( auto-fit, minmax(240px, 1fr) )'; ctr.style.gap='12px';
+      function pill(href,label){ const a=document.createElement('a'); a.href=href; a.textContent=label; a.setAttribute('aria-label',label); Object.assign(a.style,{display:'inline-flex',minHeight:'56px',minWidth:'240px',alignItems:'center',justifyContent:'center',padding:'12px 20px',fontWeight:'800',background:'var(--neon)',color:'#000',borderRadius:'12px',boxShadow:'0 0 24px rgba(0,255,225,.55)',textDecoration:'none'}); a.addEventListener('mouseenter',()=>a.style.boxShadow='0 0 36px rgba(0,255,225,.75)'); a.addEventListener('mouseleave',()=>a.style.boxShadow='0 0 24px rgba(0,255,225,.55)'); return a; }
+      ctr.appendChild(pill(LINKS.JOIN_CTA,'Join (Card/Normal)'));
+      ctr.appendChild(pill(LINKS.SOLANA_PAY,'Join via Solana (Bot)'));
+      wrap.appendChild(ctr);
     } else if(id==='community'){
-      wrap.innerHTML = `<div style="margin-bottom:10px"><div style="opacity:.8;font-size:13px">Chat</div><a href="${COMMUNITY_LINKS.TELEGRAM}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">Telegram → ${COMMUNITY_LINKS.TELEGRAM}</a></div>
-      <div><div style="opacity:.8;font-size:13px">Updates</div><a href="${COMMUNITY_LINKS.X_TWITTER}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">X / Twitter → ${COMMUNITY_LINKS.X_TWITTER}</a></div>`;
+      wrap.innerHTML = `<div style=\"margin-bottom:10px\"><div style=\"opacity:.8;font-size:13px\">Join the community</div><a href=\"${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">Telegram → ${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}</a></div>
+      <div style=\"margin-bottom:10px\"><div style=\"opacity:.8;font-size:13px\">DM Me</div><a href=\"${COMMUNITY_LINKS.TELEGRAM_DM}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">Telegram DM → ${COMMUNITY_LINKS.TELEGRAM_DM}</a></div>
+      <div><div style=\"opacity:.8;font-size:13px\">Updates</div><a href=\"${COMMUNITY_LINKS.X_TWITTER}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">X / Twitter → ${COMMUNITY_LINKS.X_TWITTER}</a></div>`;
     } else if(id==='telegram'){
-      wrap.innerHTML = `<p style="opacity:.85">Join our Telegram to catch early alpha and live drops.</p><a href="${COMMUNITY_LINKS.TELEGRAM}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px">💬 Open Telegram</a>`;
+      wrap.innerHTML = `<p style=\"opacity:.85\">DM me directly on Telegram, or hop into the community.</p>
+        <div style=\"display:flex;gap:12px;flex-wrap:wrap\">
+          <a href=\"${COMMUNITY_LINKS.TELEGRAM_DM}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px\">💬 DM Me</a>
+          <a href=\"${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px\">👥 Community</a>
+        </div>`;
     } else if(id==='whitepaper'){
       wrap.innerHTML = `<p style="opacity:.85">Whitepaper PDF is coming soon. This is a placeholder link you can swap.</p><a href="${LINKS.WHITEPAPER}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">📜 Open Whitepaper (placeholder)</a>`;
     }
