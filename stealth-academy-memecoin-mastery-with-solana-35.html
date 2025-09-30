@@ -1,410 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>The Stealth Academy – MemeCoin Mastery</title>
-<style>
-  :root{
-    --bg:#07090e;--neon:#00ffe1;--neon2:#7d5af7;--ink:#e6ffff;--ink-dim:#b9fff5;--bar:#0b0f17;--bevel:#9ed4ff;--danger:#ef4444;
-    --taskbar-h:44px;
-  }
-  html,body{height:100%;}
-  html{overflow-x:hidden;background:var(--bg);color:var(--ink);}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;}
-  .noselect{-webkit-user-select:none;-moz-user-select:none;user-select:none}
-  .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-  .focus-ring:focus{outline:2px solid #67e8f9; outline-offset:2px}
-
-  /* Background layers */
-  #bg-canvas{position:fixed;inset:0;z-index:-2;display:block}
-  #bg-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
-    radial-gradient(1200px 800px at 0% 0%, rgba(0,255,224,.16), transparent 60%),
-    radial-gradient(1200px 800px at 100% 100%, rgba(125,90,247,.12), transparent 60%);
-  }
-
-  /* Desktop */
-  #desktop-root{position:relative;min-height:100vh;display:flex;flex-direction:column}
-  #icons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:12px;max-width:1100px;padding:16px 16px 8px}
-  .icon{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;border-radius:12px;background:transparent;border:0;color:var(--ink);cursor:pointer;min-width:88px;min-height:88px}
-  .icon:hover{background:rgba(255,255,255,.05)}
-  .icon:active{transform:scale(.98)}
-  .icon .glyph{font-size:24px;filter:drop-shadow(0 0 6px rgba(0,255,237,.7))}
-  .icon .label{font-size:12px;text-align:center;max-width:96px;text-shadow:0 0 8px rgba(0,255,237,.6)}
-
-  /* Windows area */
-  #windows{position:relative;flex:1 1 auto;padding-bottom:var(--taskbar-h)}
-  .win{position:absolute;background:rgba(11,15,23,.92);backdrop-filter:saturate(140%) blur(4px);border:1px solid #2b2f37;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 1px 0 0 rgba(255,255,255,.16), 0 10px 24px rgba(0,255,225,.08)}
-  .titlebar{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;border-bottom:1px solid rgba(255,255,255,.2);background:linear-gradient(90deg,#2b9bff,#18e0d1,#7d5af7);color:#000;border-top-left-radius:6px;border-top-right-radius:6px;cursor:move}
-  .title{font-weight:800;font-size:13px;text-shadow:0 0 6px rgba(0,0,0,.4)}
-  .badge{font-size:10px;background:rgba(255,255,255,.6);padding:1px 4px;border-radius:3px;margin-right:6px}
-  .controls{display:flex;gap:6px}
-  .btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.4);cursor:pointer}
-  .btn:hover{background:rgba(255,255,255,.6)}
-  .btn:active{transform:translateY(1px)}
-  .btn-danger{background:rgba(239,68,68,.7);border-color:rgba(252,165,165,.6)}
-  .btn-danger:hover{background:rgba(239,68,68,.9)}
-  .content{padding:14px;max-height:calc(100% - 36px);overflow:auto;color:var(--ink);text-shadow:0 0 6px rgba(0,255,200,.35)}
-
-  .chip{border:1px solid rgba(119,255,232,.3);background:rgba(119,255,232,.1);border-radius:10px;padding:12px;box-shadow:0 0 20px rgba(0,255,225,.15)}
-
-  /* Resize handles */
-  .handle{position:absolute;z-index:3}
-  .h-n{top:-3px;left:0;right:0;height:6px;cursor:n-resize}
-  .h-s{bottom:-3px;left:0;right:0;height:6px;cursor:s-resize}
-  .h-e{top:0;bottom:0;right:-3px;width:6px;cursor:e-resize}
-  .h-w{top:0;bottom:0;left:-3px;width:6px;cursor:w-resize}
-  .h-ne{top:-6px;right:-6px;width:12px;height:12px;cursor:ne-resize}
-  .h-nw{top:-6px;left:-6px;width:12px;height:12px;cursor:nw-resize}
-  .h-se{bottom:-6px;right:-6px;width:12px;height:12px;cursor:se-resize}
-  .h-sw{bottom:-6px;left:-6px;width:12px;height:12px;cursor:sw-resize}
-
-  /* Taskbar */
-  #taskbar{position:fixed;left:0;right:0;bottom:0;height:var(--taskbar-h);display:flex;align-items:center;justify-content:space-between;padding:4px 8px;border-top:1px solid rgba(255,255,255,.25);background:rgba(11,15,23,.9);backdrop-filter:blur(4px)}
-  #tasks{display:flex;gap:8px;overflow-x:auto}
-  .task{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2);cursor:pointer}
-  .task.active{background:rgba(0,255,225,.28);border-color:rgba(153,246,228,.6)}
-  #right-controls{display:flex;align-items:center;gap:8px}
-  .toggle{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2);cursor:pointer}
-  #clock{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2)}
-
-  /* Mobile adaptations */
-  @media (max-width: 768px){
-    .win{max-width:100vw}
-    .content{overscroll-behavior:contain}
-    .icon{min-width:88px;min-height:88px}
-    .mobile-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
-    .mobile-scroll>.chip{min-width:240px}
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce){
-    #desktop-root{transform:none !important}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catalogue Produits — ADAM MAKHLOUF</title>
+  <meta name="description" content="Galerie photos des produits — ADAM MAKHLOUF." />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: #111823;
+      --muted: #8aa0b3;
+      --text: #eaf2f9;
+      --accent: #7c5cff;
+      --accent-2: #24e3a9;
+      --ring: rgba(124, 92, 255, .55);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root{ --bg:#f7fafc; --card:#fff; --muted:#5e6b76; --text:#0b1320; --accent:#6a5cff; --accent-2:#0fbf9f; --ring:rgba(106,92,255,.35); --shadow:0 10px 30px rgba(0,0,0,.08); }
+    }
+    *{ box-sizing:border-box }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background: radial-gradient(1200px 800px at 10% -10%, rgba(124,92,255,.12), transparent 60%), radial-gradient(900px 600px at 120% 10%, rgba(36,227,169,.10), transparent 60%), var(--bg); color:var(--text) }
+    .container{ width:min(1200px,92vw); margin:0 auto }
+    header{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(120%) blur(10px); background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,0)); border-bottom:1px solid rgba(255,255,255,.06) }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0 }
+    .brand{ display:inline-flex; align-items:center; gap:.7rem; font-weight:700 }
+    .logo{ width:40px; height:40px; border-radius:12px; background: conic-gradient(from 210deg, var(--accent), var(--accent-2)); filter: drop-shadow(0 10px 18px rgba(124,92,255,.22)); }
+    .cta{ display:inline-flex; align-items:center; gap:.6rem; padding:10px 14px; border-radius:999px; background:linear-gradient(to right, var(--accent), var(--accent-2)); color:#fff; font-weight:600; border:0; box-shadow:var(--shadow) }
+    .hero{ padding:60px 0 30px; text-align:center }
+    .kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem }
+    h1{ font-size: clamp(2rem, 3.2vw + 1rem, 3.4rem); margin:10px 0 16px; line-height:1.08 }
+    .lead{ color:var(--muted); max-width:760px; margin:0 auto }
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:18px; margin:28px 0 80px }
+    .card{ grid-column: span 4; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition: transform .25s ease, box-shadow .25s ease }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.35) }
+    .media{ position:relative; aspect-ratio:4/3; background:#0d1117; overflow:hidden }
+    .media img{ width:100%; height:100%; object-fit:cover; display:block }
+    @media (max-width:1024px){ .card{ grid-column: span 6 } }
+    @media (max-width:640px){ .card{ grid-column: span 12 } }
+    .modal{ position:fixed; inset:0; background:rgba(0,0,0,.65); display:none; align-items:center; justify-content:center; padding:20px; z-index:100 }
+    .modal[open]{ display:flex }
+    .modal-card{ width:min(1100px,96vw); background:var(--card); color:var(--text); border-radius:var(--radius); overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:var(--shadow) }
+    .modal-media{ background:#0d1117 }
+    .modal-media img{ width:100%; height:100%; object-fit:contain; display:block; max-height:82vh }
+    .close{ position:absolute; top:14px; right:14px; background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.18); color:#fff; border-radius:999px; width:40px; height:40px; display:grid; place-items:center; cursor:pointer }
+    footer{ padding:40px 0 60px; color:var(--muted); text-align:center; border-top:1px dashed rgba(255,255,255,.1) }
+    footer a{ color:var(--text) }
+  </style>
 </head>
 <body>
-<canvas id="bg-canvas" aria-hidden="true"></canvas>
-<div id="bg-overlay" aria-hidden="true"></div>
-
-<div id="desktop-root" class="noselect">
-  <div id="icons-grid" aria-label="Desktop icons">
-    <button class="icon focus-ring" data-open="about" aria-label="Open About"><div class="glyph">💾</div><div class="label">About</div></button>
-    <button class="icon focus-ring" data-open="what" aria-label="Open What You'll Get"><div class="glyph">📁</div><div class="label">What You'll Get</div></button>
-    <button class="icon focus-ring" data-open="join" aria-label="Open Join Now"><div class="glyph">🚀</div><div class="label">Join Now</div></button>
-    <button class="icon focus-ring" data-open="community" aria-label="Open Community"><div class="glyph">👥</div><div class="label">Community</div></button>
-    <button class="icon focus-ring" data-open="telegram" aria-label="Open Telegram"><div class="glyph">💬</div><div class="label">Telegram</div></button>
-    <button class="icon focus-ring" data-open="whitepaper" aria-label="Open Whitepaper"><div class="glyph">📜</div><div class="label">Whitepaper</div></button>
-  </div>
-
-  <div id="windows" role="region" aria-label="Windows area"></div>
-</div>
-
-<div id="taskbar" role="toolbar" aria-label="Taskbar">
-  <div id="tasks"></div>
-  <div id="right-controls">
-    <button id="sound-toggle" class="toggle focus-ring" aria-pressed="false" aria-label="Toggle sound effects">🔇 Sound: Off</button>
-    <div id="clock" aria-label="Clock">🕒 --:--</div>
-  </div>
-</div>
-
-<a href="#icons-grid" class="sr-only">Skip to icons</a>
-
-<script>
-(function(){
-  'use strict';
-
-  // ------------------ Config & Links ------------------
-  const COMMUNITY_LINKS = {
-    TELEGRAM_COMMUNITY: 'https://t.me/stealthstocks1',
-    TELEGRAM_DM: 'https://t.me/stealth_stocks',
-    X_TWITTER: 'https://x.com/stealth_stocks'
-  };
-  const LINKS = {
-    WHITEPAPER: '#whitepaper.pdf',
-    JOIN_CTA: 'https://stealthstocks.gumroad.com/l/stealthstocks',
-    SOLANA_PAY: 'https://t.me/Sharkstealthbot'
-  };
-
-  // ------------------ Utilities ------------------
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-  const isMobile = () => window.innerWidth < 768;
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ------------------ Simple WebAudio SFX ------------------
-  let audioCtx = null; let soundEnabled = false;
-  function setSound(val){ soundEnabled = !!val; btnSound.setAttribute('aria-pressed', soundEnabled); btnSound.textContent = soundEnabled ? '🔊 Sound: On' : '🔇 Sound: Off'; }
-  function bleep(type){
-    if(!soundEnabled) return;
-    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = type==='close' ? 'square' : (type==='min'?'sawtooth':'triangle');
-    const now = audioCtx.currentTime;
-    const dur = 0.08; const freq = type==='close'?220:(type==='min'?330:440);
-    o.frequency.setValueAtTime(freq, now);
-    g.gain.setValueAtTime(0.001, now);
-    g.gain.exponentialRampToValueAtTime(0.08, now+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, now+dur);
-    o.connect(g).connect(audioCtx.destination); o.start(now); o.stop(now+dur);
-  }
-
-  // ------------------ Particle Background ------------------
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = []; let rafId = 0; let mouseX=0, mouseY=0;
-  function resizeCanvas(){ canvas.width = Math.floor(window.innerWidth * devicePixelRatio); canvas.height = Math.floor(window.innerHeight * devicePixelRatio); }
-  function initParticles(){
-    particles = [];
-    if(prefersReduced) return;
-    const count = isMobile()?40:90;
-    for(let i=0;i<count;i++){
-      particles.push({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3, r: Math.random()*1.5+0.5 });
-    }
-  }
-  function draw(){
-    const w = window.innerWidth; const h = window.innerHeight; const dpr = devicePixelRatio;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,w,h); ctx.fillStyle = '#07090e'; ctx.fillRect(0,0,w,h);
-    // grid
-    ctx.strokeStyle='rgba(80,180,255,0.04)'; ctx.lineWidth=1;
-    const gs=24; for(let x=0;x<w;x+=gs){ ctx.beginPath();ctx.moveTo(x+0.5,0);ctx.lineTo(x+0.5,h);ctx.stroke(); }
-    for(let y=0;y<h;y+=gs){ ctx.beginPath();ctx.moveTo(0,y+0.5);ctx.lineTo(w,y+0.5);ctx.stroke(); }
-    // particles
-    particles.forEach(p=>{
-      const dx=(mouseX-p.x)*0.0008, dy=(mouseY-p.y)*0.0008; p.vx=clamp(p.vx+dx,-0.6,0.6); p.vy=clamp(p.vy+dy,-0.6,0.6); p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2); ctx.fillStyle='rgba(0,255,255,0.06)'; ctx.fill();
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(88,255,200,0.9)'; ctx.fill();
-    });
-    rafId = requestAnimationFrame(draw);
-  }
-  function startBG(){ resizeCanvas(); initParticles(); cancelAnimationFrame(rafId); draw(); }
-  window.addEventListener('resize', startBG);
-  if(!prefersReduced){
-    window.addEventListener('mousemove', e=>{ mouseX=e.clientX; mouseY=e.clientY; }, {passive:true});
-    window.addEventListener('touchmove', e=>{ if(e.touches[0]){mouseX=e.touches[0].clientX; mouseY=e.touches[0].clientY;} }, {passive:true});
-  }
-  startBG();
-
-  // Subtle perspective tilt (mobile/desktop), disabled on PRM
-  const desktopRoot = document.getElementById('desktop-root');
-  if(!prefersReduced){
-    let tx=0, ty=0; let tilting=true;
-    const onMove=(x,y)=>{ tx=(x/window.innerWidth - .5)*4; ty=(y/window.innerHeight - .5)*-4; };
-    const anim=()=>{ if(!tilting) return; desktopRoot.style.transform = `perspective(1000px) rotateX(${ty}deg) rotateY(${tx}deg)`; requestAnimationFrame(anim); };
-    window.addEventListener('mousemove', e=>onMove(e.clientX,e.clientY));
-    window.addEventListener('touchmove', e=>{ if(e.touches[0]) onMove(e.touches[0].clientX,e.touches[0].clientY); }, {passive:true});
-    anim();
-  }
-
-  // ------------------ Window Manager ------------------
-  const windowsArea = document.getElementById('windows');
-  const tasks = document.getElementById('tasks');
-  const btnSound = document.getElementById('sound-toggle');
-
-  let zTop = 10;
-  const defs=[
-    {id:'about', title:'About', w:480, h:340, icon:'💾'},
-    {id:'what', title:"What You'll Get", w:560, h:360, icon:'📁'},
-    {id:'join', title:'Join Now', w:460, h:300, icon:'🚀'},
-    {id:'community', title:'Community', w:460, h:300, icon:'👥'},
-    {id:'telegram', title:'Telegram', w:420, h:260, icon:'💬'},
-    {id:'whitepaper', title:'Whitepaper', w:520, h:320, icon:'📜'}
-  ];
-
-  const state = Object.create(null); // id -> {el, open, minimized, maximized, x,y,w,h, z, prevRect}
-
-  function bringToFront(id){ zTop+=1; const w=state[id]; if(w){ w.z=zTop; w.el.style.zIndex=String(zTop);} return zTop; }
-
-  function cascadePos(i){ const gap=28; return {x:36+i*gap, y:36+i*gap}; }
-
-  function createWindow(def,i){
-    const win=document.createElement('div'); win.className='win'; win.style.zIndex=String(10+i);
-    const {x,y}=cascadePos(i);
-    const w=isMobile()?Math.min(window.innerWidth-24,def.w):def.w;
-    const h=isMobile()?Math.min(window.innerHeight-parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h'))-80,def.h):def.h;
-    Object.assign(win.style,{left:x+'px', top:y+'px', width:w+'px', height:h+'px'});
-
-    win.innerHTML = `
-      <div class="titlebar" data-id="${def.id}" aria-label="${def.title} window title bar">
-        <div style="display:flex;align-items:center;gap:6px"><span class="badge">98</span><span class="title">${def.title}</span></div>
-        <div class="controls">
-          <button class="btn focus-ring" data-min aria-label="Minimize" title="Minimize">▁</button>
-          <button class="btn focus-ring" data-max aria-label="Maximize" title="Maximize">🗖</button>
-          <button class="btn btn-danger focus-ring" data-close aria-label="Close" title="Close">✕</button>
-        </div>
+  <header>
+    <div class="container nav">
+      <div class="brand" aria-label="ADAM MAKHLOUF">
+        <div class="logo" aria-hidden="true"></div>
+        <span>ADAM MAKHLOUF</span>
       </div>
-      <div class="content" role="document"></div>
-      <div class="handle h-n"></div><div class="handle h-s"></div><div class="handle h-e"></div><div class="handle h-w"></div>
-      <div class="handle h-ne"></div><div class="handle h-nw"></div><div class="handle h-se"></div><div class="handle h-sw"></div>
-    `;
+      <a href="#contact" class="cta">Demander un devis</a>
+    </div>
+  </header>
 
-    const content = win.querySelector('.content');
-    content.appendChild(buildContent(def.id));
+  <section class="hero container">
+    <div class="kicker">Catalogue 2025</div>
+    <h1>ADAM MAKHLOUF</h1>
+    <p class="lead">Clique sur une image pour l'agrandir. Aucun titre ni prix : uniquement les visuels.</p>
+  </section>
 
-    const info = state[def.id] = { el:win, open:false, minimized:false, maximized:false, x,y,w,h, z:10+i, prevRect:null, taskBtn:null };
+  <main class="container">
+    <div id="grid" class="grid" aria-live="polite">
+      <!-- Toutes les cartes images (sans prix ni noms) -->
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem1477302019-6dbd00000193bf62abc50a210349_1500_1125.jpg" alt="Produit"/></div></article>
 
-    // Titlebar drag
-    const titlebar=win.querySelector('.titlebar');
-    attachDrag(titlebar,(dx,dy,start)=>{
-      const nx = clamp(start.left + dx, 0, window.innerWidth - win.offsetWidth);
-      const ny = clamp(start.top + dy, 0, window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h')) - win.offsetHeight);
-      win.style.left = nx+'px'; win.style.top=ny+'px'; info.x=nx; info.y=ny;
-    },()=>{ bringToFront(def.id); });
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem1360317772-4a83000001916a8b059f0a207569_782_669.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC8wMDFGV0wzMDEzMDVNQkxLLzAwMUZXTDMwMTMwNU1CTEstMDIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvbnRhaW4iLCJ3aWR0aCI6MTYwMCwiaGVpZ2h0IjoyMDAwLCJiYWNrZ3JvdW5kIjp7InIiOjI1NSwiZyI6MjU1LCJiIjoyNTUsImFscGhhIjoxfX19fQ==" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://cdn.sneakers123.com/release/8651338/nike-air-max-plus-origins-waterway-fv0394-300.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-04f90000018f5c60b72d0a239846_800_600.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem985284097-39aa0000018f09d031b00a20e273_1086_816.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-7cff0000018f7544858f0a230115_800_600.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759183492987C30809A7-B81B-4EB5-AAAF-2FA3BEAC3D6F.jpg?timeStamp=1759201964565" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-5ef800000195d576dfff0a20e2c5_800_634.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1758964964560BCC51145-B023-494B-B7C8-618B192AEE89.jpg?timeStamp=1759202097898" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-093f000001955a68129d0a8133cc_828_828.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/pcitem1891333630-792b00000192f64817a10a20e2c5_1074_1074.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg" alt="Produit"/></div></article>
+      <article class="card"><div class="media"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg" alt="Produit"/></div></article>
+    </div>
+  </main>
 
-    // Resize handles
-    const resizers=['n','s','e','w','ne','nw','se','sw'];
-    resizers.forEach(dir=>{
-      const handle=win.querySelector('.h-'+dir);
-      attachResize(handle, dir, info);
+  <dialog class="modal" id="modal" aria-labelledby="modal-title" aria-modal="true">
+    <div class="modal-card">
+      <button class="close" id="close" aria-label="Fermer">✕</button>
+      <div class="modal-media">
+        <img id="modal-img" alt="Aperçu produit" />
+      </div>
+    </div>
+  </dialog>
+
+  <footer id="contact">
+    <div class="container">
+      <p><strong>ADAM MAKHLOUF</strong> — Écrivez-nous à <a href="mailto:cbmda.watches@gmail.com">cbmda.watches@gmail.com</a> ou appelez le 07 66 16 76 34.</p>
+      <p style="margin-top:6px;">© <span id="year"></span> ADAM MAKHLOUF — Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Lightbox (cliquer une carte pour agrandir)
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const closeBtn = document.getElementById('close');
+    document.getElementById('grid').addEventListener('click', e=>{
+      const card = e.target.closest('.card');
+      if(!card) return;
+      const img = card.querySelector('img');
+      if(img){ modalImg.src = img.src; modal.setAttribute('open',''); }
     });
-
-    // Controls
-    win.querySelector('[data-min]').addEventListener('click',()=>minimize(def.id));
-    win.querySelector('[data-max]').addEventListener('click',()=>toggleMaximize(def.id));
-    win.querySelector('[data-close]').addEventListener('click',()=>closeWindow(def.id));
-
-    // Focus on mousedown
-    win.addEventListener('mousedown',()=>bringToFront(def.id));
-
-    return win;
-  }
-
-  function buildContent(id){
-    const wrap=document.createElement('div');
-    if(id==='about'){
-      wrap.innerHTML = `<p><strong>The Stealth Academy</strong> — Turn Your Dreams Into Millions with MemeCoin Mastery. Spot viral memecoins before the hype. Learn to track wallets, snipe early, and profit.</p>
-      <ul style="opacity:.9"><li>Retro vibes, modern alpha. Built for speed and clarity.</li><li>High-contrast UI with keyboard access and reduced-motion support.</li></ul>`;
-    } else if(id==='what'){
-      const items=['Insider Wallets','Sniper Strategies','Tool Stack','Step-by-Step Blueprints','Exclusive Resources'];
-      if(isMobile()){
-        const sc=document.createElement('div'); sc.className='mobile-scroll';
-        items.forEach(t=>{ const c=document.createElement('div'); c.className='chip'; c.textContent='✅ '+t; sc.appendChild(c); });
-        wrap.appendChild(sc);
-      } else {
-        const grid=document.createElement('div'); grid.style.display='grid'; grid.style.gridTemplateColumns='repeat( auto-fit, minmax(220px, 1fr) )'; grid.style.gap='12px';
-        items.forEach(t=>{ const c=document.createElement('div'); c.className='chip'; c.textContent='✅ '+t; grid.appendChild(c); });
-        wrap.appendChild(grid);
-      }
-    } else if(id==='join'){
-      const ctr=document.createElement('div'); ctr.style.display='grid'; ctr.style.gridTemplateColumns='repeat( auto-fit, minmax(240px, 1fr) )'; ctr.style.gap='12px';
-      function pill(href,label){ const a=document.createElement('a'); a.href=href; a.textContent=label; a.setAttribute('aria-label',label); Object.assign(a.style,{display:'inline-flex',minHeight:'56px',minWidth:'240px',alignItems:'center',justifyContent:'center',padding:'12px 20px',fontWeight:'800',background:'var(--neon)',color:'#000',borderRadius:'12px',boxShadow:'0 0 24px rgba(0,255,225,.55)',textDecoration:'none'}); a.addEventListener('mouseenter',()=>a.style.boxShadow='0 0 36px rgba(0,255,225,.75)'); a.addEventListener('mouseleave',()=>a.style.boxShadow='0 0 24px rgba(0,255,225,.55)'); return a; }
-      ctr.appendChild(pill(LINKS.JOIN_CTA,'Join (Card/Normal)'));
-      ctr.appendChild(pill(LINKS.SOLANA_PAY,'Join via Solana (Bot)'));
-      wrap.appendChild(ctr);
-    } else if(id==='community'){
-      wrap.innerHTML = `<div style=\"margin-bottom:10px\"><div style=\"opacity:.8;font-size:13px\">Join the community</div><a href=\"${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">Telegram → ${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}</a></div>
-      <div style=\"margin-bottom:10px\"><div style=\"opacity:.8;font-size:13px\">DM Me</div><a href=\"${COMMUNITY_LINKS.TELEGRAM_DM}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">Telegram DM → ${COMMUNITY_LINKS.TELEGRAM_DM}</a></div>
-      <div><div style=\"opacity:.8;font-size:13px\">Updates</div><a href=\"${COMMUNITY_LINKS.X_TWITTER}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline\">X / Twitter → ${COMMUNITY_LINKS.X_TWITTER}</a></div>`;
-    } else if(id==='telegram'){
-      wrap.innerHTML = `<p style=\"opacity:.85\">DM me directly on Telegram, or hop into the community.</p>
-        <div style=\"display:flex;gap:12px;flex-wrap:wrap\">
-          <a href=\"${COMMUNITY_LINKS.TELEGRAM_DM}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px\">💬 DM Me</a>
-          <a href=\"${COMMUNITY_LINKS.TELEGRAM_COMMUNITY}\" target=\"_blank\" rel=\"noreferrer noopener\" style=\"color:var(--ink);text-decoration:underline;display:inline-flex;gap:6px\">👥 Community</a>
-        </div>`;
-    } else if(id==='whitepaper'){
-      wrap.innerHTML = `<p style="opacity:.85">Whitepaper PDF is coming soon. This is a placeholder link you can swap.</p><a href="${LINKS.WHITEPAPER}" target="_blank" rel="noreferrer noopener" style="color:var(--ink);text-decoration:underline">📜 Open Whitepaper (placeholder)</a>`;
-    }
-    return wrap;
-  }
-
-  function openWindow(id){
-    const info=state[id];
-    if(!info){ console.warn('Unknown window', id); return; }
-    if(info.open && info.minimized){ toggleFromTaskbar(id); return; }
-    if(!info.open){
-      windowsArea.appendChild(info.el); info.open=true; info.minimized=false; bringToFront(id);
-      ensureTaskButton(id);
-    }
-    bleep('open');
-  }
-  function closeWindow(id){
-    const info=state[id]; if(!info||!info.open) return; info.el.remove(); info.open=false; info.minimized=false; info.maximized=false; if(info.taskBtn){ info.taskBtn.remove(); info.taskBtn=null; } bleep('close');
-  }
-  function minimize(id){
-    const info=state[id]; if(!info||!info.open) return; info.minimized=true; info.el.style.display='none'; ensureTaskButton(id); bleep('min');
-  }
-  function toggleFromTaskbar(id){
-    const info=state[id]; if(!info) return; if(!info.open){ openWindow(id); return; }
-    info.minimized=!info.minimized; info.el.style.display = info.minimized? 'none':'block'; bringToFront(id); if(info.taskBtn) info.taskBtn.classList.toggle('active', !info.minimized);
-  }
-  function toggleMaximize(id){
-    const info=state[id]; if(!info||!info.open) return; const barH=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h'));
-    if(!info.maximized){
-      info.prevRect={left:info.x, top:info.y, width:info.w, height:info.h};
-      Object.assign(info.el.style,{left:'0px', top:'0px', width:window.innerWidth+'px', height:(window.innerHeight-barH)+'px'});
-      info.x=0; info.y=0; info.w=window.innerWidth; info.h=window.innerHeight-barH; info.maximized=true;
-    } else {
-      Object.assign(info.el.style,{left:info.prevRect.left+'px', top:info.prevRect.top+'px', width:info.prevRect.width+'px', height:info.prevRect.height+'px'});
-      info.x=info.prevRect.left; info.y=info.prevRect.top; info.w=info.prevRect.width; info.h=info.prevRect.height; info.maximized=false;
-    }
-  }
-
-  function ensureTaskButton(id){
-    const info=state[id]; if(info.taskBtn) return; const def=defs.find(d=>d.id===id);
-    const btn=document.createElement('button'); btn.className='task focus-ring'; btn.textContent=def.title; btn.addEventListener('click',()=>{ toggleFromTaskbar(id); bleep('open'); });
-    tasks.appendChild(btn); info.taskBtn=btn; btn.classList.add('active');
-  }
-
-  // Drag helper
-  function attachDrag(handle, onDrag, onStart){
-    let start=null; let moved=false;
-    function pos(e){ return e.touches? {x:e.touches[0].clientX,y:e.touches[0].clientY} : {x:e.clientX,y:e.clientY}; }
-    const down=(e)=>{ const target=handle.closest('.win'); start={ x:pos(e).x, y:pos(e).y, left:target.offsetLeft, top:target.offsetTop }; moved=false; onStart&&onStart();
-      window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
-      window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up); e.preventDefault(); };
-    const move=(e)=>{ const p=pos(e); const dx=p.x-start.x; const dy=p.y-start.y; onDrag(dx,dy,start); moved=true; e.preventDefault(); };
-    const up=()=>{ window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); window.removeEventListener('touchmove',move); window.removeEventListener('touchend',up); };
-    handle.addEventListener('mousedown',down); handle.addEventListener('touchstart',down,{passive:false});
-  }
-
-  // Resize helper
-  function attachResize(handle, dir, info){
-    if(!handle) return;
-    const down=(e)=>{
-      bringToFront(info.el.querySelector('.titlebar').dataset.id);
-      const start={ x: (e.touches?e.touches[0].clientX:e.clientX), y:(e.touches?e.touches[0].clientY:e.clientY), left:info.el.offsetLeft, top:info.el.offsetTop, w:info.el.offsetWidth, h:info.el.offsetHeight };
-      function move(ev){
-        const cx=(ev.touches?ev.touches[0].clientX:ev.clientX), cy=(ev.touches?ev.touches[0].clientY:ev.clientY);
-        let nx=start.left, ny=start.top, nw=start.w, nh=start.h;
-        if(dir.includes('e')) nw = clamp(cx - start.left, 280, window.innerWidth - start.left);
-        if(dir.includes('s')) nh = clamp(cy - start.top, 200, window.innerHeight - start.top);
-        if(dir.includes('w')){ nx = clamp(cx, 0, start.left+start.w-280); nw = clamp(start.left+start.w - cx, 280, window.innerWidth - nx); }
-        if(dir.includes('n')){ ny = clamp(cy, 0, start.top+start.h-200); nh = clamp(start.top+start.h - cy, 200, window.innerHeight - ny); }
-        Object.assign(info.el.style,{left:nx+'px', top:ny+'px', width:nw+'px', height:nh+'px'});
-        info.x=nx; info.y=ny; info.w=nw; info.h=nh;
-      }
-      function up(){ window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); window.removeEventListener('touchmove',move); window.removeEventListener('touchend',up); }
-      window.addEventListener('mousemove',move); window.addEventListener('mouseup',up); window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up);
-      e.preventDefault();
-    };
-    handle.addEventListener('mousedown',down); handle.addEventListener('touchstart',down,{passive:false});
-  }
-
-  // Build all windows upfront (closed by default)
-  defs.forEach((d,i)=>{ const win=createWindow(d,i); /* not appended until opened */ });
-
-  // Desktop icons
-  document.querySelectorAll('[data-open]').forEach(btn=>btn.addEventListener('click',()=>openWindow(btn.dataset.open)));
-
-  // Sound toggle
-  btnSound.addEventListener('click',()=> setSound(!soundEnabled));
-
-  // Clock
-  const clock = document.getElementById('clock');
-  function tick(){ const now=new Date(); clock.textContent='🕒 '+now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
-  setInterval(tick,1000); tick();
-
-  // --------------- Dev Smoke Tests (non-blocking) ---------------
-  try{
-    console.assert(clamp(5,0,10)===5,'clamp in-bounds');
-    console.assert(clamp(-1,0,10)===0,'clamp low bound');
-    console.assert(clamp(20,0,10)===10,'clamp high bound');
-    const prev=zTop; const next=bringToFront('about'); console.assert(next===prev+1,'z-index increments');
-    console.debug('[Stealth Academy] Smoke tests passed.');
-  }catch(e){ console.warn('[Stealth Academy] Smoke test failure:', e); }
-})();
-</script>
+    closeBtn.addEventListener('click', ()=> modal.removeAttribute('open'));
+    modal.addEventListener('click', e=>{ if(e.target === modal) modal.removeAttribute('open') });
+    document.addEventListener('keydown', e=>{ if(e.key === 'Escape') modal.removeAttribute('open') });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
