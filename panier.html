@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Legit Flow — Panier</title>
+  <style>:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
+*{ box-sizing:border-box; }
+body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
+.container{ width:min(1400px, 95vw); margin:0 auto; }
+header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(8px); background:rgba(255,255,255,.85); border-bottom:1px solid #eee; }
+.nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+.brand{ display:inline-flex; align-items:center; gap:.7rem; font-weight:700; letter-spacing:.2px; }
+.dot{ width:38px; height:38px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 8px 22px rgba(60,100,255,.25); }
+.actions{ display:flex; gap:8px; align-items:center; }
+.btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:10px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
+.hero{ text-align:center; padding: 46px 0 18px; }
+.kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; }
+h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:800; }
+.lead{ color:#4b5563; max-width:900px; margin:0 auto 24px; }
+.badge{ display:inline-grid; place-items:center; min-width:26px; height:26px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
+.list{ display:grid; grid-template-columns: repeat(12, 1fr); gap:20px; padding: 24px 0 60px; }
+.row{ grid-column: span 6; display:grid; grid-template-columns: 120px 1fr auto; align-items:center; gap:14px; padding:14px; border:1px solid #eee; border-radius:14px; background:#fafafa; }
+.row img{ width:120px; height:100px; object-fit:contain; background:#fff; border:1px solid #eee; border-radius:12px; }
+.qty{ display:inline-flex; align-items:center; gap:8px; }
+.qty button{ width:32px; height:32px; border-radius:8px; border:1px solid #111; background:#fff; cursor:pointer; }
+.remove{ border:1px solid #c00; color:#c00; background:#fff; border-radius:999px; padding:8px 12px; cursor:pointer; }
+.actions-bar{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding: 8px 0 24px; }
+@media (max-width: 900px){ .row{ grid-column: span 12; } }
+.empty{ text-align:center; color:#6b7280; padding:40px 0; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand"><div class="dot"></div><span>Legit Flow</span></div>
+    <div class="actions">
+      <a class="btn" href="index.html">Vitrine</a>
+      <a class="btn" href="panier.html">Panier <span id="mini-count" class="badge">0</span></a>
+      <a class="cta" href="paiement.html">Paiement</a>
+    </div>
+  </div>
+</header>
+  <section class="hero">
+    <div class="container">
+      <div class="kicker">Panier</div>
+      <h1>Vos articles</h1>
+      <p class="lead">Modifiez les quantités ou supprimez des articles. Aucun prix n'est affiché.</p>
+    </div>
+  </section>
+  <main>
+    <div class="container">
+      <div class="actions-bar">
+        <div><strong>Total articles:</strong> <span id="total">0</span></div>
+        <div class="actions">
+          <button id="clear" class="btn">Vider le panier</button>
+          <a href="paiement.html" class="cta">Procéder au paiement</a>
+        </div>
+      </div>
+      <div id="list" class="list"></div>
+      <div id="empty" class="empty" style="display:none">Votre panier est vide.</div>
+    </div>
+  </main>
+  <script>
+    function render(){
+      const list = document.getElementById('list');
+      const empty = document.getElementById('empty');
+      const total = document.getElementById('total');
+      const c = getCart();
+      list.innerHTML = '';
+      let n = 0;
+      if(!c.length){ empty.style.display='block'; total.textContent='0'; }
+      else{
+        empty.style.display='none';
+        c.forEach(item => {
+          n += (item.qty||1);
+          const row = document.createElement('div');
+          row.className='row';
+          row.innerHTML = `
+            <img src="${item.src}" alt="Produit"/>
+            <div class="qty">
+              <button data-id="${item.id}" data-d="-1">-</button>
+              <span>Qté: ${item.qty||1}</span>
+              <button data-id="${item.id}" data-d="1">+</button>
+            </div>
+            <button class="remove" data-id="${item.id}">Retirer</button>
+          `;
+          list.appendChild(row);
+        });
+        total.textContent = n;
+      }
+      saveCart(c);
+    }
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('.remove')){
+        const id = e.target.dataset.id;
+        const c = getCart().filter(x => x.id !== id);
+        saveCart(c); render();
+      }
+      if(e.target.matches('.qty button')){
+        const id = e.target.dataset.id; const d = parseInt(e.target.dataset.d);
+        const c = getCart();
+        const i = c.findIndex(x => x.id === id);
+        if(i>=0){ c[i].qty = Math.max(1, (c[i].qty||1) + d); saveCart(c); render(); }
+      }
+    });
+    document.getElementById('clear').addEventListener('click', ()=>{ saveCart([]); render(); });
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+<script>
+  const CART_KEY = 'lf_cart_v1';
+  function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ return []; } }
+  function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateMiniCount(); }
+  function updateMiniCount(){
+    const b = document.getElementById('mini-count'); if(!b) return;
+    const c = getCart(); const n = c.reduce((s,i)=>s + (i.qty||1), 0);
+    b.textContent = n;
+  }
+  document.addEventListener('DOMContentLoaded', updateMiniCount);
+</script>
+</body>
+</html>
