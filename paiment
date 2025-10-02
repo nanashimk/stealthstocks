@@ -4,26 +4,40 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Paiement — Legit Flow</title>
+<meta name="description" content="Finaliser votre commande — Legit Flow." />
 <style>
-:root{ --bg:#fff; --text:#101418; --muted:#6b7280; --accent:#111; --radius:14px; }
-*{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:var(--bg)}
-.container{width:min(900px,95vw);margin:0 auto}
-header{position:sticky;top:0;z-index:30;backdrop-filter:saturate(120%) blur(8px);background:rgba(255,255,255,.85);border-bottom:1px solid #eee}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
-.brand{display:inline-flex;align-items:center;gap:.6rem;font-weight:700}
-.dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#79f,#5af)}
-.actions{display:flex;gap:8px;align-items:center}
-.btn,.cta{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:8px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;cursor:pointer}
-h1{font-size:clamp(1.4rem,2vw+1rem,2.2rem);margin:14px 0}
-.card{border:1px solid #eee;border-radius:var(--radius);padding:14px;margin:14px 0;background:#fff}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{font-size:.9rem;color:var(--muted)}
-input,textarea,select{width:100%;border:1px solid #e5e7eb;border-radius:10px;padding:10px}
-textarea{min-height:140px;white-space:pre-wrap}
-.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;border:1px solid #ddd;font-size:.8rem}
-.total{font-weight:700}
-.actions-line{display:flex;flex-wrap:wrap;gap:10px}
-small.muted{color:var(--muted)}
+:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
+*{ box-sizing:border-box; }
+body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
+.container{ width:min(900px, 95vw); margin:0 auto; }
+header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(8px); background:rgba(255,255,255,.85); border-bottom:1px solid #eee; }
+.nav{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; }
+.brand{ display:inline-flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.2px; }
+.dot{ width:28px; height:28px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 6px 18px rgba(60,100,255,.22); }
+.actions{ display:flex; gap:8px; align-items:center; }
+.btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:8px 12px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
+.badge{ display:inline-grid; place-items:center; min-width:24px; height:24px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
+
+main{ padding:24px 0 56px; }
+h1{ font-size:clamp(1.3rem, 2vw + .6rem, 2.1rem); margin:0 0 8px; font-weight:800; }
+.kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; }
+
+.card{ border:1px solid #eee; border-radius:14px; padding:16px; background:#fafafa; }
+.grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+label{ font-weight:600; font-size:.92rem; }
+input, textarea{ width:100%; border:1px solid #ddd; border-radius:12px; padding:10px 12px; font: inherit; background:#fff; }
+small{ color:#6b7280; }
+
+.list{ margin:12px 0 0; padding:0; list-style:none; }
+.list li{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
+.total{ font-weight:800; }
+
+.actions-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+button.linklike{ border:1px solid var(--accent); background:#fff; color:#111; border-radius:999px; padding:10px 14px; cursor:pointer; }
+.secondary{ border-color:#ddd; }
+
+.note{ color:#6b7280; font-size:.9rem; margin-top:6px; }
+.preview{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; border:1px dashed #ddd; border-radius:12px; padding:12px; background:#fff; }
 </style>
 </head>
 <body>
@@ -33,164 +47,137 @@ small.muted{color:var(--muted)}
     <div class="actions">
       <a class="btn" href="index.html">Vitrine</a>
       <a class="btn" href="panier.html">Panier <span id="mini-count" class="badge">0</span></a>
-      <span class="cta">Paiement</span>
+      <a class="cta" href="paiement.html">Paiement</a>
     </div>
   </div>
 </header>
 
 <main class="container">
-  <h1>Paiement / Validation de commande</h1>
+  <div class="kicker">Finalisation</div>
+  <h1>Paiement / Envoi de commande</h1>
 
-  <div class="card" id="resume">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <strong>Résumé</strong>
-      <div class="total">Total : <span id="grandTotal">0€</span></div>
-    </div>
-    <div id="list"></div>
-    <small class="muted">Vérifiez les articles avant d’envoyer.</small>
-  </div>
+  <div class="grid">
+    <section class="card">
+      <label>Vos infos (facultatif)</label>
+      <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+        <input id="fname" placeholder="Prénom" />
+        <input id="lname" placeholder="Nom" />
+      </div>
+      <input id="phone" placeholder="Téléphone" style="margin-top:8px;" />
+      <textarea id="note" rows="3" placeholder="Message au vendeur (optionnel)" style="margin-top:8px;"></textarea>
+      <small>Ces champs seront ajoutés au message.</small>
+    </section>
 
-  <div class="card">
-    <strong>Vos informations</strong>
-    <div class="row" style="margin-top:8px">
-      <div>
-        <label>Nom complet</label>
-        <input id="name" placeholder="Nom Prénom" />
+    <section class="card">
+      <label>Votre sélection</label>
+      <ul id="items" class="list"></ul>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding-top:10px;">
+        <div class="total">Total : <span id="grand">0€</span></div>
+        <a href="panier.html" class="btn secondary">Modifier le panier</a>
       </div>
-      <div>
-        <label>Téléphone</label>
-        <input id="phone" placeholder="06..." />
-      </div>
-      <div>
-        <label>E-mail</label>
-        <input id="email" placeholder="vous@exemple.com" />
-      </div>
-      <div>
-        <label>Adresse (si livraison)</label>
-        <input id="address" placeholder="Rue, ville, code postal" />
-      </div>
-      <div>
-        <label>Livraison / Retrait</label>
-        <select id="shipping">
-          <option>Retrait</option>
-          <option>Livraison standard</option>
-          <option>Livraison express</option>
-        </select>
-      </div>
-      <div>
-        <label>Moyen de paiement</label>
-        <select id="payment">
-          <option>Espèces</option>
-          <option>Virement</option>
-          <option>CB</option>
-        </select>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="card">
-    <strong>Message à envoyer (modifiable)</strong>
-    <textarea id="msg"></textarea>
-    <div class="actions-line" style="margin-top:10px">
-      <button class="btn" id="copy">Copier</button>
-      <a class="cta" id="sendMail" href="#">Envoyer par e-mail</a>
-      <a class="btn" id="sendSms" href="#">Envoyer par message</a>
-    </div>
-    <small class="muted">E-mail : cbmda.wathces@gmail.com — Téléphone : 0766167634</small>
+    <section class="card">
+      <label>Aperçu du message</label>
+      <div id="preview" class="preview"></div>
+
+      <div class="actions-row">
+        <button id="sendEmail" class="linklike">✉️ Envoyer par e‑mail</button>
+        <button id="sendSMS" class="linklike">📱 Envoyer par SMS</button>
+        <button id="copy" class="linklike secondary">Copier le message</button>
+        <button id="clear" class="linklike secondary">Vider le panier</button>
+      </div>
+      <div class="note">L’e‑mail s’ouvrira dans votre application de messagerie avec le contenu prérempli à l’adresse <strong>cbmda.wathces@gmail.com</strong>. Le SMS s’ouvre vers <strong>07&nbsp;66&nbsp;16&nbsp;76&nbsp;34</strong> (selon l’appareil).</div>
+    </section>
   </div>
 </main>
 
 <script>
-const CART_KEY='lf_cart_v1';
-const MAIL_TO='cbmda.wathces@gmail.com';
-const SMS_TO='0766167634';
+const EMAIL = "cbmda.wathces@gmail.com";
+const PHONE_SMS = "+33766167634"; // format international pour compatibilité
 
-function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return[]} }
-function updateMiniCount(){
-  const b=document.getElementById('mini-count'); if(!b) return;
-  const c=getCart(); b.textContent=c.reduce((s,i)=>s+(i.qty||1),0);
+function getCart(){ try { return JSON.parse(localStorage.getItem('cart')||'{}'); } catch(e){ return {}; } }
+function updateMiniCount(){ 
+  const c = getCart(); 
+  const total = Object.values(c).reduce((s, it) => s + (it.qty||0), 0);
+  const badge = document.getElementById('mini-count');
+  if(badge) badge.textContent = total;
 }
-function money(n){ return (Math.round((n||0)*100)/100).toFixed(2).replace('.',',')+'€'; }
 
-function buildMessage(cart, extra){
-  let lines = [];
-  lines.push("Bonjour, je souhaite commander :");
-  cart.forEach(it=>{
-    const p = Number(it.price||0);
-    const q = it.qty||1;
-    const st = isNaN(p)? '—' : money(p*q);
-    lines.push(`- ${q} × ${it.name||'Article'} — ${isNaN(p)?'prix ?':money(p)} (sous-total ${st})`);
+function euro(n){ return (Math.round(n*100)/100).toFixed(2).replace('.', ',') + '€'; }
+
+function buildLines(cart){
+  const lines = [];
+  let total = 0;
+  Object.values(cart).forEach(it=>{
+    const line = `- ${it.title} × ${it.qty} @ ${it.price}€ = ${euro(it.qty*it.price).replace(',00','')}`;
+    lines.push(line);
+    total += it.qty*it.price;
   });
-  const total = cart.reduce((s,i)=> s + (Number(i.price||0)*(i.qty||1)), 0);
-  lines.push("");
-  lines.push(`Total : ${money(total)}`);
-  lines.push("");
-  lines.push(`Nom: ${extra.name||''}`);
-  lines.push(`Téléphone: ${extra.phone||''}`);
-  lines.push(`E-mail: ${extra.email||''}`);
-  lines.push(`Adresse: ${extra.address||''}`);
-  lines.push(`Livraison/Retrait: ${extra.shipping||''}`);
-  lines.push(`Paiement: ${extra.payment||''}`);
-  return lines.join("\n");
+  return { lines, total };
 }
 
 function render(){
-  const list=document.getElementById('list');
-  list.innerHTML='';
-  const cart=getCart();
-  let total=0;
-
-  cart.forEach(it=>{
-    const line=document.createElement('div');
-    line.style.display='grid';
-    line.style.gridTemplateColumns='60px 1fr 70px 50px';
-    line.style.alignItems='center';
-    line.style.gap='10px';
-    line.style.padding='6px 0';
-    const price = Number(it.price||0);
-    total += (price * (it.qty||1));
-    line.innerHTML = `
-      <img src="${it.src||''}" style="width:60px;height:60px;object-fit:contain;border:1px solid #eee;border-radius:10px;background:#fff" />
-      <div>${it.name||'Article'}</div>
-      <div>${isNaN(price)?'—':money(price)}</div>
-      <div>× ${it.qty||1}</div>
-    `;
-    list.appendChild(line);
-  });
-
-  document.getElementById('grandTotal').textContent = money(total);
   updateMiniCount();
+  const items = document.getElementById('items');
+  const grand = document.getElementById('grand');
+  const prev = document.getElementById('preview');
+  const cart = getCart();
+  items.innerHTML = '';
 
-  // message
-  const extra = {
-    name: document.getElementById('name').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    address: document.getElementById('address').value.trim(),
-    shipping: document.getElementById('shipping').value,
-    payment: document.getElementById('payment').value,
+  const { lines, total } = buildLines(cart);
+
+  if(Object.keys(cart).length === 0){
+    items.innerHTML = '<li style="color:#6b7280">Aucun article.</li>';
+    grand.textContent = '0€';
+  }else{
+    Object.values(cart).forEach(it=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${it.title} × ${it.qty}</span><span>${euro(it.qty*it.price).replace(',00','')}</span>`;
+      items.appendChild(li);
+    });
+    grand.textContent = euro(total).replace(',00','');
+  }
+
+  // construire message
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const note = document.getElementById('note').value.trim();
+
+  const who = (fname || lname) ? `${fname} ${lname}`.trim() : '';
+  const header = `Commande Legit Flow` + (who?` — ${who}`:'');
+  const info = phone ? `Téléphone: ${phone}\n` : '';
+  const noteLine = note ? `\nNote: ${note}\n` : '';
+  const list = lines.length? lines.join('\n') : '(panier vide)';
+  const footer = `\nTotal: ${euro(total).replace(',00','')}`;
+
+  const text = `${header}\n${info}${noteLine}\nArticles:\n${list}${footer}`.trim();
+  prev.textContent = text;
+
+  // Mettre à jour actions
+  const subj = encodeURIComponent('Commande Legit Flow');
+  const body = encodeURIComponent(text);
+  const mailto = `mailto:${EMAIL}?subject=${subj}&body=${body}`;
+  const sms = `sms:${PHONE_SMS}?&body=${body}`;
+
+  const sendEmail = document.getElementById('sendEmail');
+  const sendSMS = document.getElementById('sendSMS');
+  sendEmail.onclick = ()=>{ window.location.href = mailto; };
+  sendSMS.onclick = ()=>{ window.location.href = sms; };
+
+  document.getElementById('copy').onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(text); alert('Message copié.'); }catch(e){ alert('Copie impossible, sélectionnez et copiez manuellement.'); }
   };
-  const msg = buildMessage(cart, extra);
-  document.getElementById('msg').value = msg;
-
-  // liens mail / sms
-  const subject = encodeURIComponent('Commande Legit Flow');
-  const body = encodeURIComponent(msg);
-  document.getElementById('sendMail').href = `mailto:${MAIL_TO}?subject=${subject}&body=${body}`;
-  document.getElementById('sendSms').href = `sms:${SMS_TO}?&body=${body}`;
+  document.getElementById('clear').onclick = ()=>{ localStorage.removeItem('cart'); render(); };
 }
 
-['name','phone','email','address','shipping','payment'].forEach(id=>{
-  document.addEventListener('input', e=>{ if(e.target.id===id) render(); });
+['fname','lname','phone','note'].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener('input', render);
 });
 
-document.getElementById('copy').addEventListener('click', ()=>{
-  const ta=document.getElementById('msg');
-  ta.select(); ta.setSelectionRange(0, 99999);
-  document.execCommand('copy');
-});
-
-document.addEventListener('DOMContentLoaded', render);
+render();
 </script>
 </body>
 </html>
