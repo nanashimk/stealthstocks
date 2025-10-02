@@ -82,19 +82,19 @@ button.linklike{ border:1px solid var(--accent); background:#fff; color:#111; bo
       <div id="preview" class="preview"></div>
 
       <div class="actions-row">
-        <button id="sendEmail" class="linklike">✉️ Envoyer par e‑mail</button>
+        <button id="sendEmail" class="linklike">✉️ Envoyer par e-mail</button>
         <button id="sendSMS" class="linklike">📱 Envoyer par SMS</button>
         <button id="copy" class="linklike secondary">Copier le message</button>
         <button id="clear" class="linklike secondary">Vider le panier</button>
       </div>
-      <div class="note">L’e‑mail s’ouvrira dans votre application de messagerie avec le contenu prérempli à l’adresse <strong>cbmda.watches@gmail.com</strong>. Le SMS s’ouvre vers <strong>07&nbsp;66&nbsp;16&nbsp;76&nbsp;34</strong> (selon l’appareil).</div>
+      <div class="note">L’e-mail s’ouvrira dans Gmail, prérempli pour <strong>mkinvest57@gmail.com</strong>. Le SMS s’ouvre vers <strong>07&nbsp;66&nbsp;16&nbsp;76&nbsp;34</strong> (selon l’appareil).</div>
     </section>
   </div>
 </main>
 
 <script>
-const EMAIL = "cbmda.watches@gmail.com";
-const PHONE_SMS = "+33766167634"; // format international pour compatibilité
+const EMAIL = "mkinvest57@gmail.com";
+const PHONE_SMS = "+33766167634"; // format international
 
 function getCart(){ try { return JSON.parse(localStorage.getItem('cart')||'{}'); } catch(e){ return {}; } }
 function updateMiniCount(){ 
@@ -155,16 +155,20 @@ function render(){
   const text = `${header}\n${info}${noteLine}\nArticles:\n${list}${footer}`.trim();
   prev.textContent = text;
 
-  // Mettre à jour actions
+  // Actions
   const subj = encodeURIComponent('Commande Legit Flow');
   const body = encodeURIComponent(text);
-  const mailto = `mailto:${EMAIL}?subject=${subj}&body=${body}`;
+  const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${encodeURIComponent(EMAIL)}&su=${subj}&body=${body}`;
+  const mailto = `mailto:${EMAIL}?subject=${subj}&body=${body}`; // fallback
   const sms = `sms:${PHONE_SMS}?&body=${body}`;
 
-  const sendEmail = document.getElementById('sendEmail');
-  const sendSMS = document.getElementById('sendSMS');
-  sendEmail.onclick = ()=>{ window.location.href = mailto; };
-  sendSMS.onclick = ()=>{ window.location.href = sms; };
+  document.getElementById('sendEmail').onclick = ()=>{
+    const win = window.open(gmailCompose, "_blank");
+    if(!win){ window.location.href = gmailCompose; } // certains navigateurs bloquent window.open
+    // Optionnel : fallback si Gmail indisponible
+    setTimeout(()=>{ if(document.visibilityState === 'visible') window.location.href = mailto; }, 1500);
+  };
+  document.getElementById('sendSMS').onclick = ()=>{ window.location.href = sms; };
 
   document.getElementById('copy').onclick = async ()=>{
     try{ await navigator.clipboard.writeText(text); alert('Message copié.'); }catch(e){ alert('Copie impossible, sélectionnez et copiez manuellement.'); }
