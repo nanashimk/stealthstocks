@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Legit Flow — Vitrine</title>
   <meta name="description" content="Vitrine photo minimaliste et élégante — Legit Flow." />
-  <style>:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
+  <style>
+:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
 *{ box-sizing:border-box; }
 body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
 .container{ width:min(1400px, 95vw); margin:0 auto; }
@@ -20,19 +21,30 @@ header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(
 h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:800; }
 .lead{ color:#4b5563; max-width:900px; margin:0 auto 24px; }
 .badge{ display:inline-grid; place-items:center; min-width:26px; height:26px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
+
 .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:24px; padding: 10px 0 64px; }
 .item{ position:relative; grid-column: span 3; background:#fafafa; border:1px solid #eee; border-radius: 14px; padding: 22px; display:grid; place-items:center; transition: box-shadow .2s ease, transform .2s ease; }
 .item:hover{ box-shadow: 0 12px 30px rgba(0,0,0,.08); transform: translateY(-2px); }
 .item img{ width:100%; height: 260px; object-fit: contain; cursor: zoom-in; }
 .add{ position:absolute; right:14px; bottom:14px; border:1px solid #111; background:#fff; color:#111; border-radius:999px; padding:8px 12px; cursor:pointer; }
+
+/* étiquettes pour collections (ex: Dunk Low - Variantes) */
+.tag{ position:absolute; left:14px; bottom:14px; background:#111; color:#fff; border-radius:999px; padding:6px 10px; font-size:.85rem; opacity:.9; }
+
 @media (max-width: 1200px){ .item{ grid-column: span 4; } }
 @media (max-width: 768px){ .item{ grid-column: span 6; } .item img{ height: 220px; } }
 @media (max-width: 520px){ .item{ grid-column: span 12; } .item img{ height: 200px; } }
+
+/* Lightbox / diaporama */
 dialog{ position: fixed; inset:0; width:100%; height:100%; background: rgba(255,255,255,.92); border:0; padding:0; display:none; align-items:center; justify-content:center; }
 dialog[open]{ display:flex; }
-.lightbox{ width:min(1200px, 96vw); height:min(86vh, 900px); display:grid; place-items:center; }
+.lightbox{ width:min(1200px, 96vw); height:min(86vh, 900px); display:grid; place-items:center; position:relative; }
 .lightbox img{ max-width:100%; max-height:100%; object-fit: contain; }
 .x{ position:absolute; top:18px; right:18px; width:40px; height:40px; border-radius:50%; border:1px solid #111; background:#fff; color:#111; display:grid; place-items:center; cursor:pointer; }
+.arrow{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:1px solid #111; background:#fff; color:#111; display:grid; place-items:center; cursor:pointer; }
+.left{ left:18px; } .right{ right:18px; }
+.add-current{ position:absolute; left:50%; transform:translateX(-50%); bottom:18px; border:1px solid #111; background:#fff; color:#111; border-radius:999px; padding:10px 14px; cursor:pointer; }
+.count{ position:absolute; top:18px; left:18px; background:#111; color:#fff; border-radius:999px; padding:6px 10px; font-size:.85rem; opacity:.9; }
   </style>
 </head>
 <body>
@@ -46,88 +58,284 @@ dialog[open]{ display:flex; }
     </div>
   </div>
 </header>
-  <section class="hero">
-    <div class="container">
-      <div class="kicker">Vitrine</div>
-      <h1>Legit Flow</h1>
-      <p class="lead">Cliquez pour agrandir — et utilisez “+ Panier” pour ajouter.</p>
-    </div>
-  </section>
-  <main>
-    <div class="container">
-      <div id="grid" class="grid">
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p1" data-src="https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p2" data-src="https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1477302019-6dbd00000193bf62abc50a210349_1500_1125.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p3" data-src="https://si.geilicdn.com/pcitem1477302019-6dbd00000193bf62abc50a210349_1500_1125.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1360317772-4a83000001916a8b059f0a207569_782_669.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p4" data-src="https://si.geilicdn.com/pcitem1360317772-4a83000001916a8b059f0a207569_782_669.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p5" data-src="https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png" alt="Produit Legit Flow"/><button class="add" data-id="p6" data-src="https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p7" data-src="https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p8" data-src="https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC8wMDFGV0wzMDEzMDVNQkxLLzAwMUZXTDMwMTMwNU1CTEstMDIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvbnRhaW4iLCJ3aWR0aCI6MTYwMCwiaGVpZ2h0IjoyMDAwLCJiYWNrZ3JvdW5kIjp7InIiOjI1NSwiZyI6MjU1LCJiIjoyNTUsImFscGhhIjoxfX19fQ==" alt="Produit Legit Flow"/><button class="add" data-id="p9" data-src="https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC8wMDFGV0wzMDEzMDVNQkxLLzAwMUZXTDMwMTMwNU1CTEstMDIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvbnRhaW4iLCJ3aWR0aCI6MTYwMCwiaGVpZ2h0IjoyMDAwLCJiYWNrZ3JvdW5kIjp7InIiOjI1NSwiZyI6MjU1LCJiIjoyNTUsImFscGhhIjoxfX19fQ==">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://cdn.sneakers123.com/release/8651338/nike-air-max-plus-origins-waterway-fv0394-300.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p10" data-src="https://cdn.sneakers123.com/release/8651338/nike-air-max-plus-origins-waterway-fv0394-300.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p11" data-src="https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-04f90000018f5c60b72d0a239846_800_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p12" data-src="https://si.geilicdn.com/pcitem901858814557-04f90000018f5c60b72d0a239846_800_600.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem985284097-39aa0000018f09d031b00a20e273_1086_816.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p13" data-src="https://si.geilicdn.com/pcitem985284097-39aa0000018f09d031b00a20e273_1086_816.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p14" data-src="https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-7cff0000018f7544858f0a230115_800_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p15" data-src="https://si.geilicdn.com/pcitem901858814557-7cff0000018f7544858f0a230115_800_600.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759183492987C30809A7-B81B-4EB5-AAAF-2FA3BEAC3D6F.jpg?timeStamp=1759201964565" alt="Produit Legit Flow"/><button class="add" data-id="p16" data-src="https://oss.acbuy.com/temp/pda_1759183492987C30809A7-B81B-4EB5-AAAF-2FA3BEAC3D6F.jpg?timeStamp=1759201964565">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-5ef800000195d576dfff0a20e2c5_800_634.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p17" data-src="https://si.geilicdn.com/wdseller1580621215-5ef800000195d576dfff0a20e2c5_800_634.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1758964964560BCC51145-B023-494B-B7C8-618B192AEE89.jpg?timeStamp=1759202097898" alt="Produit Legit Flow"/><button class="add" data-id="p18" data-src="https://oss.acbuy.com/temp/pda_1758964964560BCC51145-B023-494B-B7C8-618B192AEE89.jpg?timeStamp=1759202097898">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-093f000001955a68129d0a8133cc_828_828.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p19" data-src="https://si.geilicdn.com/wdseller1580621215-093f000001955a68129d0a8133cc_828_828.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1891333630-792b00000192f64817a10a20e2c5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p20" data-src="https://si.geilicdn.com/pcitem1891333630-792b00000192f64817a10a20e2c5_1074_1074.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p21" data-src="https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p22" data-src="https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-43d400000198685415e70a23111a_675_710.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p23" data-src="https://si.geilicdn.com/wdseller1580621215-43d400000198685415e70a23111a_675_710.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759211787007CB1F11A5-D19A-4197-B6C7-346B3335C29B.jpg?timeStamp=1759314960968" alt="Produit Legit Flow"/><button class="add" data-id="p24" data-src="https://oss.acbuy.com/temp/pda_1759211787007CB1F11A5-D19A-4197-B6C7-346B3335C29B.jpg?timeStamp=1759314960968">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-698f00000198827cadc10a20e273_1206_1028.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p25" data-src="https://si.geilicdn.com/wdseller1580621215-698f00000198827cadc10a20e273_1206_1028.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1580621215-000b000001928a0991050a231316_800_800.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p26" data-src="https://si.geilicdn.com/pcitem1580621215-000b000001928a0991050a231316_800_800.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open291535263-1234478995-35bf00000196cf09472c0a23b4de_1278_1918.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p27" data-src="https://si.geilicdn.com/open291535263-1234478995-35bf00000196cf09472c0a23b4de_1278_1918.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1758413473825851B4359-DF13-4260-8992-257552B11E28.jpg?timeStamp=1759315150034" alt="Produit Legit Flow"/><button class="add" data-id="p28" data-src="https://oss.acbuy.com/temp/pda_1758413473825851B4359-DF13-4260-8992-257552B11E28.jpg?timeStamp=1759315150034">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1685879877-252808396-11710000019435731f6f0a8115b5_1000_1000.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p29" data-src="https://si.geilicdn.com/open1685879877-252808396-11710000019435731f6f0a8115b5_1000_1000.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1652813497-252808396-12ef00000191efae77380a239383_800_800.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p30" data-src="https://si.geilicdn.com/open1652813497-252808396-12ef00000191efae77380a239383_800_800.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1834474013-252808396-3cf0000001993809381e0a23b491_1667_1667.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p31" data-src="https://si.geilicdn.com/open1834474013-252808396-3cf0000001993809381e0a23b491_1667_1667.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1bca0000019839bd91090a20e273_1156_1156.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p32" data-src="https://si.geilicdn.com/wdseller1580621215-1bca0000019839bd91090a20e273_1156_1156.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p33" data-src="https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-37df00000198f96706010a2304aa_1206_1130.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p34" data-src="https://si.geilicdn.com/wdseller1580621215-37df00000198f96706010a2304aa_1206_1130.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1cca00000196297b5f5c0a23111a_1058_1058.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p35" data-src="https://si.geilicdn.com/wdseller1580621215-1cca00000196297b5f5c0a23111a_1058_1058.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1395528662-252808396-53ea000001924be39d640a8133b5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p36" data-src="https://si.geilicdn.com/open1395528662-252808396-53ea000001924be39d640a8133b5_1074_1074.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1704920025-1234478995-67c90000018f1f54082e0a8115b5-unadjust_409_447.png" alt="Produit Legit Flow"/><button class="add" data-id="p37" data-src="https://si.geilicdn.com/open1704920025-1234478995-67c90000018f1f54082e0a8115b5-unadjust_409_447.png">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759221839293162E8D11-9A4F-40FA-BB6A-2F966AFB0162.jpg?timeStamp=1759315448371" alt="Produit Legit Flow"/><button class="add" data-id="p38" data-src="https://oss.acbuy.com/temp/pda_1759221839293162E8D11-9A4F-40FA-BB6A-2F966AFB0162.jpg?timeStamp=1759315448371">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p39" data-src="https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg">+ Panier</button></figure>
-        <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1690402957-1234478995-4d98000001944f270d940a8115b5_1179_1180.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p40" data-src="https://si.geilicdn.com/open1690402957-1234478995-4d98000001944f270d940a8115b5_1179_1180.jpg">+ Panier</button></figure>
-      </div>
-    </div>
-  </main>
-  <dialog id="modal" aria-modal="true" aria-label="Agrandissement image"> 
-    <button class="x" id="close" aria-label="Fermer">✕</button>
-    <div class="lightbox"><img id="big" alt="Image produit"/></div>
-  </dialog>
-  <script>
-    const modal = document.getElementById('modal');
-    const big = document.getElementById('big');
-    const closeBtn = document.getElementById('close');
-    document.querySelectorAll('.item img').forEach(img => {
-      img.addEventListener('click', ()=>{ big.src = img.src; modal.setAttribute('open',''); });
-    });
-    closeBtn.addEventListener('click', ()=> modal.removeAttribute('open'));
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.removeAttribute('open'); });
 
-    function addToCart(id, src){
-      const c = getCart();
-      const i = c.findIndex(x => x.id === id);
-      if(i >= 0){ c[i].qty = (c[i].qty||1) + 1; }
-      else{ c.push({id, src, qty:1}); }
-      saveCart(c);
-    }
-    document.querySelectorAll('.add').forEach(btn => {
-      btn.addEventListener('click', ()=>{
-        addToCart(btn.dataset.id, btn.dataset.src);
-        btn.textContent = 'Ajouté ✓'; setTimeout(()=> btn.textContent = '+ Panier', 900);
-      });
-    });
-  </script>
+<section class="hero">
+  <div class="container">
+    <div class="kicker">Vitrine</div>
+    <h1>Legit Flow</h1>
+    <p class="lead">Cliquez pour agrandir — et utilisez “+ Panier” pour ajouter.</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+    <div id="grid" class="grid">
+
+      <!-- ======= VOS ARTICLES EXISTANTS ======= -->
+      <!-- (je garde exactement vos 40 figures d'origine) -->
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p1" data-src="https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p2" data-src="https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1477302019-6dbd00000193bf62abc50a210349_1500_1125.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p3" data-src="https://si.geilicdn.com/pcitem1477302019-6dbd00000193bf62abc50a210349_1500_1125.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1360317772-4a83000001916a8b059f0a207569_782_669.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p4" data-src="https://si.geilicdn.com/pcitem1360317772-4a83000001916a8b059f0a207569_782_669.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p5" data-src="https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png" alt="Produit Legit Flow"/><button class="add" data-id="p6" data-src="https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p7" data-src="https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p8" data-src="https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC8wMDFGV0wzMDEzMDVNQkxLLzAwMUZXTDMwMTMwNU1CTEstMDIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvbnRhaW4iLCJ3aWR0aCI6MTYwMCwiaGVpZ2h0IjoyMDAwLCJiYWNrZ3JvdW5kIjp7InIiOjI1NSwiZyI6MjU1LCJiIjoyNTUsImFscGhhIjoxfX19fQ==" alt="Produit Legit Flow"/><button class="add" data-id="p9" data-src="https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC8wMDFGV0wzMDEzMDVNQkxLLzAwMUZXTDMwMTMwNU1CTEstMDIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvbnRhaW4iLCJ3aWR0aCI6MTYwMCwiaGVpZ2h0IjoyMDAwLCJiYWNrZ3JvdW5kIjp7InIiOjI1NSwiZyI6MjU1LCJiIjoyNTUsImFscGhhIjoxfX19fQ==">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://cdn.sneakers123.com/release/8651338/nike-air-max-plus-origins-waterway-fv0394-300.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p10" data-src="https://cdn.sneakers123.com/release/8651338/nike-air-max-plus-origins-waterway-fv0394-300.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p11" data-src="https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-04f90000018f5c60b72d0a239846_800_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p12" data-src="https://si.geilicdn.com/pcitem901858814557-04f90000018f5c60b72d0a239846_800_600.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem985284097-39aa0000018f09d031b00a20e273_1086_816.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p13" data-src="https://si.geilicdn.com/pcitem985284097-39aa0000018f09d031b00a20e273_1086_816.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p14" data-src="https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-7cff0000018f7544858f0a230115_800_600.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p15" data-src="https://si.geilicdn.com/pcitem901858814557-7cff0000018f7544858f0a230115_800_600.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759183492987C30809A7-B81B-4EB5-AAAF-2FA3BEAC3D6F.jpg?timeStamp=1759201964565" alt="Produit Legit Flow"/><button class="add" data-id="p16" data-src="https://oss.acbuy.com/temp/pda_1759183492987C30809A7-B81B-4EB5-AAAF-2FA3BEAC3D6F.jpg?timeStamp=1759201964565">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-5ef800000195d576dfff0a20e2c5_800_634.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p17" data-src="https://si.geilicdn.com/wdseller1580621215-5ef800000195d576dfff0a20e2c5_800_634.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1758964964560BCC51145-B023-494B-B7C8-618B192AEE89.jpg?timeStamp=1759202097898" alt="Produit Legit Flow"/><button class="add" data-id="p18" data-src="https://oss.acbuy.com/temp/pda_1758964964560BCC51145-B023-494B-B7C8-618B192AEE89.jpg?timeStamp=1759202097898">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-093f000001955a68129d0a8133cc_828_828.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p19" data-src="https://si.geilicdn.com/wdseller1580621215-093f000001955a68129d0a8133cc_828_828.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1891333630-792b00000192f64817a10a20e2c5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p20" data-src="https://si.geilicdn.com/pcitem1891333630-792b00000192f64817a10a20e2c5_1074_1074.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p21" data-src="https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p22" data-src="https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-43d400000198685415e70a23111a_675_710.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p23" data-src="https://si.geilicdn.com/wdseller1580621215-43d400000198685415e70a23111a_675_710.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759211787007CB1F11A5-D19A-4197-B6C7-346B3335C29B.jpg?timeStamp=1759314960968" alt="Produit Legit Flow"/><button class="add" data-id="p24" data-src="https://oss.acbuy.com/temp/pda_1759211787007CB1F11A5-D19A-4197-B6C7-346B3335C29B.jpg?timeStamp=1759314960968">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-698f00000198827cadc10a20e273_1206_1028.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p25" data-src="https://si.geilicdn.com/wdseller1580621215-698f00000198827cadc10a20e273_1206_1028.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem1580621215-000b000001928a0991050a231316_800_800.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p26" data-src="https://si.geilicdn.com/pcitem1580621215-000b000001928a0991050a231316_800_800.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open291535263-1234478995-35bf00000196cf09472c0a23b4de_1278_1918.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p27" data-src="https://si.geilicdn.com/open291535263-1234478995-35bf00000196cf09472c0a23b4de_1278_1918.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1758413473825851B4359-DF13-4260-8992-257552B11E28.jpg?timeStamp=1759315150034" alt="Produit Legit Flow"/><button class="add" data-id="p28" data-src="https://oss.acbuy.com/temp/pda_1758413473825851B4359-DF13-4260-8992-257552B11E28.jpg?timeStamp=1759315150034">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1685879877-252808396-11710000019435731f6f0a8115b5_1000_1000.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p29" data-src="https://si.geilicdn.com/open1685879877-252808396-11710000019435731f6f0a8115b5_1000_1000.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1652813497-252808396-12ef00000191efae77380a239383_800_800.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p30" data-src="https://si.geilicdn.com/open1652813497-252808396-12ef00000191efae77380a239383_800_800.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1834474013-252808396-3cf0000001993809381e0a23b491_1667_1667.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p31" data-src="https://si.geilicdn.com/open1834474013-252808396-3cf0000001993809381e0a23b491_1667_1667.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1bca0000019839bd91090a20e273_1156_1156.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p32" data-src="https://si.geilicdn.com/wdseller1580621215-1bca0000019839bd91090a20e273_1156_1156.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p33" data-src="https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-37df00000198f96706010a2304aa_1206_1130.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p34" data-src="https://si.geilicdn.com/wdseller1580621215-37df00000198f96706010a2304aa_1206_1130.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/wdseller1580621215-1cca00000196297b5f5c0a23111a_1058_1058.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p35" data-src="https://si.geilicdn.com/wdseller1580621215-1cca00000196297b5f5c0a23111a_1058_1058.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1395528662-252808396-53ea000001924be39d640a8133b5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p36" data-src="https://si.geilicdn.com/open1395528662-252808396-53ea000001924be39d640a8133b5_1074_1074.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1704920025-1234478995-67c90000018f1f54082e0a8115b5-unadjust_409_447.png" alt="Produit Legit Flow"/><button class="add" data-id="p37" data-src="https://si.geilicdn.com/open1704920025-1234478995-67c90000018f1f54082e0a8115b5-unadjust_409_447.png">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://oss.acbuy.com/temp/pda_1759221839293162E8D11-9A4F-40FA-BB6A-2F966AFB0162.jpg?timeStamp=1759315448371" alt="Produit Legit Flow"/><button class="add" data-id="p38" data-src="https://oss.acbuy.com/temp/pda_1759221839293162E8D11-9A4F-40FA-BB6A-2F966AFB0162.jpg?timeStamp=1759315448371">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p39" data-src="https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg">+ Panier</button></figure>
+      <figure class="item"><img loading="lazy" src="https://si.geilicdn.com/open1690402957-1234478995-4d98000001944f270d940a8115b5_1179_1180.jpg" alt="Produit Legit Flow"/><button class="add" data-id="p40" data-src="https://si.geilicdn.com/open1690402957-1234478995-4d98000001944f270d940a8115b5_1179_1180.jpg">+ Panier</button></figure>
+
+      <!-- ======= NOUVELLE CARTE : DUNK LOW (VARIANTES) ======= -->
+      <figure class="item dunk" data-group="dunk">
+        <!-- vignette = 1ère variante -->
+        <img loading="lazy" src="https://si.geilicdn.com/pcitem901858814557-02940000018f7a23bbcf0a23959c_800_600.jpg" alt="Dunk Low (variantes)"/>
+        <span class="tag">Dunk Low — Variantes</span>
+        <button class="add" data-id="dunk-1" data-src="https://si.geilicdn.com/pcitem901858814557-02940000018f7a23bbcf0a23959c_800_600.jpg">+ Panier</button>
+      </figure>
+
+    </div>
+  </div>
+</main>
+
+<!-- Lightbox / diaporama -->
+<dialog id="modal" aria-modal="true" aria-label="Agrandissement image">
+  <div class="lightbox">
+    <div class="count" id="count">1/1</div>
+    <button class="arrow left" id="prev" aria-label="Image précédente">‹</button>
+    <img id="big" alt="Image produit"/>
+    <button class="arrow right" id="next" aria-label="Image suivante">›</button>
+    <button class="add-current" id="addCurrent">+ Panier (cette image)</button>
+    <button class="x" id="close" aria-label="Fermer">✕</button>
+  </div>
+</dialog>
+
 <script>
+  /* ========== Données : variantes DUNK LOW ========== */
+  const DUNK_VARIANTS = [
+    "https://si.geilicdn.com/pcitem901858814557-02940000018f7a23bbcf0a23959c_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-00ff0000018f7a2399690a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-05e30000018f7a23b9910a20e7c7_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5be90000018f7a23b7310a2395f2_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5e660000018f7a23b4b20a21146b_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5b9c0000018f7a23b2570a2304aa_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5c070000018f7a23b01b0a231316_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04580000018f7a23adc10a2303ee_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04d30000018f7a23ab710a2102c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04550000018f7a23a8a20a81347d_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04c40000018f7a23a5cb0a230115_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-06710000018f7a23a36f0a210349_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04570000018f7a23a0bd0a2396f4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-7e480000018f7a239e510a23041a_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-07080000018f7a239bdc0a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-02440000018f7a2a15b70a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5d4d0000018f7a2a3f010a231316_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-06260000018f7a2ab0610a230115_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-0a5a0000018f7a2ade280a22d172_800_800.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5d780000018f7a2b13540a231316_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-04590000018f7a2b58430a210256_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-05140000018f7a2b8fa40a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-08b20000018f7a2be3010a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-05ff0000018f7a2c1e4e0a2303ee_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a7e0000018f51d7efe80a20e7c7_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-56150000018f51d7da3f0a20e672_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a9b0000018f51d7ee470a210349_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-58a90000018f51d7ece00a23037f_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-56670000018f51d7eb830a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a820000018f51d7e9d00a2102c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5bd60000018f51d7e8230a2303ee_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a940000018f51d7e68a0a23038e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5b920000018f51d7e5080a20e273_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a030000018f51d7e39a0a210256_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-58e50000018f51d7e1e30a2301b4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-57130000018f51d7e0600a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-594f0000018f51d7dee20a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-596a0000018f51d7dd6d0a23047e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5c180000018f51d7dbea0a8134f0_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5b410000018f51db3b830a23038e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5b6a0000018f51db53900a239846_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5cfc0000018f51db7a6e0a8133cc_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5ab70000018f51db92b30a210256_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a2b0000018f51dbb8860a23047e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5a110000018f51dbd8b00a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5c5b0000018f51dbf0310a20e273_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-573d0000018f51dc0bbf0a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5b520000018f51dc252f0a231316_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-5d0d0000018f51dc57930a8134f0_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-49d60000018f804f51c00a8133cc_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-49f70000018f804f2cf20a2396f4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-21690000018f804f4f0d0a23111a_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-209a0000018f804f4c760a2395f2_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1ffc0000018f804f49c40a2304aa_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4a7a0000018f804f47460a210349_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-44ac0000018f804f44830a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-47990000018f804f41bf0a2102c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-48910000018f804f3f2c0a20e273_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-46250000018f804f3cbc0a210256_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-46c80000018f804f39c60a2301b4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-480d0000018f804f37350a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4b0e0000018f804f347e0a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-440b0000018f804f31d80a20e672_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-49040000018f804f2f600a81347d_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4a990000018f805366390a20e7c7_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-48f50000018f80538ff20a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4a0e0000018f8052ed210a20e2c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4b680000018f8053c8660a210349_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4b010000018f80541fe30a2396f4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-49920000018f80545b700a239846_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-475b0000018f805478650a23057e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4c120000018f805494f00a2315ef_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-45c40000018f8054bea40a20e284_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-21210000018f8054df790a2304aa_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4a760000018f8054fcc20a20e2c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-4b080000018f8055282d0a8133cc_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-49490000018f8055429b0a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-21140000018f8055728d0a231316_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-76c00000018f7acb12250a2304aa_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1e2f0000018f7ac636ba0a20e2c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-77f40000018f7acb31c80a23111a_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1fbb0000018f7acb4bc30a230115_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1e780000018f7acb67700a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1ff90000018f7acb879d0a239846_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1f660000018f7acbb6180a20e273_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-79e90000018f7acbe3270a21146b_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-21580000018f7acc0f7d0a210349_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1fb50000018f7acc2d770a8133cc_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-248e0000018f7acc67410a22d172_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-20040000018f7accadbe0a2102c5_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1f8a0000018f7accdb040a2303ee_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-203f0000018f7acd01f30a239846_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1ded0000018f7acd2b1b0a2301b4_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-7a3c0000018f7acd68e90a21146b_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-20b00000018f7acda6480a8134f0_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-78750000018f7acdc6150a23111a_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-206a0000018f7ace16c90a239846_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-7a5b0000018f7ace39940a21146b_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-19a40000018f7ace601d0a23041a_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1f2a0000018f7ace82570a23047e_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-77af0000018f7aceb2960a2395f2_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-1f160000018f7aced68e0a207569_800_600.jpg",
+    "https://si.geilicdn.com/pcitem901858814557-21660000018f7acefa970a20e7c7_800_600.jpg",
+
+    "https://si.geilicdn.com/open1836249653-1234478995-28dc00000196aff27d0d0aa08290_800_800.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-2a0500000196aff2b9fe0a22d249_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-1f1b00000196aff2beb80a231226_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-1ecb00000196aff29ada0a231226_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3a8c00000196aff2a8c20a23b4de_1824_1368.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3adc00000196aff2c4ac0a23b4de_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-327800000196aff2ade00aa0834c_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-394f00000196aff2cd560a8133b0_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-292600000196aff2a33a0aa08290_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-330600000196aff2d3390aa0834c_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-29cc00000196aff2d7e40aa08290_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-30c200000196aff2ddaa0a8115c2_1074_1074.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-335000000196aff2e2390aa0834c_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3b7e00000196aff2e62e0a23b4de_1536_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-2fda00000196aff292be0a8115c2_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-2a3800000196aff2ec020aa08290_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3bb600000196aff2f0f00a23b4de_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-203900000196aff2f90b0a231226_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-204f00000196aff2fdf00a231226_880_880.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-329200000196aff2b4890aa0834c_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-1ae100000196aff302f20a23b491_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3c2600000196aff3089e0a23b4de_1536_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-2ae400000196aff30f290aa08290_1920_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3c5600000196aff315cd0a23b4de_1440_1920.jpg",
+    "https://si.geilicdn.com/open1836249653-1234478995-3ae300000196aff3228b0a8133b0_800_800.jpg"
+  ];
+</script>
+
+<script>
+  // Lightbox / diaporama + ajout au panier depuis le diaporama
+  const modal = document.getElementById('modal');
+  const big = document.getElementById('big');
+  const closeBtn = document.getElementById('close');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const addCurrentBtn = document.getElementById('addCurrent');
+  const count = document.getElementById('count');
+
+  let currentSet = [];
+  let index = 0;
+
+  function updateViewer(){
+    big.src = currentSet[index];
+    count.textContent = (index+1) + "/" + currentSet.length;
+  }
+  function openViewer(set, startIdx=0){
+    currentSet = set.slice();
+    index = Math.max(0, Math.min(startIdx, currentSet.length-1));
+    updateViewer();
+    modal.setAttribute('open','');
+  }
+  function step(d){
+    if(!currentSet.length) return;
+    index = (index + d + currentSet.length) % currentSet.length;
+    updateViewer();
+  }
+
+  // Ouvrir: image simple ou groupe "dunk"
+  document.querySelectorAll('.item img').forEach(img => {
+    img.addEventListener('click', (e)=>{
+      const fig = e.target.closest('figure');
+      if(fig && fig.dataset.group === 'dunk'){
+        openViewer(DUNK_VARIANTS, 0);
+      }else{
+        openViewer([img.src], 0);
+      }
+    });
+  });
+
+  // Contrôles
+  prevBtn.addEventListener('click', ()=> step(-1));
+  nextBtn.addEventListener('click', ()=> step(1));
+  addCurrentBtn.addEventListener('click', ()=>{
+    if(!currentSet.length) return;
+    addToCart('dunk-variant-' + index, currentSet[index]);
+    addCurrentBtn.textContent = 'Ajouté ✓';
+    setTimeout(()=> addCurrentBtn.textContent = '+ Panier (cette image)', 900);
+  });
+
+  closeBtn.addEventListener('click', ()=> modal.removeAttribute('open'));
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.removeAttribute('open'); });
+  document.addEventListener('keydown', (e)=>{
+    if(!modal.open) return;
+    if(e.key === 'Escape') modal.removeAttribute('open');
+    if(e.key === 'ArrowRight') step(1);
+    if(e.key === 'ArrowLeft') step(-1);
+  });
+</script>
+
+<script>
+  // Panier (inchangé) + fonction utilisée par les boutons
   const CART_KEY = 'lf_cart_v1';
   function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ return []; } }
   function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateMiniCount(); }
@@ -136,7 +344,23 @@ dialog[open]{ display:flex; }
     const c = getCart(); const n = c.reduce((s,i)=>s + (i.qty||1), 0);
     b.textContent = n;
   }
+  function addToCart(id, src){
+    const c = getCart();
+    const i = c.findIndex(x => x.id === id);
+    if(i >= 0){ c[i].qty = (c[i].qty||1) + 1; }
+    else{ c.push({id, src, qty:1}); }
+    saveCart(c);
+  }
   document.addEventListener('DOMContentLoaded', updateMiniCount);
+
+  // Boutons "+ Panier" des cartes
+  document.querySelectorAll('.add').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      addToCart(btn.dataset.id, btn.dataset.src);
+      btn.textContent = 'Ajouté ✓'; setTimeout(()=> btn.textContent = '+ Panier', 900);
+    });
+  });
 </script>
+
 </body>
 </html>
