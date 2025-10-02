@@ -3,26 +3,33 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Legit Flow — Panier</title>
+<title>Panier — Legit Flow</title>
 <style>
-:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
-*{ box-sizing:border-box; } body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
-.container{ width:min(1100px, 95vw); margin:0 auto; padding: 20px 0; }
-header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(8px); background:rgba(255,255,255,.85); border-bottom:1px solid #eee; }
-.nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
-.brand{ display:inline-flex; align-items:center; gap:.7rem; font-weight:700; letter-spacing:.2px; }
-.dot{ width:30px; height:30px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 8px 22px rgba(60,100,255,.25); }
-.actions{ display:flex; gap:8px; align-items:center; }
-.btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:10px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
-h1{ font-size:clamp(1.5rem, 2vw + 1rem, 2.2rem); margin:10px 0 8px; font-weight:800; }
-.table{ width:100%; border-collapse:collapse; margin-top:16px; }
-.table th, .table td{ padding:12px; border-bottom:1px solid #eee; text-align:left; }
-.qty{ display:inline-flex; border:1px solid #111; border-radius:999px; overflow:hidden; }
-.qty button{ border:0; background:#fff; padding:6px 10px; cursor:pointer; }
-.qty span{ min-width:28px; text-align:center; display:inline-block; }
-.right{ text-align:right; }
-.total{ font-weight:700; font-size:1.1rem; }
-.empty{ color:#6b7280; margin: 26px 0; }
+:root{ --bg:#fff; --text:#101418; --muted:#6b7280; --accent:#111; --radius:14px; }
+*{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:var(--bg)}
+.container{width:min(1200px,95vw);margin:0 auto}
+header{position:sticky;top:0;z-index:30;backdrop-filter:saturate(120%) blur(8px);background:rgba(255,255,255,.85);border-bottom:1px solid #eee}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.brand{display:inline-flex;align-items:center;gap:.6rem;font-weight:700}
+.dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#79f,#5af)}
+.actions{display:flex;gap:8px;align-items:center}
+.btn,.cta{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:8px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem}
+h1{font-size:clamp(1.4rem,2vw+1rem,2.2rem);margin:14px 0}
+.table{margin:10px 0 24px;border:1px solid #eee;border-radius:var(--radius);overflow:hidden}
+.row{display:grid;grid-template-columns:80px 1fr 100px 120px 100px 80px;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #f1f1f1}
+.row.head{background:#fafafa;font-weight:600}
+.row:last-child{border-bottom:0}
+.row img{width:80px;height:80px;object-fit:contain;background:#fff;border:1px solid #eee;border-radius:10px}
+.qty{display:inline-flex;border:1px solid #ddd;border-radius:999px;overflow:hidden}
+.qty button{border:0;background:#fff;padding:6px 10px;cursor:pointer}
+.qty span{min-width:28px;text-align:center;display:inline-block}
+.total{display:flex;justify-content:flex-end;font-weight:700;margin:12px 0;font-size:1.1rem}
+.actions-bar{display:flex;justify-content:space-between;gap:10px;margin:18px 0}
+.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;border:1px solid #ddd;font-size:.8rem}
+@media (max-width:760px){
+  .row{grid-template-columns:60px 1fr 80px 110px 100px 60px;font-size:.9rem}
+  .row img{width:60px;height:60px}
+}
 </style>
 </head>
 <body>
@@ -31,77 +38,90 @@ h1{ font-size:clamp(1.5rem, 2vw + 1rem, 2.2rem); margin:10px 0 8px; font-weight:
     <div class="brand"><div class="dot"></div><span>Legit Flow</span></div>
     <div class="actions">
       <a class="btn" href="index.html">Vitrine</a>
+      <a class="btn" href="panier.html">Panier <span id="mini-count" class="badge">0</span></a>
       <a class="cta" href="paiement.html">Paiement</a>
     </div>
   </div>
 </header>
 
-<div class="container">
+<main class="container">
   <h1>Votre panier</h1>
-  <div id="empty" class="empty" style="display:none">Votre panier est vide.</div>
-  <table class="table" id="cartTable" style="display:none">
-    <thead>
-      <tr><th>Produit</th><th>Prix</th><th>Qté</th><th class="right">Sous-total</th></tr>
-    </thead>
-    <tbody id="rows"></tbody>
-    <tfoot>
-      <tr><td colspan="3" class="right total">Total</td><td class="right total" id="total">0€</td></tr>
-    </tfoot>
-  </table>
-</div>
+
+  <div class="table" id="table">
+    <div class="row head">
+      <div>Photo</div><div>Article</div><div>Prix</div><div>Quantité</div><div>Sous-total</div><div></div>
+    </div>
+    <!-- lignes JS -->
+  </div>
+
+  <div class="total">Total à payer : <span id="grandTotal" style="margin-left:8px">0€</span></div>
+
+  <div class="actions-bar">
+    <button id="clear" class="btn">Vider le panier</button>
+    <a class="cta" href="paiement.html">Aller au paiement</a>
+  </div>
+</main>
 
 <script>
-function getCart(){ return JSON.parse(localStorage.getItem('cart') || '{}'); }
-function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); render(); }
-
-const rows = document.getElementById('rows');
-const totalEl = document.getElementById('total');
-const tbl = document.getElementById('cartTable');
-const empty = document.getElementById('empty');
+const CART_KEY='lf_cart_v1';
+function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return[]} }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateMiniCount(); }
+function updateMiniCount(){
+  const b=document.getElementById('mini-count'); if(!b) return;
+  const c=getCart(); b.textContent=c.reduce((s,i)=>s+(i.qty||1),0);
+}
+function money(n){ return (Math.round((n||0)*100)/100).toFixed(2).replace('.',',')+'€'; }
 
 function render(){
-  const c = getCart();
-  const items = Object.values(c);
-  if(items.length === 0){
-    tbl.style.display = 'none'; empty.style.display = 'block'; return;
-  }
-  empty.style.display = 'none'; tbl.style.display = 'table';
-  rows.innerHTML = '';
-  let total = 0;
-  items.forEach(it => {
-    const tr = document.createElement('tr');
-    const sub = it.price * it.qty;
-    total += sub;
-    tr.innerHTML = `
-      <td><img src="${it.img}" alt="" style="width:46px;height:46px;object-fit:contain;vertical-align:middle;margin-right:8px;border:1px solid #eee;border-radius:8px;background:#fff" /> ${it.title}</td>
-      <td>${it.price}€</td>
-      <td>
+  const table=document.getElementById('table');
+  // supprime les anciennes lignes (hors head)
+  [...table.querySelectorAll('.row.data')].forEach(n=>n.remove());
+  const cart=getCart();
+  let total=0;
+  cart.forEach((it,idx)=>{
+    const row=document.createElement('div');
+    row.className='row data';
+    const price = Number(it.price||0);
+    const subtotal = price * (it.qty||1);
+    total += subtotal;
+
+    row.innerHTML = `
+      <div><img src="${it.src||''}" alt=""></div>
+      <div>${it.name||'Article'}</div>
+      <div>${isNaN(price)?'—':money(price)}</div>
+      <div>
         <div class="qty">
-          <button data-id="${it.id}" data-delta="-1">–</button>
-          <span>${it.qty}</span>
-          <button data-id="${it.id}" data-delta="1">+</button>
+          <button data-act="dec" data-i="${idx}">−</button>
+          <span>${it.qty||1}</span>
+          <button data-act="inc" data-i="${idx}">+</button>
         </div>
-      </td>
-      <td class="right">${sub}€</td>
+      </div>
+      <div>${isNaN(subtotal)?'—':money(subtotal)}</div>
+      <div><button data-act="del" data-i="${idx}" class="btn">Suppr.</button></div>
     `;
-    rows.appendChild(tr);
+    table.appendChild(row);
   });
-  totalEl.textContent = total + '€';
+  document.getElementById('grandTotal').textContent = money(total);
+  updateMiniCount();
 }
 
-rows.addEventListener('click', (e) => {
-  const btn = e.target.closest('button[data-delta]');
-  if(!btn) return;
-  const id = btn.dataset.id;
-  const delta = parseInt(btn.dataset.delta, 10);
-  const c = getCart();
-  if(!c[id]) return;
-  c[id].qty += delta;
-  if(c[id].qty <= 0){ delete c[id]; }
-  setCart(c);
+document.addEventListener('click',(e)=>{
+  const btn=e.target.closest('button'); if(!btn) return;
+  const act=btn.dataset.act; const i=Number(btn.dataset.i);
+  if(!act || isNaN(i)) return;
+  const cart=getCart();
+  if(!cart[i]) return;
+  if(act==='inc'){ cart[i].qty=(cart[i].qty||1)+1; }
+  if(act==='dec'){ cart[i].qty=Math.max(1,(cart[i].qty||1)-1); }
+  if(act==='del'){ cart.splice(i,1); }
+  saveCart(cart); render();
 });
 
-render();
+document.getElementById('clear').addEventListener('click',()=>{
+  localStorage.removeItem(CART_KEY); render();
+});
+
+document.addEventListener('DOMContentLoaded', ()=>{ render(); });
 </script>
 </body>
 </html>
