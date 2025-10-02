@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paiement — Legit Flow</title>
+<style>
+:root{ --bg:#fff; --text:#101418; --muted:#6b7280; --accent:#111; --radius:14px; }
+*{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:var(--bg)}
+.container{width:min(900px,95vw);margin:0 auto}
+header{position:sticky;top:0;z-index:30;backdrop-filter:saturate(120%) blur(8px);background:rgba(255,255,255,.85);border-bottom:1px solid #eee}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.brand{display:inline-flex;align-items:center;gap:.6rem;font-weight:700}
+.dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#79f,#5af)}
+.actions{display:flex;gap:8px;align-items:center}
+.btn,.cta{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:8px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;cursor:pointer}
+h1{font-size:clamp(1.4rem,2vw+1rem,2.2rem);margin:14px 0}
+.card{border:1px solid #eee;border-radius:var(--radius);padding:14px;margin:14px 0;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{font-size:.9rem;color:var(--muted)}
+input,textarea,select{width:100%;border:1px solid #e5e7eb;border-radius:10px;padding:10px}
+textarea{min-height:140px;white-space:pre-wrap}
+.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;border:1px solid #ddd;font-size:.8rem}
+.total{font-weight:700}
+.actions-line{display:flex;flex-wrap:wrap;gap:10px}
+small.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand"><div class="dot"></div><span>Legit Flow</span></div>
+    <div class="actions">
+      <a class="btn" href="index.html">Vitrine</a>
+      <a class="btn" href="panier.html">Panier <span id="mini-count" class="badge">0</span></a>
+      <span class="cta">Paiement</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <h1>Paiement / Validation de commande</h1>
+
+  <div class="card" id="resume">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong>Résumé</strong>
+      <div class="total">Total : <span id="grandTotal">0€</span></div>
+    </div>
+    <div id="list"></div>
+    <small class="muted">Vérifiez les articles avant d’envoyer.</small>
+  </div>
+
+  <div class="card">
+    <strong>Vos informations</strong>
+    <div class="row" style="margin-top:8px">
+      <div>
+        <label>Nom complet</label>
+        <input id="name" placeholder="Nom Prénom" />
+      </div>
+      <div>
+        <label>Téléphone</label>
+        <input id="phone" placeholder="06..." />
+      </div>
+      <div>
+        <label>E-mail</label>
+        <input id="email" placeholder="vous@exemple.com" />
+      </div>
+      <div>
+        <label>Adresse (si livraison)</label>
+        <input id="address" placeholder="Rue, ville, code postal" />
+      </div>
+      <div>
+        <label>Livraison / Retrait</label>
+        <select id="shipping">
+          <option>Retrait</option>
+          <option>Livraison standard</option>
+          <option>Livraison express</option>
+        </select>
+      </div>
+      <div>
+        <label>Moyen de paiement</label>
+        <select id="payment">
+          <option>Espèces</option>
+          <option>Virement</option>
+          <option>CB</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong>Message à envoyer (modifiable)</strong>
+    <textarea id="msg"></textarea>
+    <div class="actions-line" style="margin-top:10px">
+      <button class="btn" id="copy">Copier</button>
+      <a class="cta" id="sendMail" href="#">Envoyer par e-mail</a>
+      <a class="btn" id="sendSms" href="#">Envoyer par message</a>
+    </div>
+    <small class="muted">E-mail : cbmda.wathces@gmail.com — Téléphone : 0766167634</small>
+  </div>
+</main>
+
+<script>
+const CART_KEY='lf_cart_v1';
+const MAIL_TO='cbmda.wathces@gmail.com';
+const SMS_TO='0766167634';
+
+function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return[]} }
+function updateMiniCount(){
+  const b=document.getElementById('mini-count'); if(!b) return;
+  const c=getCart(); b.textContent=c.reduce((s,i)=>s+(i.qty||1),0);
+}
+function money(n){ return (Math.round((n||0)*100)/100).toFixed(2).replace('.',',')+'€'; }
+
+function buildMessage(cart, extra){
+  let lines = [];
+  lines.push("Bonjour, je souhaite commander :");
+  cart.forEach(it=>{
+    const p = Number(it.price||0);
+    const q = it.qty||1;
+    const st = isNaN(p)? '—' : money(p*q);
+    lines.push(`- ${q} × ${it.name||'Article'} — ${isNaN(p)?'prix ?':money(p)} (sous-total ${st})`);
+  });
+  const total = cart.reduce((s,i)=> s + (Number(i.price||0)*(i.qty||1)), 0);
+  lines.push("");
+  lines.push(`Total : ${money(total)}`);
+  lines.push("");
+  lines.push(`Nom: ${extra.name||''}`);
+  lines.push(`Téléphone: ${extra.phone||''}`);
+  lines.push(`E-mail: ${extra.email||''}`);
+  lines.push(`Adresse: ${extra.address||''}`);
+  lines.push(`Livraison/Retrait: ${extra.shipping||''}`);
+  lines.push(`Paiement: ${extra.payment||''}`);
+  return lines.join("\n");
+}
+
+function render(){
+  const list=document.getElementById('list');
+  list.innerHTML='';
+  const cart=getCart();
+  let total=0;
+
+  cart.forEach(it=>{
+    const line=document.createElement('div');
+    line.style.display='grid';
+    line.style.gridTemplateColumns='60px 1fr 70px 50px';
+    line.style.alignItems='center';
+    line.style.gap='10px';
+    line.style.padding='6px 0';
+    const price = Number(it.price||0);
+    total += (price * (it.qty||1));
+    line.innerHTML = `
+      <img src="${it.src||''}" style="width:60px;height:60px;object-fit:contain;border:1px solid #eee;border-radius:10px;background:#fff" />
+      <div>${it.name||'Article'}</div>
+      <div>${isNaN(price)?'—':money(price)}</div>
+      <div>× ${it.qty||1}</div>
+    `;
+    list.appendChild(line);
+  });
+
+  document.getElementById('grandTotal').textContent = money(total);
+  updateMiniCount();
+
+  // message
+  const extra = {
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    shipping: document.getElementById('shipping').value,
+    payment: document.getElementById('payment').value,
+  };
+  const msg = buildMessage(cart, extra);
+  document.getElementById('msg').value = msg;
+
+  // liens mail / sms
+  const subject = encodeURIComponent('Commande Legit Flow');
+  const body = encodeURIComponent(msg);
+  document.getElementById('sendMail').href = `mailto:${MAIL_TO}?subject=${subject}&body=${body}`;
+  document.getElementById('sendSms').href = `sms:${SMS_TO}?&body=${body}`;
+}
+
+['name','phone','email','address','shipping','payment'].forEach(id=>{
+  document.addEventListener('input', e=>{ if(e.target.id===id) render(); });
+});
+
+document.getElementById('copy').addEventListener('click', ()=>{
+  const ta=document.getElementById('msg');
+  ta.select(); ta.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+});
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>
