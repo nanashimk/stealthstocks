@@ -1,34 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Legit Flow — Panier</title>
-  <style>:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
-*{ box-sizing:border-box; }
-body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
-.container{ width:min(1400px, 95vw); margin:0 auto; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Legit Flow — Panier</title>
+<style>
+:root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
+*{ box-sizing:border-box; } body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
+.container{ width:min(1100px, 95vw); margin:0 auto; padding: 20px 0; }
 header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(8px); background:rgba(255,255,255,.85); border-bottom:1px solid #eee; }
 .nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
 .brand{ display:inline-flex; align-items:center; gap:.7rem; font-weight:700; letter-spacing:.2px; }
-.dot{ width:38px; height:38px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 8px 22px rgba(60,100,255,.25); }
+.dot{ width:30px; height:30px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 8px 22px rgba(60,100,255,.25); }
 .actions{ display:flex; gap:8px; align-items:center; }
 .btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:10px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
-.hero{ text-align:center; padding: 46px 0 18px; }
-.kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; }
-h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:800; }
-.lead{ color:#4b5563; max-width:900px; margin:0 auto 24px; }
-.badge{ display:inline-grid; place-items:center; min-width:26px; height:26px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
-.list{ display:grid; grid-template-columns: repeat(12, 1fr); gap:20px; padding: 24px 0 60px; }
-.row{ grid-column: span 6; display:grid; grid-template-columns: 120px 1fr auto; align-items:center; gap:14px; padding:14px; border:1px solid #eee; border-radius:14px; background:#fafafa; }
-.row img{ width:120px; height:100px; object-fit:contain; background:#fff; border:1px solid #eee; border-radius:12px; }
-.qty{ display:inline-flex; align-items:center; gap:8px; }
-.qty button{ width:32px; height:32px; border-radius:8px; border:1px solid #111; background:#fff; cursor:pointer; }
-.remove{ border:1px solid #c00; color:#c00; background:#fff; border-radius:999px; padding:8px 12px; cursor:pointer; }
-.actions-bar{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding: 8px 0 24px; }
-@media (max-width: 900px){ .row{ grid-column: span 12; } }
-.empty{ text-align:center; color:#6b7280; padding:40px 0; }
-  </style>
+h1{ font-size:clamp(1.5rem, 2vw + 1rem, 2.2rem); margin:10px 0 8px; font-weight:800; }
+.table{ width:100%; border-collapse:collapse; margin-top:16px; }
+.table th, .table td{ padding:12px; border-bottom:1px solid #eee; text-align:left; }
+.qty{ display:inline-flex; border:1px solid #111; border-radius:999px; overflow:hidden; }
+.qty button{ border:0; background:#fff; padding:6px 10px; cursor:pointer; }
+.qty span{ min-width:28px; text-align:center; display:inline-block; }
+.right{ text-align:right; }
+.total{ font-weight:700; font-size:1.1rem; }
+.empty{ color:#6b7280; margin: 26px 0; }
+</style>
 </head>
 <body>
 <header>
@@ -36,87 +31,77 @@ h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:
     <div class="brand"><div class="dot"></div><span>Legit Flow</span></div>
     <div class="actions">
       <a class="btn" href="index.html">Vitrine</a>
-      <a class="btn" href="panier.html">Panier <span id="mini-count" class="badge">0</span></a>
       <a class="cta" href="paiement.html">Paiement</a>
     </div>
   </div>
 </header>
-  <section class="hero">
-    <div class="container">
-      <div class="kicker">Panier</div>
-      <h1>Vos articles</h1>
-      <p class="lead">Modifiez les quantités ou supprimez des articles. Aucun prix n'est affiché.</p>
-    </div>
-  </section>
-  <main>
-    <div class="container">
-      <div class="actions-bar">
-        <div><strong>Total articles:</strong> <span id="total">0</span></div>
-        <div class="actions">
-          <button id="clear" class="btn">Vider le panier</button>
-          <a href="paiement.html" class="cta">Procéder au paiement</a>
-        </div>
-      </div>
-      <div id="list" class="list"></div>
-      <div id="empty" class="empty" style="display:none">Votre panier est vide.</div>
-    </div>
-  </main>
-  <script>
-    function render(){
-      const list = document.getElementById('list');
-      const empty = document.getElementById('empty');
-      const total = document.getElementById('total');
-      const c = getCart();
-      list.innerHTML = '';
-      let n = 0;
-      if(!c.length){ empty.style.display='block'; total.textContent='0'; }
-      else{
-        empty.style.display='none';
-        c.forEach(item => {
-          n += (item.qty||1);
-          const row = document.createElement('div');
-          row.className='row';
-          row.innerHTML = `
-            <img src="${item.src}" alt="Produit"/>
-            <div class="qty">
-              <button data-id="${item.id}" data-d="-1">-</button>
-              <span>Qté: ${item.qty||1}</span>
-              <button data-id="${item.id}" data-d="1">+</button>
-            </div>
-            <button class="remove" data-id="${item.id}">Retirer</button>
-          `;
-          list.appendChild(row);
-        });
-        total.textContent = n;
-      }
-      saveCart(c);
-    }
-    document.addEventListener('click', (e)=>{
-      if(e.target.matches('.remove')){
-        const id = e.target.dataset.id;
-        const c = getCart().filter(x => x.id !== id);
-        saveCart(c); render();
-      }
-      if(e.target.matches('.qty button')){
-        const id = e.target.dataset.id; const d = parseInt(e.target.dataset.d);
-        const c = getCart();
-        const i = c.findIndex(x => x.id === id);
-        if(i>=0){ c[i].qty = Math.max(1, (c[i].qty||1) + d); saveCart(c); render(); }
-      }
-    });
-    document.getElementById('clear').addEventListener('click', ()=>{ saveCart([]); render(); });
-    document.addEventListener('DOMContentLoaded', render);
-  </script>
+
+<div class="container">
+  <h1>Votre panier</h1>
+  <div id="empty" class="empty" style="display:none">Votre panier est vide.</div>
+  <table class="table" id="cartTable" style="display:none">
+    <thead>
+      <tr><th>Produit</th><th>Prix</th><th>Qté</th><th class="right">Sous-total</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+    <tfoot>
+      <tr><td colspan="3" class="right total">Total</td><td class="right total" id="total">0€</td></tr>
+    </tfoot>
+  </table>
+</div>
+
 <script>
-  const CART_KEY = 'lf_cart_v1';
-  function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ return []; } }
-  function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateMiniCount(); }
-  function updateMiniCount(){
-    const b = document.getElementById('mini-count'); if(!b) return;
-    const c = getCart(); const n = c.reduce((s,i)=>s + (i.qty||1), 0);
-    b.textContent = n;
+function getCart(){ return JSON.parse(localStorage.getItem('cart') || '{}'); }
+function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); render(); }
+
+const rows = document.getElementById('rows');
+const totalEl = document.getElementById('total');
+const tbl = document.getElementById('cartTable');
+const empty = document.getElementById('empty');
+
+function render(){
+  const c = getCart();
+  const items = Object.values(c);
+  if(items.length === 0){
+    tbl.style.display = 'none'; empty.style.display = 'block'; return;
   }
-  document.addEventListener('DOMContentLoaded', updateMiniCount);
+  empty.style.display = 'none'; tbl.style.display = 'table';
+  rows.innerHTML = '';
+  let total = 0;
+  items.forEach(it => {
+    const tr = document.createElement('tr');
+    const sub = it.price * it.qty;
+    total += sub;
+    tr.innerHTML = `
+      <td><img src="${it.img}" alt="" style="width:46px;height:46px;object-fit:contain;vertical-align:middle;margin-right:8px;border:1px solid #eee;border-radius:8px;background:#fff" /> ${it.title}</td>
+      <td>${it.price}€</td>
+      <td>
+        <div class="qty">
+          <button data-id="${it.id}" data-delta="-1">–</button>
+          <span>${it.qty}</span>
+          <button data-id="${it.id}" data-delta="1">+</button>
+        </div>
+      </td>
+      <td class="right">${sub}€</td>
+    `;
+    rows.appendChild(tr);
+  });
+  totalEl.textContent = total + '€';
+}
+
+rows.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-delta]');
+  if(!btn) return;
+  const id = btn.dataset.id;
+  const delta = parseInt(btn.dataset.delta, 10);
+  const c = getCart();
+  if(!c[id]) return;
+  c[id].qty += delta;
+  if(c[id].qty <= 0){ delete c[id]; }
+  setCart(c);
+});
+
+render();
 </script>
 </body>
 </html>
