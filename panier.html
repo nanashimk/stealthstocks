@@ -3,59 +3,46 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Legit Flow — Panier</title>
-<meta name="description" content="Panier — Legit Flow." />
+<title>Panier — Legit Flow</title>
+<meta name="description" content="Votre panier — Legit Flow." />
 <style>
 :root{ --bg:#ffffff; --text:#101418; --muted:#6b7280; --radius:18px; --accent:#111; }
 *{ box-sizing:border-box; }
 body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--text); background:var(--bg); }
-.container{ width:min(1100px, 95vw); margin:0 auto; }
-
+.container{ width:min(1200px, 95vw); margin:0 auto; }
 header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(120%) blur(8px); background:rgba(255,255,255,.85); border-bottom:1px solid #eee; }
-.nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
-.brand{ display:inline-flex; align-items:center; gap:.7rem; font-weight:700; letter-spacing:.2px; }
-.dot{ width:38px; height:38px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 8px 22px rgba(60,100,255,.25); }
+.nav{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; }
+.brand{ display:inline-flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.2px; }
+.dot{ width:28px; height:28px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #79f, #5af); box-shadow: 0 6px 18px rgba(60,100,255,.22); }
 .actions{ display:flex; gap:8px; align-items:center; }
-.btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:10px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
+.btn, .cta{ border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:999px; padding:8px 12px; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; }
+.badge{ display:inline-grid; place-items:center; min-width:24px; height:24px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
 
-.hero{ text-align:center; padding: 46px 0 10px; }
+main{ padding:24px 0 56px; }
+h1{ font-size:clamp(1.3rem, 2vw + .6rem, 2.1rem); margin:0 0 8px; font-weight:800; }
 .kicker{ color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; }
-h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:800; }
-.lead{ color:#4b5563; max-width:900px; margin:0 auto 24px; }
 
-.badge{ display:inline-grid; place-items:center; min-width:26px; height:26px; padding:0 6px; border-radius:999px; border:1px solid #ddd; font-size:.8rem; }
+.table{ width:100%; border-collapse: collapse; margin-top:16px; }
+.table th, .table td{ border-bottom:1px solid #eee; padding:12px 8px; text-align:left; vertical-align:middle; }
+.table th{ color:#6b7280; font-weight:600; font-size:.9rem; }
+.item{ display:flex; align-items:center; gap:12px; }
+.item img{ width:64px; height:64px; object-fit:cover; border-radius:12px; border:1px solid #eee; background:#fff; }
 
-/* Cart */
-.cart{ display:grid; grid-template-columns: 1fr; gap:16px; padding: 12px 0 64px; }
-.item{ display:grid; grid-template-columns: 90px 1fr auto auto auto; align-items:center; gap:14px; background:#fafafa; border:1px solid #eee; border-radius:14px; padding:14px; }
-.item img{ width:90px; height:90px; object-fit:contain; background:#fff; border-radius:12px; }
-.item .title{ font-weight:600; }
-.item .price, .item .subtotal{ color:#374151; font-variant-numeric: tabular-nums; }
-.qty{ display:inline-flex; align-items:center; gap:8px; border:1px solid #ddd; background:#fff; border-radius:999px; padding:6px 10px; }
-.qty button{ border:0; background:transparent; font-size:1.1rem; width:26px; height:26px; cursor:pointer; }
-.qty input{ width:42px; text-align:center; border:0; outline:none; font-weight:600; }
-.remove{ border:1px solid #111; background:#fff; color:#111; border-radius:999px; padding:6px 10px; cursor:pointer; }
+.qty{ display:inline-flex; border:1px solid #ccc; border-radius:999px; overflow:hidden; }
+.qty button{ background:#fff; border:0; padding:6px 10px; cursor:pointer; }
+.qty input{ width:44px; text-align:center; border:0; outline:none; padding:6px; }
 
-.cart-empty{ border:1px dashed #ddd; border-radius:14px; padding:26px; text-align:center; color:#6b7280; }
+.row-actions{ display:flex; gap:8px; align-items:center; }
+.remove{ background:transparent; border:0; color:#ef4444; cursor:pointer; }
 
-.summary{ position:sticky; bottom:0; background:rgba(255,255,255,.9); backdrop-filter: blur(6px); border-top:1px solid #eee; }
-.summary .wrap{ display:flex; gap:14px; align-items:center; justify-content:space-between; padding:12px 0; }
-.total{ font-size:1.1rem; font-weight:700; }
-.actions-row{ display:flex; gap:10px; }
+.summary{ margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.total{ font-size:1.15rem; font-weight:800; }
+.controls{ display:flex; gap:8px; flex-wrap:wrap; }
 .secondary{ border:1px solid #ddd; }
-.clear{ border-color:#e11d48; color:#e11d48; }
+.empty{ text-align:center; padding:32px 0 48px; color:#6b7280; }
 
-@media (max-width: 800px){
-  .item{ grid-template-columns: 70px 1fr auto; grid-template-areas:
-    "thumb title remove"
-    "thumb qty subtotal";
-  }
-  .item img{ grid-area: thumb; width:70px; height:70px; }
-  .item .title{ grid-area: title; }
-  .item .price{ display:none; }
-  .item .subtotal{ grid-area: subtotal; justify-self:end; }
-  .qty{ grid-area: qty; }
-  .remove{ grid-area: remove; justify-self:end; }
+@media (max-width:720px){
+  .hide-sm{ display:none; }
 }
 </style>
 </head>
@@ -71,138 +58,153 @@ h1{ font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:10px 0 8px; font-weight:
   </div>
 </header>
 
-<section class="hero">
-  <div class="container">
-    <div class="kicker">Panier</div>
-    <h1>Votre panier</h1>
-    <p class="lead">Ajustez les quantités, supprimez des articles, et passez au paiement quand vous êtes prêt.</p>
-  </div>
-</section>
+<main class="container">
+  <div class="kicker">Votre panier</div>
+  <h1>Récapitulatif</h1>
 
-<main>
-  <div class="container">
-    <div id="cart" class="cart"></div>
+  <div id="empty" class="empty" style="display:none;">Votre panier est vide.</div>
+
+  <table class="table" id="cartTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Article</th>
+        <th class="hide-sm">Prix</th>
+        <th>Qté</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="cartBody"></tbody>
+  </table>
+
+  <div class="summary" id="summary" style="display:none;">
+    <div class="total" id="grandTotal">Total : 0€</div>
+    <div class="controls">
+      <a class="btn secondary" href="index.html">← Continuer</a>
+      <button id="clear" class="btn secondary" type="button">Vider le panier</button>
+      <a class="cta" href="paiement.html">Passer au paiement →</a>
+    </div>
   </div>
 </main>
 
-<div class="summary">
-  <div class="container wrap">
-    <div class="total"><span id="items-count">0</span> article(s) — <span id="grand-total">0 €</span></div>
-    <div class="actions-row">
-      <a href="index.html" class="btn secondary">Continuer</a>
-      <button id="clear" class="btn clear">Vider</button>
-      <a href="paiement.html" class="cta">Payer</a>
-    </div>
-  </div>
-</div>
-
 <script>
-// Cart storage utils (compatible avec index.html)
-function getCart(){ return JSON.parse(localStorage.getItem('cart') || '{}'); }
-function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); updateMiniCount(); }
+function getCart(){ try { return JSON.parse(localStorage.getItem('cart')||'{}'); } catch(e){ return {}; } }
+function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); render(); }
 function updateMiniCount(){ 
   const c = getCart(); 
-  const total = Object.values(c).reduce((sum, it) => sum + it.qty, 0);
-  document.getElementById('mini-count').textContent = total; 
+  const total = Object.values(c).reduce((s, it) => s + (it.qty||0), 0);
+  const badge = document.getElementById('mini-count');
+  if(badge) badge.textContent = total;
 }
 
-// Helpers
-const fmt = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' });
+function formatEuro(n){ return (Math.round(n*100)/100).toFixed(2).replace('.', ',') + '€'; }
 
-// Render
-const cartEl = document.getElementById('cart');
-const totalEl = document.getElementById('grand-total');
-const countEl = document.getElementById('items-count');
-const clearBtn = document.getElementById('clear');
-
-function renderCart(){
+function changeQty(id, delta){
   const cart = getCart();
-  const items = Object.values(cart);
-  cartEl.innerHTML = '';
+  if(!cart[id]) return;
+  cart[id].qty = Math.max(0, (cart[id].qty||0) + delta);
+  if(cart[id].qty === 0) delete cart[id];
+  setCart(cart);
+}
 
-  if(items.length === 0){
-    cartEl.innerHTML = '<div class="cart-empty">Votre panier est vide. Ajoutez des articles depuis la vitrine.</div>';
-  } else {
-    const frag = document.createDocumentFragment();
-    items.forEach(it => {
-      const row = document.createElement('div');
-      row.className = 'item';
-      row.dataset.id = it.id;
-      row.innerHTML = `
-        <img src="${it.img}" alt="${it.title}" />
-        <div class="title">${it.title}<div class="price">${fmt.format(it.price)}</div></div>
-        <div class="qty">
-          <button class="dec" aria-label="Diminuer">−</button>
-          <input class="q" type="number" min="0" value="${it.qty}"/>
-          <button class="inc" aria-label="Augmenter">+</button>
-        </div>
-        <div class="subtotal">${fmt.format(it.qty * it.price)}</div>
-        <button class="remove" aria-label="Supprimer">✕</button>
-      `;
-      frag.appendChild(row);
-    });
-    cartEl.appendChild(frag);
-  }
+function setQty(id, val){
+  const cart = getCart();
+  if(!cart[id]) return;
+  const n = Math.max(0, parseInt(val||'0', 10) || 0);
+  if(n === 0) delete cart[id]; else cart[id].qty = n;
+  setCart(cart);
+}
 
-  // Totals
-  const totalQty = items.reduce((s, it) => s + it.qty, 0);
-  const grand = items.reduce((s, it) => s + it.qty * it.price, 0);
-  countEl.textContent = totalQty;
-  totalEl.textContent = fmt.format(grand);
+function removeItem(id){
+  const cart = getCart();
+  delete cart[id];
+  setCart(cart);
+}
+
+function clearCart(){
+  localStorage.removeItem('cart');
+  render();
+}
+
+function render(){
+  const cart = getCart();
   updateMiniCount();
-}
+  const rows = [];
+  let total = 0;
 
-renderCart();
+  const keys = Object.keys(cart);
+  const empty = document.getElementById('empty');
+  const table = document.getElementById('cartTable');
+  const body = document.getElementById('cartBody');
+  const summary = document.getElementById('summary');
+  const grand = document.getElementById('grandTotal');
 
-// Interactions
-cartEl.addEventListener('click', (e) => {
-  const row = e.target.closest('.item');
-  if(!row) return;
-  const id = row.dataset.id;
-  const cart = getCart();
-  const it = cart[id];
-  if(!it) return;
-
-  if(e.target.classList.contains('inc')){
-    it.qty += 1;
-  } else if(e.target.classList.contains('dec')){
-    it.qty = Math.max(0, it.qty - 1);
-  } else if(e.target.classList.contains('remove')){
-    delete cart[id];
-  } else {
+  if(keys.length === 0){
+    empty.style.display = '';
+    table.style.display = 'none';
+    summary.style.display = 'none';
     return;
   }
 
-  if(it.qty === 0) delete cart[id];
-  setCart(cart);
-  renderCart();
+  empty.style.display = 'none';
+  table.style.display = '';
+  summary.style.display = '';
+
+  body.innerHTML = '';
+
+  keys.forEach(id => {
+    const it = cart[id];
+    const lineTotal = (it.price||0) * (it.qty||0);
+    total += lineTotal;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="item">
+          <img src="${it.img||''}" alt="${it.title||''}">
+          <div>
+            <div style="font-weight:600">${it.title||''}</div>
+            <div class="hide-sm" style="color:#6b7280;font-size:.9rem;">${it.price}€ / unité</div>
+          </div>
+        </div>
+      </td>
+      <td class="hide-sm">${it.price}€</td>
+      <td>
+        <div class="qty">
+          <button type="button" aria-label="diminuer" data-act="dec" data-id="${id}">−</button>
+          <input type="text" value="${it.qty||0}" data-act="set" data-id="${id}" inputmode="numeric" pattern="[0-9]*" />
+          <button type="button" aria-label="augmenter" data-act="inc" data-id="${id}">+</button>
+        </div>
+      </td>
+      <td>${formatEuro(lineTotal).replace(',00','')} </td>
+      <td class="row-actions"><button class="remove" data-act="del" data-id="${id}">Supprimer</button></td>
+    `;
+    body.appendChild(tr);
+  });
+
+  grand.textContent = 'Total : ' + formatEuro(total).replace(',00','');
+}
+
+document.getElementById('cartBody').addEventListener('click', (e)=>{
+  const b = e.target.closest('button');
+  if(!b) return;
+  const id = b.dataset.id;
+  const act = b.dataset.act;
+  if(act === 'dec') changeQty(id, -1);
+  if(act === 'inc') changeQty(id, +1);
+  if(act === 'del') removeItem(id);
 });
 
-cartEl.addEventListener('change', (e) => {
-  if(!e.target.classList.contains('q')) return;
-  const row = e.target.closest('.item'); if(!row) return;
-  const id = row.dataset.id;
-  const cart = getCart();
-  const it = cart[id]; if(!it) return;
-  let val = parseInt(e.target.value, 10);
-  if(isNaN(val) || val < 0) val = 0;
-  it.qty = val;
-  if(it.qty === 0) delete cart[id];
-  setCart(cart);
-  renderCart();
-});
-
-clearBtn.addEventListener('click', () => {
-  if(confirm('Vider le panier ?')){
-    localStorage.removeItem('cart');
-    renderCart();
+document.getElementById('cartBody').addEventListener('input', (e)=>{
+  const el = e.target;
+  if(el && el.dataset.act === 'set'){
+    setQty(el.dataset.id, el.value);
   }
 });
 
-// Keep in sync if cart changes in another tab
-window.addEventListener('storage', (evt) => {
-  if(evt.key === 'cart'){ renderCart(); }
-});
+document.getElementById('clear').addEventListener('click', clearCart);
+
+render();
 </script>
 </body>
 </html>
