@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalogue par catégories</title>
+<meta name="description" content="Parcourez les produits par catégories et accédez à chaque page produit.">
+<style>
+:root{--max:1200px}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;margin:0;background:#fafafa;color:#111;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.header{position:sticky;top:0;background:white;border-bottom:1px solid #eee;z-index:10}
+.header .wrap{max-width:var(--max);margin:auto;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 16px}
+nav a{margin-right:12px}
+.container{max-width:var(--max);margin:auto;padding:24px 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.card{background:white;border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.card .p{padding:12px}
+.price{font-weight:700}
+.badge{display:inline-block;background:#111;color:#fff;border-radius:999px;padding:2px 10px;font-size:12px}
+/* Gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.gallery img{width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid #eee;background:#fff}
+.hero{display:grid;grid-template-columns:1fr;gap:16px}
+.hero img{width:100%;height:auto;border-radius:12px;border:1px solid #eee;background:#fff}
+@media(min-width:900px){.hero{grid-template-columns:1.2fr .8fr}}
+/* Lightbox CSS-only using :target */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);align-items:center;justify-content:center;padding:20px}
+.lightbox img{max-width:95vw;max-height:85vh;display:block}
+.lightbox:target{display:flex}
+.lightbox a.close{position:absolute;top:12px;right:16px;font-size:30px;color:#fff}
+.details{background:#fff;border:1px solid #eee;border-radius:12px;padding:16px}
+.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #111}
+.btn.primary{background:#111;color:#fff}
+.small{font-size:12px;color:#555}
+footer{max-width:var(--max);margin:32px auto;padding:16px;color:#666}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="wrap">
+    <strong>Catalogue</strong>
+    <nav>
+      <a href="#Chaussures">Chaussures</a>
+      <a href="#Vêtements">Vêtements</a>
+      <a href="#Accessoires">Accessoires</a>
+      <a href="./index.html">Accueil</a>
+      <a href="./paiementgmail.html">Paiement</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  
+        <section id="Chaussures" aria-labelledby="h-Chaussures">
+            <h2 id="h-Chaussures">Chaussures</h2>
+            <div class="grid">
+                
+            <a href="./prada-americas-cup.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://oss.acbuy.com/temp/pda_175802715058252EC071A-AB99-4394-B6F7-EA9635884677.jpg?timeStamp=1759441127235" alt="Prada America's Cup vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Chaussures</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Prada America's Cup</h3>
+                    <div class="price">50€</div>
+                </div>
+            </a>
+            
+            <a href="./nike-tn.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01eN9jyr1BunKwquDEt_!!2217836820006-0-cib.jpg" alt="Nike TN vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Chaussures</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Nike TN</h3>
+                    
+                </div>
+            </a>
+            
+            <a href="./channel-runner-11.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/wdseller1913061311-398d00000195e1020dda0a239646_1176_1176.jpg" alt="Channel Runner 1:1 vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Chaussures</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Channel Runner 1:1</h3>
+                    
+                </div>
+            </a>
+            
+            <a href="./nike-dunk.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/pcitem901858814557-02940000018f7a23bbcf0a23959c_800_600.jpg" alt="Nike Dunk vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Chaussures</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Nike Dunk</h3>
+                    
+                </div>
+            </a>
+            
+            </div>
+        </section>
+        
+        <section id="Vêtements" aria-labelledby="h-Vêtements">
+            <h2 id="h-Vêtements">Vêtements</h2>
+            <div class="grid">
+                
+            <a href="./ensemble-corteiz.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/wdseller1580621215-46dd00000198685415b50a2315ef_1024_1024.jpg" alt="Ensemble Corteiz vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Vêtements</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Ensemble Corteiz</h3>
+                    
+                </div>
+            </a>
+            
+            <a href="./maillot-liverpool-25-26.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/f54aaf314c3045d29ab6ad15ff1f4e20_9366/Maillot_domicile_Liverpool_FC_25-26_Rouge_JV6423_01_laydown.jpg" alt="Maillot Liverpool 25/26 Domicile vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Vêtements</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Maillot Liverpool 25/26 Domicile</h3>
+                    <div class="price">70€</div>
+                </div>
+            </a>
+            
+            </div>
+        </section>
+        
+        <section id="Accessoires" aria-labelledby="h-Accessoires">
+            <h2 id="h-Accessoires">Accessoires</h2>
+            <div class="grid">
+                
+            <a href="./cagoule-corteiz.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg" alt="Cagoule Corteiz vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Accessoires</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Cagoule Corteiz</h3>
+                    
+                </div>
+            </a>
+            
+            <a href="./chaussette-base.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/wdseller1580621215-0c0700000196297ee7060a2395d6_800_800.jpg" alt="Chaussette Base vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Accessoires</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Chaussette Base</h3>
+                    
+                </div>
+            </a>
+            
+            <a href="./casquette-dior.html" class="card" itemscope itemtype="https://schema.org/Product">
+                <img src="https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg" alt="Casquette Dior vignette" loading="lazy" decoding="async">
+                <div class="p">
+                    <div class="badge">Accessoires</div>
+                    <h3 itemprop="name" style="margin:.3rem 0">Casquette Dior</h3>
+                    
+                </div>
+            </a>
+            
+            </div>
+        </section>
+        
+</main>
+<footer>
+  <small>Astuce : cliquez sur un produit pour voir la galerie complète et les options de taille (le cas échéant).</small>
+</footer>
+</body></html>
