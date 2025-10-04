@@ -100,11 +100,43 @@ function updateMiniCount(){
   miniCount.textContent = total; 
 }
 
+/**
+ * Certains hébergeurs (ex: cbu01.alicdn.com) bloquent le hotlink.
+ * On route ces images via images.weserv.nl pour éviter les 403/404.
+ */
+function imageURL(u) {
+  try {
+    const host = u.replace(/^https?:\/\//,'').split('/')[0];
+    if (host.includes('alicdn.com')) {
+      const noProto = u.replace(/^https?:\/\//,'');
+      return 'https://images.weserv.nl/?url=' + encodeURIComponent(noProto);
+    }
+    return u;
+  } catch(e) {
+    return u;
+  }
+}
+
+function placeholderSVG(text='Image indisponible'){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+    <rect width="100%" height="100%" fill="#f5f5f5"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="ui-sans-serif,system-ui" font-size="20" fill="#9ca3af">${text}</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+function onThumbError(img) {
+  const p = catalog.find(x => x.id === img.dataset.id);
+  if (!p) { img.src = placeholderSVG(); return; }
+  const altSrc = (p.images || []).find(u => !u.includes('alicdn.com'));
+  img.src = altSrc ? imageURL(altSrc) : placeholderSVG();
+}
+
 function addToCart(id) {
   const p = catalog.find(x => x.id === id);
   if(!p) return;
   const c = getCart();
-  if(!c[id]) c[id] = { id, title: p.title, price: p.price, img: p.images[0], qty: 0 };
+  if(!c[id]) c[id] = { id, title: p.title, price: p.price, img: imageURL(p.images[0]), qty: 0 };
   c[id].qty += 1;
   setCart(c);
 }
@@ -114,8 +146,9 @@ function renderGrid() {
   catalog.forEach(p => {
     const fig = document.createElement('figure');
     fig.className = 'item';
+    const thumb = imageURL(p.images[0]);
     fig.innerHTML = `
-      <img class="thumb" src="${p.images[0]}" alt="${p.title}" data-id="${p.id}" />
+      <img class="thumb" src="${thumb}" alt="${p.title}" data-id="${p.id}" referrerpolicy="no-referrer" loading="lazy" decoding="async" />
       <div class="cap">
         <div class="title">${p.title}</div>
         <div class="price">${p.price}€</div>
@@ -126,6 +159,11 @@ function renderGrid() {
   });
   grid.innerHTML = '';
   grid.appendChild(frag);
+
+  // Attache un onerror propre une fois les images dans le DOM
+  grid.querySelectorAll('img.thumb').forEach(img => {
+    img.onerror = () => onThumbError(img);
+  });
 }
 
 renderGrid();
@@ -163,8 +201,15 @@ function openLightbox(id) {
 function updateLightbox() {
   const p = catalog.find(x => x.id === currentId);
   if(!p) return;
-  dlgImg.src = p.images[currentIndex];
+  dlgImg.referrerPolicy = 'no-referrer';
+  dlgImg.loading = 'eager';
+  dlgImg.src = imageURL(p.images[currentIndex]);
   dlgImg.alt = p.title;
+  dlgImg.onerror = () => {
+    // Si l'image en cours casse, tente une alternative non alicdn, sinon placeholder
+    const alt = (p.images || []).find((u, idx) => idx !== currentIndex && !u.includes('alicdn.com'));
+    dlgImg.src = alt ? imageURL(alt) : placeholderSVG('Aperçu indisponible');
+  };
   dlgCount.textContent = `${currentIndex+1} / ${p.images.length} — ${p.title} (${p.price}€)`;
   addCurrentBtn.onclick = () => addToCart(p.id);
 }
@@ -182,7 +227,6 @@ dlgNext.addEventListener('click', () => {
   currentIndex = (currentIndex + 1) % p.images.length;
   updateLightbox();
 });
-
 </script>
 </body>
 </html>
