@@ -228,79 +228,128 @@ dlgNext.addEventListener('click', () => {
   updateLightbox();
 });
 </script>
-<!-- AJOUTS : bonnet lv + maillots en items individuels (aucune modif sur l'existant) -->
 <script>
-  (function () {
-    /* 1) Ajouter le produit "bonnet lv" à 15€ (une seule fois) */
-    if (!catalog || !Array.isArray(catalog)) return; // sécurité
-    if (!catalog.some(p => p.id === "bonnet-lv")) {
-      catalog.push({
-        id: "bonnet-lv",
-        title: "bonnet lv",
-        price: 15,
-        images: [
-          "https://si.geilicdn.com/pcitem322338468-79c70000018ecdc51d240a2313e0_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-7a4d0000018ecdc5187b0a813276_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-78ef0000018ecdc51a1d0a22d50c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-6f210000018ecdc510740a20e7c7_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-4c570000018ecdc511f90a23046c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-79510000018ecdc865ad0a2312e8_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-75080000018ecdc8a10b0a20e672_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-77040000018ecdc8bf120a22d160_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-713c0000018ecdc8dab40a210349_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-71470000018ecdc8f7010a20e2c5_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-78360000018ecdbeca010a22d50c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-70a90000018ecdbeced70a20e35c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-6e560000018ecdbec0400a20e7c7_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-06700000018ecdbec5010a239821_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-71430000018ecdc1c8c10a207569_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-4bfe0000018ecdc1f87a0a23046c_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-78410000018ecdc2168f0a23136f_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-75740000018ecdc230900a231418_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-5ecc0000018ecd3834ee0a20e273_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-5b830000018ecd3839dd0a20e7c7_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-60760000018ecd3845fa0a210244_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-65b10000018ecd383f360a22d50c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-63130000018ecd38315b0a22d160_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-63eb0000018ecd3428370a22d246_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-60f80000018ecd3423ef0a813470_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-5d000000018ecd341e4c0a20e2c5_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-062d0000018ecdbc77880a239821_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-6fe40000018ecdbc9e890a20e2c5_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-70650000018ecdbc9b3e0a239737_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-4b5e0000018ecdbc957f0a23046c_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-76830000018ecdbc8eee0a23954a_1074_1074.jpg",
-          "https://si.geilicdn.com/pcitem322338468-74ae0000018ecdb6697a0a8134f0_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-73590000018ecdb6e7b90a813470_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-72600000018ecdb708720a210244_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-72c60000018ecdb725540a22d4f5_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-73140000018ecdb742260a20e672_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-701b0000018ecdb9d6430a239737_800_800.jpg",
-          "https://si.geilicdn.com/pcitem322338468-66e30000018ecd421edd0a8133ca_1080_1080.jpg",
-          "https://si.geilicdn.com/pcitem322338468-61e40000018ecd4206470a210244_1080_1080.jpg"
-        ]
-      });
-    }
-  
-    /* 2) Remplacer le produit groupé "maillots-de-foot" par des items individuels (1 photo = 1 article) */
-    const idx = catalog.findIndex(p => p.id === "maillots-de-foot");
-    if (idx !== -1) {
-      const base = catalog[idx];
-      catalog.splice(idx, 1); // retirer l'ancien item groupé
-      base.images.forEach((url, i) => {
-        catalog.push({
-          id: "maillot-" + (i + 1),
-          title: "maillot de foot",
-          price: base.price,
-          images: [url]
-        });
-      });
-    }
-  
-    /* 3) Rafraîchir l’affichage */
-    if (typeof renderGrid === "function") renderGrid();
-    if (typeof updateMiniCount === "function") updateMiniCount();
-  })();
-  </script>
+// 1) Ajouter le produit "bonnet lv" (15€) sans toucher au JSON d'origine
+catalog.push({
+  id: "bonnet-lv",
+  title: "bonnet lv",
+  price: 15,
+  images: [
+    "https://si.geilicdn.com/pcitem322338468-79c70000018ecdc51d240a2313e0_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-7a4d0000018ecdc5187b0a813276_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-78ef0000018ecdc51a1d0a22d50c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-6f210000018ecdc510740a20e7c7_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-4c570000018ecdc511f90a23046c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-79510000018ecdc865ad0a2312e8_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-75080000018ecdc8a10b0a20e672_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-77040000018ecdc8bf120a22d160_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-713c0000018ecdc8dab40a210349_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-71470000018ecdc8f7010a20e2c5_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-78360000018ecdbeca010a22d50c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-70a90000018ecdbeced70a20e35c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-6e560000018ecdbec0400a20e7c7_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-06700000018ecdbec5010a239821_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-71430000018ecdc1c8c10a207569_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-4bfe0000018ecdc1f87a0a23046c_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-78410000018ecdc2168f0a23136f_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-75740000018ecdc230900a231418_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-5ecc0000018ecd3834ee0a20e273_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-5b830000018ecd3839dd0a20e7c7_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-60760000018ecd3845fa0a210244_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-65b10000018ecd383f360a22d50c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-63130000018ecd38315b0a22d160_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-63eb0000018ecd3428370a22d246_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-60f80000018ecd3423ef0a813470_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-5d000000018ecd341e4c0a20e2c5_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-062d0000018ecdbc77880a239821_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-6fe40000018ecdbc9e890a20e2c5_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-70650000018ecdbc9b3e0a239737_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-4b5e0000018ecdbc957f0a23046c_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-76830000018ecdbc8eee0a23954a_1074_1074.jpg",
+    "https://si.geilicdn.com/pcitem322338468-74ae0000018ecdb6697a0a8134f0_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-73590000018ecdb6e7b90a813470_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-72600000018ecdb708720a210244_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-72c60000018ecdb725540a22d4f5_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-73140000018ecdb742260a20e672_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-701b0000018ecdb9d6430a239737_800_800.jpg",
+    "https://si.geilicdn.com/pcitem322338468-66e30000018ecd421edd0a8133ca_1080_1080.jpg",
+    "https://si.geilicdn.com/pcitem322338468-61e40000018ecd4206470a210244_1080_1080.jpg"
+  ]
+});
+
+// 2) Construire une "vue étendue" : une carte par image pour TOUS les produits
+const expanded = [];
+catalog.forEach(p => {
+  (p.images || []).forEach((url, idx) => {
+    expanded.push({
+      id: p.id,             // on garde l’ID d’origine (panier intact)
+      title: `${p.title} — ${idx + 1}`,
+      price: p.price,
+      image: url,
+      index: idx
+    });
+  });
+});
+
+// 3) Ouvrir le lightbox directement sur la miniature cliquée
+const __origOpenLightbox = openLightbox;
+openLightbox = function(id){
+  if (typeof window.__desiredIndex === 'number') {
+    currentId = id;
+    currentIndex = window.__desiredIndex;
+    updateLightbox();
+    dlg.showModal();
+    window.__desiredIndex = null;
+  } else {
+    __origOpenLightbox(id);
+  }
+};
+
+// 4) Mémoriser l’index de l’image cliquée (capture = true pour passer avant l’écouteur existant)
+document.addEventListener('click', function(e){
+  const img = e.target.closest('img.thumb');
+  if (img && img.dataset.index) {
+    window.__desiredIndex = parseInt(img.dataset.index, 10);
+  }
+  const btn = e.target.closest('button.add');
+  if (btn && btn.dataset.index) {
+    window.__desiredIndex = parseInt(btn.dataset.index, 10);
+  }
+}, true);
+
+// 5) Patch léger : quand on ajoute au panier, on met l’aperçu de l’image cliquée
+const __origAddToCart = addToCart;
+addToCart = function(id){
+  const p = catalog.find(x => x.id === id);
+  if (!p) return;
+  const c = getCart();
+  if (!c[id]) c[id] = { id, title: p.title, price: p.price, img: p.images[0], qty: 0 };
+  const idx = (typeof window.__desiredIndex === 'number') ? window.__desiredIndex : 0;
+  c[id].img = p.images[idx] || p.images[0];
+  c[id].qty += 1;
+  setCart(c);
+  window.__desiredIndex = null;
+};
+
+// 6) Re-render : une carte par image
+(function renderSeparated(){
+  const frag = document.createDocumentFragment();
+  expanded.forEach(it => {
+    const fig = document.createElement('figure');
+    fig.className = 'item';
+    fig.innerHTML = `
+      <img class="thumb" src="${it.image}" alt="${it.title}" data-id="${it.id}" data-index="${it.index}" />
+      <div class="cap">
+        <div class="title">${it.title}</div>
+        <div class="price">${it.price}€</div>
+      </div>
+      <button class="add" data-id="${it.id}" data-index="${it.index}">+ Panier</button>
+    `;
+    frag.appendChild(fig);
+  });
+  grid.innerHTML = "";
+  grid.appendChild(frag);
+})();
+</script>
 </body>
 </html>
