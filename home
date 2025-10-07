@@ -1,0 +1,229 @@
+
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { Search, ShoppingCart, ChevronDown, Star, Sparkles, Rocket, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import ProductGrid from "../components/ProductGrid";
+import Lightbox from "../components/Lightbox";
+
+const CATALOG = [{"id":"doudoune-palace","title":"Doudoune PALACE","price":80,"images":["https://si.geilicdn.com/open1673632073-252808396-6410000001999439a9140a8115c2_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-287f000001999439eba90aa043f9_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-6adb000001999439ed590a231226_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-504f000001999439ef730aa0229a_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-5053000001999439f1480aa0229a_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-6add000001999439f2f40a231226_600_600.jpg","https://si.geilicdn.com/open1673632073-252808396-6adf000001999439f4e20a231226_1152_1152.jpg","https://si.geilicdn.com/open1673632073-252808396-65fd000001999439f74c0a8133b0_1152_1152.jpg","https://si.geilicdn.com/open1673632073-252808396-65ff000001999439f98a0a8133b0_1200_1200.jpg","https://si.geilicdn.com/open1673632073-252808396-6b95000001999439fbfd0a22d249_1152_1152.jpg"]},{"id":"ensemble-reflectif-nike-x-corteiz","title":"ensemble reflectif nike x corteiz","price":100,"images":["https://si.geilicdn.com/wdseller1580621215-05df000001955a6722770a20e2c5_828_1022.jpg","https://si.geilicdn.com/pcitem1969492450-10b300000198fac7feb80a23037f_1300_1300.jpg"]},{"id":"portefeuille-lv","title":"portefeuille LV","price":20,"images":["https://si.geilicdn.com/pcitem1477302019-6ea000000193bf67d13e0a20e672_1500_1125.jpg","https://si.geilicdn.com/pcitem1477302019-702b00000193bf67eaf20a23037f_1500_1125.jpg","https://si.geilicdn.com/pcitem1477302019-698900000193bf67fd520a20e7c7_1500_1125.jpg","https://si.geilicdn.com/pcitem1477302019-71c700000193bf6811160a2396f4_1500_1125.jpg","https://si.geilicdn.com/pcitem1477302019-700b00000193bf68263e0a21146b_1500_1125.jpg"]},{"id":"balenciaga-track","title":"balenciaga track ","price":120,"images":["https://si.geilicdn.com/pcitem1360317772-06b50000019058542cf60a23041a_1280_1706.jpg","https://si.geilicdn.com/pcitem1360317772-0919000001905854269a0a2396f4_1280_1706.jpg","https://si.geilicdn.com/pcitem1360317772-0cd900000190585424890a22d172_1280_1706.jpg","https://si.geilicdn.com/pcitem1360317772-0a9a00000190585422c40a81347d_1280_1706.jpg","https://si.geilicdn.com/pcitem1360317772-08d500000190585420b30a23057e_1280_1706.jpg"]},{"id":"doudoune-cp-company","title":"doudoune CP company","price":80,"images":["https://si.geilicdn.com/wdseller1580621215-45b50000019947983d7c0a2304aa_1206_1323.jpg","https://si.geilicdn.com/wdseller1580621215-208500000199479935c90a230215_1631_1633.jpg","https://si.geilicdn.com/wdseller1580621215-2be30000019947994dc10a23b4f4_1633_1635.jpg","https://si.geilicdn.com/wdseller1580621215-67bb00000199479963060a230417_1728_1729.jpg","https://si.geilicdn.com/wdseller1580621215-1f8d0000019947997f9a0a2305d8_1608_1610.jpg"]},{"id":"lv-trainers","title":"LV trainers","price":70,"images":["https://si.geilicdn.com/pcitem901862111711-545500000192221655bf0a210256-unadjust_1078_832.png","https://si.geilicdn.com/pcitem901862111711-4fcf00000192220ce4b80a23037f_1200_1200.jpg","https://si.geilicdn.com/pcitem901862111711-53e300000192220f43fb0a2102c5-unadjust_1094_847.png","https://si.geilicdn.com/pcitem901862111711-572600000192220f59850a20e273-unadjust_1090_865.png","https://si.geilicdn.com/pcitem901862111711-4a3a00000192220f6d930a8134f0-unadjust_1052_817.png"]},{"id":"asics-gel-14-sneakers","title":"Asics Gel 14 Sneakers","price":60,"images":["https://si.geilicdn.com/open1719175101-1234478995-7e0a00000198428ebebd0aa043f9_2000_2000.jpg","https://si.geilicdn.com/open1719175101-1234478995-648200000198428ef0bb0aa0c791_800_800.jpg","https://si.geilicdn.com/open1719175101-1234478995-307100000198428ef7810a23b491_800_800.jpg","https://si.geilicdn.com/open1719175101-1234478995-32b400000198428f02470a23b4de_800_800.jpg","https://si.geilicdn.com/open1719175101-1234478995-32d200000198428f0cfb0a23b4de_800_800.jpg"]},{"id":"channel-runner-1-1","title":"Channel runner 1:1","price":140,"images":["https://si.geilicdn.com/wdseller1913061311-398d00000195e1020dda0a239646_1176_1176.jpg","https://si.geilicdn.com/wdseller1913061311-31f800000195e10239e80a2304a0_2560_2560.jpg","https://si.geilicdn.com/wdseller1913061311-2f7f00000195e1026f190a240147_2560_2560.jpg","https://si.geilicdn.com/wdseller1913061311-304300000195e1029baa0a2396c9_2560_2560.jpg","https://si.geilicdn.com/wdseller1913061311-2e9800000195e102b9870a2302e6_2560_2560.jpg"]},{"id":"bape-sta-os","title":"Bape Sta OS","price":60,"images":["https://si.geilicdn.com/open1672368829-1234478995-47af00000197b5cdea1a0a23b491_1200_800.jpg","https://si.geilicdn.com/open1672368829-1234478995-463300000197b5cde0de0a8115c2-unadjust_800_800.png","https://si.geilicdn.com/open1672368829-1234478995-4c5c00000197b5cdece20a22d249_1200_800.jpg","https://si.geilicdn.com/open1672368829-1234478995-4f7500000197b5cdeed40a231226_1200_800.jpg","https://si.geilicdn.com/open1672368829-1234478995-121200000197b5cdf1df0aa0c791_1200_800.jpg"]},{"id":"tn","title":"TN","price":40,"images":["https://cbu01.alicdn.com/img/ibank/O1CN01CEPcas1BunKwTI42S_!!2217836820006-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01eN9jyr1BunKwquDEt_!!2217836820006-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01YIGCo71BunLYTLna3_!!2217836820006-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01GMpRG81BunKxgwUZR_!!2217836820006-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01oMNUzC1BunKtMEOWN_!!2217836820006-0-cib.jpg"]},{"id":"air-force-1","title":"Air force 1","price":50,"images":["https://si.geilicdn.com/open1639122105-1234478995-1a630000018f523793e10a210298_900_675.jpg","https://si.geilicdn.com/open1639122105-1234478995-73ba0000018f5237685d0a232357_800_800.jpg","https://si.geilicdn.com/open1639122105-1234478995-04300000018f52379eae0aa0233d_900_675.jpg","https://si.geilicdn.com/open1639122105-1234478995-7c340000018f52388da70a239631_900_675.jpg","https://si.geilicdn.com/open1639122105-1234478995-54d30000018f5238a13c0a8115b5_900_675.jpg"]},{"id":"jordan-1-travis","title":"jordan 1 travis","price":100,"images":["https://si.geilicdn.com/pcitem901858814557-04ba0000018f5c60b3160a210256_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-04fd0000018f5c60c7580a239846_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-04be0000018f5c60c5c30a210256_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-02290000018f5c60c4020a20e672_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-023d0000018f5c60c2a80a81347d_800_600.jpg"]},{"id":"dior-b22","title":"Dior B22","price":110,"images":["https://si.geilicdn.com/open1708516832-1234478995-05d800000189777b10a40a23028d_1080_1080.jpg","https://si.geilicdn.com/pcitem1874236696-1e1800000192b74863d20a8134f0_1200_1200.jpg","https://si.geilicdn.com/open1708516832-1234478995-3d8900000189777b07c20a230227_1080_1080.jpg","https://si.geilicdn.com/open1708516832-1234478995-1de000000189777b0b150a8115b5_1080_1080.jpg","https://si.geilicdn.com/open1708516832-1234478995-468c00000189777b0d8e0a22d595_1080_1080.jpg"]},{"id":"dior-b30","title":"Dior B30","price":90,"images":["https://si.geilicdn.com/pcitem985284097-3b5e0000018f09cd652b0a230115_1086_816.jpg","https://si.geilicdn.com/pcitem985284097-38450000018f09cda97e0a2315ef_1086_816.jpg","https://si.geilicdn.com/pcitem985284097-3afc0000018f09cdcd800a23041a_1086_816.jpg","https://si.geilicdn.com/pcitem985284097-3c9e0000018f09cdf36c0a8134f0_1086_816.jpg","https://si.geilicdn.com/pcitem985284097-3d870000018f09ce292e0a8133cc_1086_816.jpg"]},{"id":"jordan-4","title":"Jordan 4","price":60,"images":["https://si.geilicdn.com/pcitem901858814557-55050000018f754478fc0a23111a_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-7df20000018f754491df0a210349_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-7c090000018f7544903b0a23037f_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-7c050000018f75448e400a239846_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-7c960000018f75448c7b0a2303ee_800_600.jpg"]},{"id":"maillots-de-foot","title":"maillots de foot","price":20,"images":["https://cbu01.alicdn.com/img/ibank/O1CN01TK0nSH1V3vuQ1r5gm_!!2217506412598-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01CxOgd41V3vuSFdHXQ_!!2217506412598-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01AqNOtG1V3vuhtWWfe_!!2217506412598-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01krMXEG1V3vuV8NiC6_!!2217506412598-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01yvz8xF1V3vuODvb6P_!!2217506412598-0-cib.jpg"]},{"id":"jerzey-corteiz","title":"jerzey corteiz","price":25,"images":["https://si.geilicdn.com/wdseller1580621215-666e00000195d576e0030a2102c5_1200_1200.jpg","https://si.geilicdn.com/wdseller1580621215-698800000195d57b01ae0a2301b4_691_690.jpg","https://si.geilicdn.com/wdseller1580621215-635f00000195d57b16750a811411_640_641.jpg","https://si.geilicdn.com/wdseller1580621215-5e0c00000195d57b61490a210256_486_485.jpg","https://si.geilicdn.com/wdseller1580621215-698b00000195d57b85f00a20e273_454_453.jpg"]},{"id":"ensemble-de-foot","title":"ensemble de foot","price":20,"images":["https://cbu01.alicdn.com/img/ibank/O1CN01CoVVp21ziBKBmSthw_!!2215802346747-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01elqLqk1ziBKCK9JYG_!!2215802346747-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01k9Qp8q1ziBDMS3RGc_!!2215802346747-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN016V75J01ziBDnl092w_!!2215802346747-0-cib.jpg","https://cbu01.alicdn.com/img/ibank/O1CN01vbqHBR1ziB7VPAUMF_!!2215802346747-0-cib.jpg"]},{"id":"casquette-gucci","title":"casquette gucci","price":30,"images":["https://si.geilicdn.com/pcitem1891333630-5bb700000192c1b594510a210139_1536_1536.jpg","https://si.geilicdn.com/pcitem1891333630-434400000192c1b5ba820a23041a_1536_1536.jpg","https://si.geilicdn.com/pcitem1891333630-42a500000192c1b5d9d00a2301b4_1536_1536.jpg","https://si.geilicdn.com/pcitem1891333630-46df00000192c1b5fcbc0a23111a_1536_1536.jpg","https://si.geilicdn.com/pcitem1891333630-688b00000192c1b6307e0a239646_1074_1074.jpg"]},{"id":"echarpe-bonnet-lv","title":"écharpe + bonnet lv","price":40,"images":["https://si.geilicdn.com/wdseller1580621215-439b0000019990426f7d0a239846_1284_1284.jpg","https://si.geilicdn.com/wdseller1580621215-419900000199904314140a239646_1284_1284.jpg","https://si.geilicdn.com/wdseller1580621215-3f390000019990433ab10a210256_1266_1266.jpg","https://si.geilicdn.com/wdseller1580621215-4d240000019990434afc0a2315ef_1200_1200.jpg"]},{"id":"bonnet-prada","title":"bonnet prada","price":15,"images":["https://si.geilicdn.com/wdseller1580621215-6e1e00000195ec8144b60a23111a_1074_1074.jpg","https://si.geilicdn.com/wdseller1580621215-725400000195ec8232700a20e672_1074_1074.jpg","https://si.geilicdn.com/wdseller1580621215-705400000195ec8242820a23038e_790_790.jpg","https://si.geilicdn.com/wdseller1580621215-6c9700000195ec8252bb0a210256_800_800.jpg"]},{"id":"ensemble-corteiz","title":"ensemble corteiz ","price":50,"images":["https://si.geilicdn.com/wdseller1580621215-46dd00000198685415b50a2315ef_1024_1024.jpg","https://si.geilicdn.com/wdseller1580621215-42c7000001986854e3b20a210256_1120_1120.jpg","https://si.geilicdn.com/wdseller1580621215-43d400000198685415e70a23111a_675_710.jpg","https://si.geilicdn.com/wdseller1580621215-49b8000001986854fc230a231177_950_952.jpg","https://si.geilicdn.com/wdseller1580621215-446300000198685543e50a23111a_455_457.jpg"]},{"id":"nike-tech","title":"Nike tech","price":60,"images":["https://si.geilicdn.com/wdseller1580621215-656700000198827cadbc0a210256_1206_948.jpg","https://si.geilicdn.com/wdseller1580621215-6f9400000198827d69190a231177_1200_1200.jpg","https://si.geilicdn.com/wdseller1580621215-6c6500000198827d74a20a81347d_1200_1200.jpg","https://si.geilicdn.com/wdseller1580621215-6f2c00000198827d8e350a2315ef_1200_1200.jpg","https://si.geilicdn.com/wdseller1580621215-6b3900000198827d9a680a23057e_1200_1200.jpg"]},{"id":"pant-corteiz","title":"pant corteiz","price":40,"images":["https://si.geilicdn.com/pcitem1580621215-41aa000001928a098c8b0a2396f4_800_800.jpg","https://si.geilicdn.com/pcitem1580621215-3847000001928a098eaa0a23041a_800_800.jpg","https://si.geilicdn.com/pcitem1580621215-000b000001928a0991050a231316_800_800.jpg","https://si.geilicdn.com/pcitem1580621215-210e000001928a0993380a2395d6_800_800.jpg","https://si.geilicdn.com/pcitem1580621215-3e90000001928a09956a0a23037f_800_800.jpg"]},{"id":"ensemble-nocta-nike","title":"ensemble nocta nike","price":80,"images":["https://si.geilicdn.com/open291535263-1234478995-3f3500000196cf0998b70a231226_800_800.jpg","https://si.geilicdn.com/open291535263-1234478995-361d00000196cf099bf00a23b4de_800_800.jpg","https://si.geilicdn.com/open291535263-1234478995-395500000196cf099e9d0aa0834c_800_800.jpg","https://si.geilicdn.com/open291535263-1234478995-366400000196cf09f44e0a8115c2_1024_1026.jpg","https://si.geilicdn.com/open291535263-1234478995-396c00000196cf09f7870a8133b0_1024_1026.jpg"]},{"id":"bape-x-miami","title":"BAPE x miami","price":20,"images":["https://si.geilicdn.com/open1685879877-252808396-439100000194357367840a8133b5_1000_1000.jpg","https://si.geilicdn.com/open1685879877-252808396-6cd4000001943573697b0a210559_1000_1000.jpg","https://si.geilicdn.com/open1685879877-252808396-76cd0000019435736b640aa0834c_1000_1000.jpg","https://si.geilicdn.com/open1685879877-252808396-4b050000019435736d990a239383_1097_1097.jpg","https://si.geilicdn.com/open1685879877-252808396-4b07000001943573706d0a239383_1097_1097.jpg"]},{"id":"veste-cp-company","title":"veste CP company","price":40,"images":["https://si.geilicdn.com/open1652813497-252808396-01c200000191efaef6ff0aa0233d_1920_1920.jpg","https://si.geilicdn.com/open1652813497-252808396-12ef00000191efae77380a239383_800_800.jpg","https://si.geilicdn.com/open1652813497-252808396-59a200000191efaeecdc0a8115b5_1920_1920.jpg","https://si.geilicdn.com/open1652813497-252808396-0a5600000191efaef2260a8133b5_1920_1920.jpg","https://si.geilicdn.com/open1652813497-252808396-01ca00000191efaefb5a0aa0233d_800_800.jpg"]},{"id":"veste-bape-requin","title":"veste bape requin","price":40,"images":["https://si.geilicdn.com/open1834474013-252808396-2953000001993808ed640aa0229a_800_795.jpg","https://si.geilicdn.com/open1834474013-252808396-42d300000199380917ab0a22d249_800_1026.jpg","https://si.geilicdn.com/open1834474013-252808396-3e8c0000019938091a500a23b4de_797_797.jpg","https://si.geilicdn.com/open1834474013-252808396-3a840000019938091caa0a8115c2_1001_1001.jpg","https://si.geilicdn.com/open1834474013-252808396-3ce60000019938091ef90a23b491_500_500.jpg"]},{"id":"cagoule-corteiz","title":"cagoule corteiz","price":10,"images":["https://si.geilicdn.com/wdseller1580621215-04ec0000019333844b660a2301f1_1242_1242.jpg","https://si.geilicdn.com/wdseller1580621215-06cc0000019333859e510a2304a0_1512_1512.jpg","https://si.geilicdn.com/wdseller1580621215-0925000001933385bd770a23138d_1512_1512.jpg","https://si.geilicdn.com/wdseller1580621215-061c000001933385db2d0a2102b1_1512_1512.jpg","https://si.geilicdn.com/wdseller1580621215-36c6000001933385f7010a239426_1512_1512.jpg"]},{"id":"sacoche-trapstar","title":"sacoche trapstar","price":10,"images":["https://si.geilicdn.com/wdseller1580621215-37df00000198f96706010a2304aa_1206_1130.jpg","https://si.geilicdn.com/wdseller1580621215-5f1300000198f967a4460a2301b4_800_800.jpg","https://si.geilicdn.com/wdseller1580621215-636800000198f967b0ab0a23111a_800_800.jpg","https://si.geilicdn.com/wdseller1580621215-33e300000198f967c57d0a231316_900_902.jpg","https://si.geilicdn.com/wdseller1580621215-59a300000198f96706060a230115_1206_1110.jpg"]},{"id":"chaussete-bape","title":"chaussete bape","price":6,"images":["https://si.geilicdn.com/wdseller1580621215-0c0700000196297ee7060a2395d6_800_800.jpg","https://si.geilicdn.com/wdseller1580621215-1cca00000196297b5f5c0a23111a_1058_1058.jpg","https://si.geilicdn.com/wdseller1580621215-1c5500000196297ef8900a207569_800_800.jpg","https://si.geilicdn.com/wdseller1580621215-1d3e00000196297f094b0a20e273_800_800.jpg","https://si.geilicdn.com/wdseller1580621215-257100000196297f1d540a2303ee_800_800.jpg"]},{"id":"porte-carte-goyard","title":"porte carte goyard","price":15,"images":["https://si.geilicdn.com/open1395528662-252808396-5404000001924be3b3150a8133b5_1074_1074.jpg","https://si.geilicdn.com/open1395528662-252808396-0435000001924be3b6fc0a210559_1080_1080.jpg","https://si.geilicdn.com/open1395528662-252808396-5414000001924be3ba550a8133b5_1074_1074.jpg","https://si.geilicdn.com/open1395528662-252808396-541a000001924be3bd550a8133b5_1074_1074.jpg","https://si.geilicdn.com/open1395528662-252808396-6942000001924be3c05d0a22d234_1074_1074.jpg"]},{"id":"sac-supreme","title":"sac supreme","price":20,"images":["https://si.geilicdn.com/open1704920025-1234478995-53c70000018f1f540f4c0a210559_800_800.jpg","https://si.geilicdn.com/open1704920025-1234478995-31c40000018f1f540c950a210298_1080_1080.jpg","https://si.geilicdn.com/open1704920025-1234478995-10c60000018f1f5412030a239631_800_800.jpg","https://si.geilicdn.com/open1704920025-1234478995-1e4d0000018f1f54142b0a8133b5_800_800.jpg"]},{"id":"casquette-dior","title":"casquette dior","price":20,"images":["https://si.geilicdn.com/pcitem901911512620-52b00000019425072d760a2102c5_1074_1074.jpg","https://si.geilicdn.com/pcitem901911512620-4ff600000194250727080a23111a_1074_1074.jpg","https://si.geilicdn.com/pcitem901911512620-50070000019425072b640a20e2c5_1074_1074.jpg","https://si.geilicdn.com/pcitem901911512620-50d600000194250729300a239846_1074_1074.jpg","https://si.geilicdn.com/pcitem901911512620-52a100000194250859960a81347d_1074_1074.jpg"]},{"id":"airpods","title":"Airpods","price":20,"images":["https://si.geilicdn.com/open1690402957-1234478995-7e68000001944f2726cf0a8133b5_640_640.jpg","https://si.geilicdn.com/open1690402957-1234478995-2811000001944f2727b30a210559_640_640.jpg","https://si.geilicdn.com/open1690402957-1234478995-16eb000001944f2728be0a210298_1024_1024.jpg","https://si.geilicdn.com/open1690402957-1234478995-20c8000001944f272a180a22d234_1024_1024.jpg","https://si.geilicdn.com/open1690402957-1234478995-16ed000001944f272bbe0aa08290_1024_1024.jpg"]},{"id":"dunk","title":"dunk","price":60,"images":["https://si.geilicdn.com/pcitem901858814557-02940000018f7a23bbcf0a23959c_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-00ff0000018f7a2399690a20e284_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-05e30000018f7a23b9910a20e7c7_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-5be90000018f7a23b7310a2395f2_800_600.jpg","https://si.geilicdn.com/pcitem901858814557-5e660000018f7a23b4b20a21146b_800_600.jpg"]},{"id":"rolex","title":"rolex","price":180,"images":["https://si.geilicdn.com/open1680067565-1234478995-52710000019647b8ef660aa08290_1080_1080.jpg","https://si.geilicdn.com/open1680067565-1234478995-5b4a0000019647b8e4e70aa0834c_1080_1080.jpg","https://si.geilicdn.com/open1680067565-1234478995-58a90000019647b8ba230a8115c2_1320_988.jpg","https://si.geilicdn.com/open1680067565-1234478995-5aea0000019647b8bfd70aa0834c_903_675.jpg","https://si.geilicdn.com/open1680067565-1234478995-5be40000019647b928d60aa0834c_1080_1080.jpg"]},{"id":"maillot-liverpool","title":"maillot du liverpool","price":70,"images":["https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/f54aaf314c3045d29ab6ad15ff1f4e20_9366/Maillot_domicile_Liverpool_FC_25-26_Rouge_JV6423_01_laydown.jpg"]},{"id":"prada-americas-cup","title":"Prada america's cup","price":50,"images":["https://oss.acbuy.com/temp/pda_175802715058252EC071A-AB99-4394-B6F7-EA9635884677.jpg?timeStamp=1759441127235","https://oss.acbuy.com/temp/pda_17580271506873DC43E0F-FD87-4095-BCDA-5E39855A5F69.jpg?timeStamp=1759441127235","https://oss.acbuy.com/temp/pda_17580271506878FA6B303-7908-47A4-83D7-79FB883E456D.jpg?timeStamp=1759441127235"]},{"id":"bonnet-lv","title":"bonnet lv, moncler et prada","price":15,"images":["https://si.geilicdn.com/pcitem322338468-79c70000018ecdc51d240a2313e0_1074_1074.jpg","https://si.geilicdn.com/pcitem322338468-7a4d0000018ecdc5187b0a813276_1074_1074.jpg","https://si.geilicdn.com/pcitem322338468-78ef0000018ecdc51a1d0a22d50c_1074_1074.jpg","https://si.geilicdn.com/pcitem322338468-6f210000018ecdc510740a20e7c7_1074_1074.jpg","https://si.geilicdn.com/pcitem322338468-4c570000018ecdc511f90a23046c_1074_1074.jpg"]}];
+
+export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [cart, setCart] = useState([]);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery) return CATALOG;
+    return CATALOG.filter(product =>
+      product.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
+
+  const addToCart = (product) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.id === product.id);
+      if (existing) {
+        return prev.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const openLightbox = (product, imageIndex = 0) => {
+    setCurrentProduct(product);
+    setCurrentImageIndex(imageIndex);
+    setLightboxOpen(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white relative overflow-hidden">
+      {/* Space Background Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-cyan-400/5 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-300/40 rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `twinkle ${2 + Math.random() * 3}s infinite ${Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <section className="pt-24 pb-12 px-6">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200/50 rounded-full px-4 py-2 mb-6">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-medium text-blue-900">Authenticité garantie</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Legit Flow
+            </h1>
+            
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Articles authentiques et traçables, expédiés depuis l'Europe
+            </p>
+
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher un produit..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 pr-4 py-6 text-lg border-2 border-gray-200 focus:border-blue-400 rounded-2xl shadow-lg shadow-blue-100/50"
+                />
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex gap-4 justify-center flex-wrap">
+              <Link to={createPageUrl("About")}>
+                <Button variant="outline" className="gap-2 rounded-full px-6 py-6 border-2 hover:bg-blue-50 hover:border-blue-300">
+                  <Info className="w-5 h-5" />
+                  Provenance des produits
+                </Button>
+              </Link>
+              <Link to={createPageUrl("Cart")}>
+                <Button className="gap-2 rounded-full px-6 py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <ShoppingCart className="w-5 h-5" />
+                  Panier ({cart.reduce((sum, item) => sum + item.quantity, 0)})
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
+                <Star className="w-8 h-8 text-blue-500" />
+                Questions Fréquentes
+                <Star className="w-8 h-8 text-blue-500" />
+              </h2>
+              <p className="text-gray-600">Tout ce que vous devez savoir sur nos produits</p>
+            </div>
+
+            <Card className="border-2 border-blue-100 shadow-xl shadow-blue-100/50 rounded-3xl overflow-hidden backdrop-blur-sm bg-white/80">
+              <CardContent className="p-6">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1" className="border-blue-100">
+                    <AccordionTrigger className="text-lg font-semibold hover:text-blue-600">
+                      Le produit est-il authentique ?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-700 leading-relaxed">
+                      Oui. Nous ne vendons que des articles authentiques et traçables. Nos lots proviennent de 
+                      grossistes/liquidateurs européens agréés ; les exemplaires ont été mis sur le marché européen. 
+                      Les documents (facture fournisseur, connaissement, SKU) sont conservés et fournis sur demande.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-2" className="border-blue-100">
+                    <AccordionTrigger className="text-lg font-semibold hover:text-blue-600">
+                      Pourquoi l'article est-il expédié depuis la Chine ?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-700 leading-relaxed">
+                      Beaucoup d'articles officiels sont fabriqués ou stockés temporairement en Asie avant distribution. 
+                      L'expédition depuis la Chine n'altère pas le statut d'authenticité lorsque la mise sur le marché 
+                      de ces exemplaires a été autorisée pour l'UE. Notre garantie repose sur la traçabilité documentaire.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-3" className="border-blue-100">
+                    <AccordionTrigger className="text-lg font-semibold hover:text-blue-600">
+                      Puis-je obtenir les preuves d'origine ?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-700 leading-relaxed">
+                      Oui. Sur simple demande, nous fournissons les documents de traçabilité liés à votre exemplaire 
+                      (facture fournisseur, bill of lading, références produit).
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Products Section */}
+        <section className="py-12 px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-3 flex items-center justify-center gap-3">
+                <Rocket className="w-10 h-10 text-purple-500" />
+                Notre Collection
+              </h2>
+              <p className="text-gray-600">
+                {filteredProducts.length} {filteredProducts.length === 1 ? 'produit' : 'produits'} disponible{filteredProducts.length === 1 ? '' : 's'}
+              </p>
+            </div>
+
+            <ProductGrid
+              products={filteredProducts}
+              onProductClick={openLightbox}
+              onAddToCart={addToCart}
+            />
+          </div>
+        </section>
+
+        {/* Product Note */}
+        <section className="py-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-2 border-blue-100 bg-gradient-to-br from-blue-50/50 to-purple-50/30 rounded-3xl backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <h3 className="text-xl font-bold mb-3">Article authentique — origine et traçabilité</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Maillot authentique, issu d'un lot mis sur le marché européen. Provenance documentée : 
+                  facture du grossiste/liquidateur et références SKU disponibles sur demande.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </div>
+
+      {/* Lightbox */}
+      {lightboxOpen && currentProduct && (
+        <Lightbox
+          product={currentProduct}
+          imageIndex={currentImageIndex}
+          onClose={() => setLightboxOpen(false)}
+          onAddToCart={addToCart}
+          onImageChange={setCurrentImageIndex}
+        />
+      )}
+
+      <style jsx>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </div>
+  );
+}
