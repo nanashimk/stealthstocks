@@ -1,89 +1,100 @@
-<script type="text/babel">
-  // --- Contenus très simples ---
-  function Home() {
-    return (
-      <>
-        <h1 style={{textAlign:"center"}}>Accueil</h1>
-        <p style={{maxWidth:700,margin:"16px auto"}}>
-          Bienvenue sur <b>StealthStocks</b>. Ici tu peux mettre un texte d’intro,
-          une image, ou une liste d’actions.
-        </p>
-      </>
-    );
-  }
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StealthStocks</title>
 
-  function About() {
-    return (
-      <>
-        <h1 style={{textAlign:"center"}}>À propos</h1>
-        <p style={{maxWidth:700,margin:"16px auto"}}>
-          Petite description du site, de ce que tu veux suivre, etc.
-        </p>
-      </>
-    );
-  }
+    <!-- React + ReactDOM + Babel (CDN qui a marché chez toi) -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 
-  function Cart() {
-    return (
-      <>
-        <h1 style={{textAlign:"center"}}>Panier</h1>
-        <p style={{maxWidth:700,margin:"16px auto"}}>
-          Ici tu pourras lister des éléments sélectionnés (ex : tickers) plus tard.
-        </p>
-      </>
-    );
-  }
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 0; }
+      main { max-width: 900px; margin: 0 auto; padding: 24px 16px 100px; }
+      h1 { text-align: center; }
+      .nav {
+        position: fixed; left: 50%; transform: translateX(-50%);
+        bottom: 24px; background: rgba(255,255,255,.9);
+        border: 1px solid #d0d7de; border-radius: 999px;
+        padding: 8px; display: flex; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      }
+      .btn {
+        border: 1px solid #d0d7de; padding: 10px 14px;
+        border-radius: 999px; cursor: pointer; text-decoration: none; color: #333;
+      }
+      .btn:hover { background: #f3f4f6; }
+      .btn.active { background: #635bff; color: white; border-color: #635bff; }
+    </style>
+  </head>
+  <body>
+    <main id="root"></main>
 
-  function Checkout() {
-    return (
-      <>
-        <h1 style={{textAlign:"center"}}>Paiement</h1>
-        <p style={{maxWidth:700,margin:"16px auto"}}>
-          Zone de confirmation (démo pour l’instant).
-        </p>
-      </>
-    );
-  }
+    <script type="text/babel">
+      // --- Pages ---
+      function Home() {
+        return (
+          <>
+            <h1>Accueil</h1>
+            <p style={{maxWidth:700, margin:"16px auto"}}>
+              Bienvenue sur <b>StealthStocks</b>.
+            </p>
+          </>
+        );
+      }
+      function About() {
+        return (
+          <>
+            <h1>À propos</h1>
+            <p style={{maxWidth:700, margin:"16px auto"}}>Un petit texte…</p>
+          </>
+        );
+      }
+      function Cart() { return (<><h1>Panier</h1></>); }
+      function Checkout() { return (<><h1>Paiement</h1></>); }
 
-  const PAGES = { home: Home, about: About, cart: Cart, checkout: Checkout };
+      const PAGES = { home: Home, about: About, cart: Cart, checkout: Checkout };
 
-  // --- Router basé sur le hash ---
-  function useHashRoute() {
-    const getRoute = () => window.location.hash.slice(1) || "home";
-    const [hash, setHash] = React.useState(getRoute);
-    React.useEffect(() => {
-      // Si pas de hash, on force #home pour l’URL propre
-      if (!window.location.hash) window.location.hash = "#home";
-      const onHashChange = () => setHash(getRoute());
-      window.addEventListener("hashchange", onHashChange);
-      return () => window.removeEventListener("hashchange", onHashChange);
-    }, []);
-    return hash;
-  }
+      // --- Router hash (#home, #about, …) ---
+      function useHashRoute() {
+        const getRoute = () => window.location.hash.slice(1) || "home";
+        const [route, setRoute] = React.useState(getRoute);
 
-  function App() {
-    const route = useHashRoute();
-    const Page = PAGES[route] || Home;
+        React.useEffect(() => {
+          // si pas de hash, on force #home pour l’URL propre
+          if (!window.location.hash) window.location.hash = "#home";
+          const onHashChange = () => setRoute(getRoute());
+          window.addEventListener("hashchange", onHashChange);
+          return () => window.removeEventListener("hashchange", onHashChange);
+        }, []);
 
-    const NavButton = ({to, label}) => (
-      <a href={`#${to}`} className={`btn ${route === to ? "active" : ""}`}>{label}</a>
-    );
+        return route;
+      }
 
-    return (
-      <>
-        <main style={{maxWidth:"900px",margin:"0 auto",padding:"24px 16px 100px"}}>
-          <Page />
-        </main>
-        <nav className="nav">
-          <NavButton to="home" label="Home" />
-          <NavButton to="about" label="About" />
-          <NavButton to="cart" label="Cart" />
-          <NavButton to="checkout" label="Checkout" />
-        </nav>
-      </>
-    );
-  }
+      function App() {
+        const route = useHashRoute();
+        const Page = PAGES[route] || Home;
 
-  const root = ReactDOM.createRoot(document.getElementById("root"));
-  root.render(<App />);
-</script>
+        const NavButton = ({to, label}) => (
+          <a href={`#${to}`} className={`btn ${route === to ? "active" : ""}`}>{label}</a>
+        );
+
+        return (
+          <>
+            <Page />
+            <nav className="nav">
+              <NavButton to="home" label="Home" />
+              <NavButton to="about" label="About" />
+              <NavButton to="cart" label="Cart" />
+              <NavButton to="checkout" label="Checkout" />
+            </nav>
+          </>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
