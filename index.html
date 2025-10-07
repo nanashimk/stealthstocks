@@ -1,17 +1,59 @@
 <script type="text/babel">
-  // Pages
-  function Home() { return <h1>🏠 Accueil</h1>; }
-  function About() { return <h1>ℹ️ À propos</h1>; }
-  function Cart() { return <h1>🛒 Panier</h1>; }
-  function Checkout() { return <h1>💳 Paiement</h1>; }
+  // --- Contenus très simples ---
+  function Home() {
+    return (
+      <>
+        <h1 style={{textAlign:"center"}}>Accueil</h1>
+        <p style={{maxWidth:700,margin:"16px auto"}}>
+          Bienvenue sur <b>StealthStocks</b>. https://parispromenades.fr/wp-content/uploads/2024/05/cedric-grollet-opera.jpg
+        </p>
+      </>
+    );
+  }
+
+  function About() {
+    return (
+      <>
+        <h1 style={{textAlign:"center"}}>À propos</h1>
+        <p style={{maxWidth:700,margin:"16px auto"}}>
+          Petite description du site, de ce que tu veux suivre, etc.
+        </p>
+      </>
+    );
+  }
+
+  function Cart() {
+    return (
+      <>
+        <h1 style={{textAlign:"center"}}>Panier</h1>
+        <p style={{maxWidth:700,margin:"16px auto"}}>
+          Ici tu pourras lister des éléments sélectionnés (ex : tickers) plus tard.
+        </p>
+      </>
+    );
+  }
+
+  function Checkout() {
+    return (
+      <>
+        <h1 style={{textAlign:"center"}}>Paiement</h1>
+        <p style={{maxWidth:700,margin:"16px auto"}}>
+          Zone de confirmation (démo pour l’instant).
+        </p>
+      </>
+    );
+  }
 
   const PAGES = { home: Home, about: About, cart: Cart, checkout: Checkout };
 
-  // Gestion du "routing" avec le hash (#)
+  // --- Router basé sur le hash ---
   function useHashRoute() {
-    const [hash, setHash] = React.useState(() => window.location.hash.slice(1) || "home");
+    const getRoute = () => window.location.hash.slice(1) || "home";
+    const [hash, setHash] = React.useState(getRoute);
     React.useEffect(() => {
-      const onHashChange = () => setHash(window.location.hash.slice(1) || "home");
+      // Si pas de hash, on force #home pour l’URL propre
+      if (!window.location.hash) window.location.hash = "#home";
+      const onHashChange = () => setHash(getRoute());
       window.addEventListener("hashchange", onHashChange);
       return () => window.removeEventListener("hashchange", onHashChange);
     }, []);
@@ -23,14 +65,12 @@
     const Page = PAGES[route] || Home;
 
     const NavButton = ({to, label}) => (
-      <a href={`#${to}`} className={`btn ${route === to ? "active" : ""}`}>
-        {label}
-      </a>
+      <a href={`#${to}`} className={`btn ${route === to ? "active" : ""}`}>{label}</a>
     );
 
     return (
       <>
-        <main style={{maxWidth:"800px",margin:"0 auto",paddingBottom:"90px"}}>
+        <main style={{maxWidth:"900px",margin:"0 auto",padding:"24px 16px 100px"}}>
           <Page />
         </main>
         <nav className="nav">
