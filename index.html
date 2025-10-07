@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mon site JSX simple</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- React + Babel (démo simple, suffisant pour commencer) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Un peu de style optionnel -->
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 24px; }
+      .nav { position: fixed; left: 50%; transform: translateX(-50%); bottom: 24px; 
+             background: rgba(255,255,255,.8); border: 1px solid #d0d7de; 
+             border-radius: 999px; padding: 8px; display: flex; gap: 8px; }
+      .btn { border: 1px solid #d0d7de; padding: 10px 14px; border-radius: 999px; cursor: pointer; }
+      .btn.active { background: #635bff; color: white; border-color: #635bff; }
+      main { max-width: 800px; margin: 0 auto; padding-bottom: 90px; }
+    </style>
+  </head>
+  <body>
+    <main id="root"></main>
+
+    <!-- Ton "JSX" (HTML dans JS) -->
+    <script type="text/babel">
+      // Petites "pages" très simples
+      function Home() {
+        return <h1>Accueil</h1>;
+      }
+      function About() {
+        return <h1>À propos</h1>;
+      }
+      function Cart() {
+        return <h1>Panier</h1>;
+      }
+      function Checkout() {
+        return <h1>Paiement</h1>;
+      }
+
+      // Mini "router" super simple basé sur l’URL après #
+      const PAGES = { home: Home, about: About, cart: Cart, checkout: Checkout };
+
+      function useHashRoute() {
+        const [hash, setHash] = React.useState(() => window.location.hash.slice(1) || "home");
+        React.useEffect(() => {
+          const onHashChange = () => setHash(window.location.hash.slice(1) || "home");
+          window.addEventListener("hashchange", onHashChange);
+          return () => window.removeEventListener("hashchange", onHashChange);
+        }, []);
+        return hash;
+      }
+
+      function App() {
+        const route = useHashRoute();
+        const Page = PAGES[route] || Home;
+
+        const Item = ({to, children}) => {
+          const active = route === to ? "btn active" : "btn";
+          return <a className={active} href={`#${to}`}>{children}</a>;
+        };
+
+        return (
+          <>
+            <nav className="nav">
+              <Item to="home">Home</Item>
+              <Item to="about">About</Item>
+              <Item to="cart">Cart</Item>
+              <Item to="checkout">Checkout</Item>
+            </nav>
+            <Page />
+          </>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
