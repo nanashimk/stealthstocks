@@ -1,0 +1,238 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { ArrowLeft, CreditCard, Lock, Package, CheckCircle, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+export default function Checkout() {
+  const [formData, setFormData] = useState({
+    email: "",
+    fullName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
+    cardNumber: "",
+    expiry: "",
+    cvv: ""
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [orderComplete, setOrderComplete] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsProcessing(false);
+      setOrderComplete(true);
+    }, 2000);
+  };
+
+  if (orderComplete) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white relative overflow-hidden flex items-center justify-center p-6">
+        <Card className="max-w-2xl w-full border-2 border-green-200 rounded-3xl shadow-2xl shadow-green-200/50">
+          <CardContent className="p-12 text-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+              <CheckCircle className="w-12 h-12 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold mb-4">Commande confirmée !</h1>
+            <p className="text-gray-600 mb-8">
+              Merci pour votre achat. Vous recevrez un email de confirmation avec les détails de votre commande.
+            </p>
+            <Link to={createPageUrl("Home")}>
+              <Button size="lg" className="rounded-full px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-600">
+                Retour à la boutique
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white relative overflow-hidden">
+      {/* Space Background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="sticky top-0 z-30 backdrop-blur-md bg-white/80 border-b border-blue-100 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link to={createPageUrl("Cart")}>
+              <Button variant="ghost" className="gap-2 rounded-full">
+                <ArrowLeft className="w-5 h-5" />
+                Retour au panier
+              </Button>
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Paiement
+            </h1>
+            <div className="w-32"></div>
+          </div>
+        </header>
+
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <Alert className="mb-8 border-2 border-blue-200 bg-blue-50/50">
+            <Lock className="w-5 h-5 text-blue-600" />
+            <AlertDescription className="text-gray-700">
+              Paiement sécurisé - Vos informations sont protégées
+            </AlertDescription>
+          </Alert>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Contact Information */}
+            <Card className="border-2 border-gray-200 rounded-3xl shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Package className="w-5 h-5 text-blue-600" />
+                  Informations de livraison
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="rounded-xl"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="fullName">Nom complet</Label>
+                  <Input
+                    id="fullName"
+                    required
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                    className="rounded-xl"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="address">Adresse</Label>
+                  <Input
+                    id="address"
+                    required
+                    value={formData.address}
+                    onChange={(e) => setFormData({...formData, address: e.target.value})}
+                    className="rounded-xl"
+                  />
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="city">Ville</Label>
+                    <Input
+                      id="city"
+                      required
+                      value={formData.city}
+                      onChange={(e) => setFormData({...formData, city: e.target.value})}
+                      className="rounded-xl"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="postalCode">Code postal</Label>
+                    <Input
+                      id="postalCode"
+                      required
+                      value={formData.postalCode}
+                      onChange={(e) => setFormData({...formData, postalCode: e.target.value})}
+                      className="rounded-xl"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="country">Pays</Label>
+                    <Input
+                      id="country"
+                      required
+                      value={formData.country}
+                      onChange={(e) => setFormData({...formData, country: e.target.value})}
+                      className="rounded-xl"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment Information */}
+            <Card className="border-2 border-gray-200 rounded-3xl shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="w-5 h-5 text-blue-600" />
+                  Informations de paiement
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="cardNumber">Numéro de carte</Label>
+                  <Input
+                    id="cardNumber"
+                    required
+                    placeholder="1234 5678 9012 3456"
+                    value={formData.cardNumber}
+                    onChange={(e) => setFormData({...formData, cardNumber: e.target.value})}
+                    className="rounded-xl"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="expiry">Expiration</Label>
+                    <Input
+                      id="expiry"
+                      required
+                      placeholder="MM/AA"
+                      value={formData.expiry}
+                      onChange={(e) => setFormData({...formData, expiry: e.target.value})}
+                      className="rounded-xl"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="cvv">CVV</Label>
+                    <Input
+                      id="cvv"
+                      required
+                      placeholder="123"
+                      value={formData.cvv}
+                      onChange={(e) => setFormData({...formData, cvv: e.target.value})}
+                      className="rounded-xl"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Button
+              type="submit"
+              disabled={isProcessing}
+              className="w-full py-6 text-lg rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-xl"
+            >
+              {isProcessing ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Traitement en cours...
+                </>
+              ) : (
+                <>
+                  <Lock className="w-5 h-5 mr-2" />
+                  Confirmer le paiement
+                </>
+              )}
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
