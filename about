@@ -1,0 +1,238 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { ArrowLeft, Shield, FileCheck, Globe, Package, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function About() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white relative overflow-hidden">
+      {/* Space Background Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-300/40 rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `twinkle ${2 + Math.random() * 3}s infinite ${Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="sticky top-0 z-30 backdrop-blur-md bg-white/80 border-b border-blue-100 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link to={createPageUrl("Home")}>
+              <Button variant="ghost" className="gap-2 rounded-full">
+                <ArrowLeft className="w-5 h-5" />
+                Retour
+              </Button>
+            </Link>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Legit Flow
+            </h1>
+            <div className="w-24"></div>
+          </div>
+        </header>
+
+        {/* Hero Section */}
+        <section className="pt-20 pb-12 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200/50 rounded-full px-4 py-2 mb-6">
+              <Shield className="w-5 h-5 text-blue-600" />
+              <span className="text-sm font-medium text-blue-900">Transparence et Authenticité</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Provenance et authenticité de nos produits
+            </h1>
+            
+            <p className="text-xl text-gray-600 leading-relaxed">
+              Nous nous engageons à vendre uniquement des articles authentiques et traçables. 
+              Les maillots proposés sur ce site proviennent de lots acquis auprès d'un grossiste / 
+              liquidateur européen agréé.
+            </p>
+          </div>
+        </section>
+
+        {/* Key Points */}
+        <section className="py-12 px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card className="border-2 border-blue-100 rounded-3xl shadow-xl shadow-blue-100/50 bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4">
+                    <FileCheck className="w-7 h-7 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Documents Vérifiés</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Chaque lot est documenté par des pièces justificatives prouvant leur authenticité.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-purple-100 rounded-3xl shadow-xl shadow-purple-100/50 bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-4">
+                    <Globe className="w-7 h-7 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Marché Européen</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Articles officiels destinés au marché européen avec traçabilité complète.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-blue-100 rounded-3xl shadow-xl shadow-blue-100/50 bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4">
+                    <Package className="w-7 h-7 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Traçabilité SKU</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Références SKU disponibles pour chaque produit, garantissant son origine.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Detailed Information */}
+            <Card className="border-2 border-blue-100 rounded-3xl shadow-2xl shadow-blue-200/50 bg-white/90 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl">Précisions pratiques</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Nos fournisseurs gèrent des stocks en flux international : les produits peuvent être 
+                      physiquement expédiés depuis des entrepôts situés en Chine, où sont souvent assemblés 
+                      ou stockés les articles, sans remettre en cause leur statut d'articles officiels destinés 
+                      au marché européen.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-purple-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Pour chaque lot, nous conservons et pouvons produire sur demande les documents suivants : 
+                      facture d'origine du grossiste/liquidateur, bill of lading (connaissement), et référence 
+                      SKU liée au produit. Ces documents permettent d'établir la traçabilité et de prouver que 
+                      l'article a été autorisé à la vente sur le marché européen.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Nous ne sommes pas un revendeur officiel partenaire des marques (nous ne sommes pas affiliés 
+                      à Nike/PSG/etc.). Nous sommes une micro-entreprise indépendante spécialisée dans l'achat-revente 
+                      d'articles authentiques issus de circuits de distribution européens.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Transparency and Guarantee */}
+            <Card className="mt-8 border-2 border-green-100 rounded-3xl shadow-2xl shadow-green-200/50 bg-gradient-to-br from-green-50/50 to-blue-50/30 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Shield className="w-7 h-7 text-green-600" />
+                  Transparence et garantie
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Si vous souhaitez vérifier la provenance d'un article acheté chez nous, demandez-nous 
+                      simplement les pièces justificatives : nous les fournirons dans la limite des informations 
+                      confidentielles communiquées par nos fournisseurs.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Toutes les ventes sont accompagnées d'un reçu/facture à votre nom et de nos conditions 
+                      de vente. Pour toute question relative à l'authenticité, la conformité ou la garantie 
+                      légale, contactez-nous — nous répondrons sous 48 heures.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="py-16 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <Card className="border-2 border-blue-200 rounded-3xl shadow-2xl shadow-blue-200/50 bg-gradient-to-br from-blue-50 to-purple-50/50 backdrop-blur-sm">
+              <CardContent className="p-12">
+                <h2 className="text-3xl font-bold mb-4">Des questions ?</h2>
+                <p className="text-gray-600 text-lg mb-6">
+                  N'hésitez pas à nous contacter pour toute information supplémentaire
+                </p>
+                <Link to={createPageUrl("Home")}>
+                  <Button size="lg" className="rounded-full px-8 py-6 text-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                    Retour à la boutique
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </div>
+
+      <style jsx>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </div>
+  );
+}
