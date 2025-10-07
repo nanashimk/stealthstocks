@@ -1,8 +1,22 @@
 <!doctype html>
 <html lang="fr">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Test Pages</title>
-  <h1>Ça marche ✅</h1>
-  <p>Si tu vois ce texte, GitHub Pages fonctionne.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSX Test</title>
+    <style>body{font-family:system-ui,Arial,sans-serif;padding:24px}</style>
+    <!-- React + ReactDOM + Babel depuis unpkg -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function App(){ return <h1>Hello depuis JSX 👋</h1>; }
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
 </html>
