@@ -1,22 +1,48 @@
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JSX Test</title>
-    <style>body{font-family:system-ui,Arial,sans-serif;padding:24px}</style>
-    <!-- React + ReactDOM + Babel depuis unpkg -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
+<script type="text/babel">
+  // Pages
+  function Home() { return <h1>🏠 Accueil</h1>; }
+  function About() { return <h1>ℹ️ À propos</h1>; }
+  function Cart() { return <h1>🛒 Panier</h1>; }
+  function Checkout() { return <h1>💳 Paiement</h1>; }
 
-    <script type="text/babel">
-      function App(){ return <h1>Hello depuis JSX 👋</h1>; }
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<App />);
-    </script>
-  </body>
-</html>
+  const PAGES = { home: Home, about: About, cart: Cart, checkout: Checkout };
+
+  // Gestion du "routing" avec le hash (#)
+  function useHashRoute() {
+    const [hash, setHash] = React.useState(() => window.location.hash.slice(1) || "home");
+    React.useEffect(() => {
+      const onHashChange = () => setHash(window.location.hash.slice(1) || "home");
+      window.addEventListener("hashchange", onHashChange);
+      return () => window.removeEventListener("hashchange", onHashChange);
+    }, []);
+    return hash;
+  }
+
+  function App() {
+    const route = useHashRoute();
+    const Page = PAGES[route] || Home;
+
+    const NavButton = ({to, label}) => (
+      <a href={`#${to}`} className={`btn ${route === to ? "active" : ""}`}>
+        {label}
+      </a>
+    );
+
+    return (
+      <>
+        <main style={{maxWidth:"800px",margin:"0 auto",paddingBottom:"90px"}}>
+          <Page />
+        </main>
+        <nav className="nav">
+          <NavButton to="home" label="Home" />
+          <NavButton to="about" label="About" />
+          <NavButton to="cart" label="Cart" />
+          <NavButton to="checkout" label="Checkout" />
+        </nav>
+      </>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<App />);
+</script>
