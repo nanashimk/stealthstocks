@@ -11,6 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 
     <style>
+      .grid { 
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+  gap: 12px; max-width: 980px; margin: 16px auto;
+}
+.card {
+  border: 1px solid #e5e7eb; border-radius: 14px; padding: 12px; 
+  box-shadow: 0 6px 24px rgba(0,0,0,.04); cursor: pointer;
+}
+.card:hover { background: #f9fafb; }
+.card.active { border-color: #635bff; box-shadow: 0 8px 30px rgba(99,91,255,.18); }
+.ticker { font-weight: 700; letter-spacing: .5px; }
+.price { opacity: .7; font-variant-numeric: tabular-nums; }
+.badge {
+  display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #e5e7eb;
+  font-size:12px;margin-left:6px
+}
+.search { 
+  width: 100%; max-width: 480px; display:block; margin: 0 auto 12px; 
+  padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 10px;
+}
       body { font-family: system-ui, Arial, sans-serif; margin: 0; }
       main { max-width: 900px; margin: 0 auto; padding: 24px 16px 100px; }
       h1 { text-align: center; }
@@ -32,6 +52,72 @@
     <main id="root"></main>
 
     <script type="text/babel">
+      function Home() {
+  const [q, setQ] = React.useState("");
+  const [picked, setPicked] = React.useState(new Set());
+
+  const data = [
+    { t: "AAPL", name: "Apple", price: 227.5, ch: +1.2 },
+    { t: "MSFT", name: "Microsoft", price: 420.3, ch: -0.4 },
+    { t: "NVDA", name: "NVIDIA", price: 115.7, ch: +2.9 },
+    { t: "AMZN", name: "Amazon", price: 189.2, ch: +0.7 },
+    { t: "GOOGL", name: "Alphabet", price: 176.9, ch: -0.3 },
+    { t: "META", name: "Meta", price: 500.1, ch: +0.5 },
+    { t: "TSLA", name: "Tesla", price: 245.0, ch: -1.1 },
+    { t: "AMD", name: "AMD", price: 161.4, ch: +1.6 },
+  ];
+
+  const filtered = data.filter(
+    s => s.t.toLowerCase().includes(q.toLowerCase()) || s.name.toLowerCase().includes(q.toLowerCase())
+  );
+
+  const toggle = (t) => {
+    const next = new Set(picked);
+    next.has(t) ? next.delete(t) : next.add(t);
+    setPicked(next);
+  };
+
+  return (
+    <>
+      <h1>Accueil</h1>
+      <p style={{maxWidth:700, margin:"8px auto", textAlign:"center"}}>
+        Bienvenue sur <b>StealthStocks</b>. Sélectionne quelques tickers ci-dessous.
+      </p>
+
+      <input
+        className="search"
+        placeholder="Rechercher (ex: NVDA, Amazon)…"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+      />
+
+      <div className="grid">
+        {filtered.map(s => (
+          <div
+            key={s.t}
+            className={`card ${picked.has(s.t) ? "active" : ""}`}
+            onClick={() => toggle(s.t)}
+          >
+            <div className="ticker">{s.t} <span className="badge">{s.name}</span></div>
+            <div className="price" style={{marginTop:6}}>~ {s.price.toFixed(2)} $</div>
+            <div style={{marginTop:6, fontSize:12, color: s.ch >= 0 ? "#16a34a" : "#dc2626"}}>
+              {s.ch >= 0 ? "▲" : "▼"} {Math.abs(s.ch).toFixed(1)}%
+            </div>
+            {picked.has(s.t) && (
+              <div style={{marginTop:10, fontSize:12, color:"#635bff"}}>Sélectionné ✓</div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {picked.size > 0 && (
+        <p style={{textAlign:"center", marginTop:8}}>
+          {picked.size} sélection{picked.size>1?"s":""} : {[...picked].join(", ")}
+        </p>
+      )}
+    </>
+  );
+}
       // --- Pages ---
       function Home() {
         return (
