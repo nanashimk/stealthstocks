@@ -83,18 +83,16 @@ button.linklike{ border:1px solid var(--accent); background:#fff; color:#111; bo
 
       <div class="actions-row">
         <button id="sendEmail" class="linklike">✉️ Envoyer par e-mail</button>
-        <button id="sendSMS" class="linklike">📱 Envoyer par SMS</button>
         <button id="copy" class="linklike secondary">Copier le message</button>
         <button id="clear" class="linklike secondary">Vider le panier</button>
       </div>
-      <div class="note">L’e-mail s’ouvrira dans Gmail, prérempli pour <strong>mkinvest57@gmail.com</strong>. Le SMS s’ouvre vers <strong>00&nbsp;00&nbsp;00&nbsp;00&nbsp;00</strong> (selon l’appareil).</div>
+      <div class="note">L’e-mail s’ouvrira dans Gmail, prérempli pour <strong>mkinvest57@gmail.com</strong>. Si Gmail est bloqué, on bascule automatiquement en <code>mailto:</code>.</div>
     </section>
   </div>
 </main>
 
 <script>
 const EMAIL = "mkinvest57@gmail.com";
-const PHONE_SMS = "prochainement"; // format international
 
 function getCart(){ try { return JSON.parse(localStorage.getItem('cart')||'{}'); } catch(e){ return {}; } }
 function updateMiniCount(){ 
@@ -103,7 +101,6 @@ function updateMiniCount(){
   const badge = document.getElementById('mini-count');
   if(badge) badge.textContent = total;
 }
-
 function euro(n){ return (Math.round(n*100)/100).toFixed(2).replace('.', ',') + '€'; }
 
 function buildLines(cart){
@@ -160,15 +157,13 @@ function render(){
   const body = encodeURIComponent(text);
   const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${encodeURIComponent(EMAIL)}&su=${subj}&body=${body}`;
   const mailto = `mailto:${EMAIL}?subject=${subj}&body=${body}`; // fallback
-  const sms = `sms:${PHONE_SMS}?&body=${body}`;
 
   document.getElementById('sendEmail').onclick = ()=>{
     const win = window.open(gmailCompose, "_blank");
-    if(!win){ window.location.href = gmailCompose; } // certains navigateurs bloquent window.open
-    // Optionnel : fallback si Gmail indisponible
+    if(!win){ window.location.href = gmailCompose; }
+    // Fallback si Gmail indisponible / pop-up bloquée
     setTimeout(()=>{ if(document.visibilityState === 'visible') window.location.href = mailto; }, 1500);
   };
-  document.getElementById('sendSMS').onclick = ()=>{ window.location.href = sms; };
 
   document.getElementById('copy').onclick = async ()=>{
     try{ await navigator.clipboard.writeText(text); alert('Message copié.'); }catch(e){ alert('Copie impossible, sélectionnez et copiez manuellement.'); }
@@ -180,7 +175,6 @@ function render(){
   const el = document.getElementById(id);
   el.addEventListener('input', render);
 });
-
 render();
 </script>
 </body>
