@@ -96,7 +96,6 @@ function updateMiniCount(){
   const badge = document.getElementById('mini-count');
   if(badge) badge.textContent = total;
 }
-
 function formatEuro(n){ return (Math.round(n*100)/100).toFixed(2).replace('.', ',') + '€'; }
 
 function changeQty(id, delta){
@@ -106,7 +105,6 @@ function changeQty(id, delta){
   if(cart[id].qty === 0) delete cart[id];
   setCart(cart);
 }
-
 function setQty(id, val){
   const cart = getCart();
   if(!cart[id]) return;
@@ -114,13 +112,11 @@ function setQty(id, val){
   if(n === 0) delete cart[id]; else cart[id].qty = n;
   setCart(cart);
 }
-
 function removeItem(id){
   const cart = getCart();
   delete cart[id];
   setCart(cart);
 }
-
 function clearCart(){
   localStorage.removeItem('cart');
   render();
@@ -129,9 +125,6 @@ function clearCart(){
 function render(){
   const cart = getCart();
   updateMiniCount();
-  const rows = [];
-  let total = 0;
-
   const keys = Object.keys(cart);
   const empty = document.getElementById('empty');
   const table = document.getElementById('cartTable');
@@ -151,6 +144,7 @@ function render(){
   summary.style.display = '';
 
   body.innerHTML = '';
+  let total = 0;
 
   keys.forEach(id => {
     const it = cart[id];
@@ -161,7 +155,7 @@ function render(){
     tr.innerHTML = `
       <td>
         <div class="item">
-          <img src="${it.img||''}" alt="${it.title||''}">
+          <img src="${it.img||''}" alt="${it.title||''}" referrerpolicy="no-referrer">
           <div>
             <div style="font-weight:600">${it.title||''}</div>
             <div class="hide-sm" style="color:#6b7280;font-size:.9rem;">${it.price}€ / unité</div>
@@ -176,7 +170,7 @@ function render(){
           <button type="button" aria-label="augmenter" data-act="inc" data-id="${id}">+</button>
         </div>
       </td>
-      <td>${formatEuro(lineTotal).replace(',00','')} </td>
+      <td>${formatEuro(lineTotal).replace(',00','')}</td>
       <td class="row-actions"><button class="remove" data-act="del" data-id="${id}">Supprimer</button></td>
     `;
     body.appendChild(tr);
@@ -194,14 +188,12 @@ document.getElementById('cartBody').addEventListener('click', (e)=>{
   if(act === 'inc') changeQty(id, +1);
   if(act === 'del') removeItem(id);
 });
-
 document.getElementById('cartBody').addEventListener('input', (e)=>{
   const el = e.target;
   if(el && el.dataset.act === 'set'){
     setQty(el.dataset.id, el.value);
   }
 });
-
 document.getElementById('clear').addEventListener('click', clearCart);
 
 render();
